@@ -47,7 +47,7 @@ Raphael.fn.note_radius = 7;
 
 Raphael.fn.fret_width = Raphael.fn.string_spacing * ( Raphael.fn.strings_drawn - 1 ); 
 Raphael.fn.fret_height = Raphael.fn.fret_spacing * (Raphael.fn.frets_drawn + 0.5); 
-Raphael.fn.chord_width = Raphael.fn.margin_left + Raphael.fn.fret_width + Raphael.fn.margin_right; 
+Raphael.fn.chord_width = Raphael.fn.margin_left + Raphael.fn.fret_width + Raphael.fn.string_spacing + Raphael.fn.margin_right; 
 Raphael.fn.chord_height = Raphael.fn.margin_top + Raphael.fn.fret_height + Raphael.fn.margin_bottom;
 
 Raphael.fn.tab_current_string = 0; // 1,2,3,4,5,6 or 0 = not set
@@ -78,7 +78,7 @@ Raphael.fn.chord_fretboard = function ( position, chord_name ) {
 
   this.text( // chord name
     fret_left + 2.5 * this.string_spacing,
-    this.margin_top - 25, 
+    this.margin_top - 20, 
     chord_name).attr({stroke: this.color, "font-size":"20px"});
   
   if ( position == 1 ) { // nut
@@ -252,6 +252,7 @@ Raphael.fn.tab_start = function () {
   this.increment_offset(width);
 }
 
+/*
 // set the tab type and initialize measures
 Raphael.fn.set_tabtype = function (tabtype) {
   this.tabtype = tabtype;
@@ -274,6 +275,8 @@ Raphael.fn.set_tabtype = function (tabtype) {
   }
   this.tab_start();
 }
+*/
+
 
 // draw an individual note in the tab
 Raphael.fn.draw_tab_note = function (string_number, token, left_offset) {
@@ -489,24 +492,40 @@ jtab.characterize = function (notation) {
   var tabtype = 0;
   var gotChord = ( notation.match( /[A-G]/ ) != null );
   var gotTab = ( notation.match( /\$/ ) != null );
-  if ( gotChord && gotTab ) {
+  if ( gotChord && gotTab ) { // chord and tab - already set by default
     tabtype = 1;
-  } else if ( gotChord ) {
+    Raphael.fn.has_chord = true;
+    Raphael.fn.has_tab = true;
+    Raphael.fn.tab_top = Raphael.fn.chord_height + Raphael.fn.tab_margin_top;
+    Raphael.fn.total_height = Raphael.fn.tab_top + Raphael.fn.tab_height + Raphael.fn.margin_bottom;
+  } else if ( gotChord ) { // chord only
     tabtype = 2;
-  } else if ( gotTab ) {
+    Raphael.fn.has_chord = true;
+    Raphael.fn.has_tab = false;
+    Raphael.fn.tab_top = Raphael.fn.chord_height + Raphael.fn.tab_margin_top;
+    Raphael.fn.total_height = Raphael.fn.chord_height;
+  } else if ( gotTab ) { // tab only
     tabtype = 3;
+    Raphael.fn.has_chord = false;
+    Raphael.fn.has_tab = true;
+    Raphael.fn.tab_top = Raphael.fn.tab_margin_top;
+    Raphael.fn.total_height = Raphael.fn.tab_top + Raphael.fn.tab_height + Raphael.fn.margin_bottom;
   }
+  Raphael.fn.tabtype = tabtype;    
   return tabtype;
 }
 
 // main render entry point
 jtab.render = function (element,notation) {
- 
+
   var tabtype = jtab.characterize( notation );
   if (tabtype == 0 ) return;
-  $(element).update('');
-  canvas = Raphael(element, 80, 80);
-  canvas.set_tabtype( tabtype );
+  
+  // add the Raphael canvas in its own DIV. this gets around an IE6 issue with not removing previous renderings
+  var canvas_holder = new Element('div').setStyle({height: Raphael.fn.total_height});
+  $(element).update(canvas_holder);
+  canvas = Raphael(canvas_holder, 80, Raphael.fn.total_height );
+  canvas.tab_start();
   
   //canvas.render_notation( notation );
   var tokens = notation.split(/\s/);
