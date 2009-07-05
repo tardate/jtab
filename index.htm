@@ -1,0 +1,418 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+
+    <title>jTab - Guitar Chord and Tab Library</title>
+    <meta name="description" content=""/>
+    <meta name="keywords"    content="guitar,chord,tab,tabulature,music,notation,javascript,css,svg,html,xhtml"/>
+
+    <style type="text/css" media="screen">
+    body {
+      background: #fff url(http://tardate.com/images/bg-black-gradient.jpg) repeat-x fixed top;
+      color:#000;
+      font-family: helvetica, arial, sans-serif;
+    }
+    p, div, span, li {
+      font-size: 13px;
+    }
+    
+    #header {
+      width: 1030px;
+      clear: both;
+      padding:0 10px;
+      color: #FEFAFA;
+    }
+    #header h1 {
+      color: #FFFF33;
+    }
+    
+    #menu {
+      float: left;
+      position:relative;
+      width: 180px;
+      background-color: transparent;
+      color: #FEFAFA;
+    }
+    #menu ul {
+      margin-left:10px;
+      padding-left:10px;
+    }
+    #menu a,
+    #menu a:visited,
+    #menu a:hover {
+      color: #FEFAFA;
+    }
+      
+    
+    #content {
+      margin-left: 180px;
+      padding:1px 10px 10px;
+      width: 850px;
+      background-color: #F4EFFE;
+    }
+    
+    #footer {
+      width: 1030px;
+      clear: both;
+    }
+    
+    </style>
+    
+    <script type="text/javascript">
+    window.onload=function(){
+      // just to make sure we can chain onload handlers correctly
+      // alert('original onload');
+    }
+    </script>
+
+    <!-- START: for jtab -->
+    <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+    <link type="text/css" rel="stylesheet" media="screen" href="css/jtab-helper.css"/>
+    <script src="javascripts/prototype.js" type="text/javascript"></script>
+    <script src="javascripts/raphael.js" type="text/javascript"></script>
+    <script src="javascripts/jtab.js" type="text/javascript"></script>
+    <!-- END: for jtab -->
+
+    <!-- START: for syntaxhighlighter -->
+    <link href='http://tardate.com/syntaxhighlighter/css/SyntaxHighlighter.css' rel='stylesheet' type='text/css'/>
+    <script language='javascript' src='http://tardate.com/syntaxhighlighter/js/shCore.js'></script>
+    <script language='javascript' src='http://tardate.com/syntaxhighlighter/js/shBrushJScript.js'></script>
+    <script language='javascript' src='http://tardate.com/syntaxhighlighter/js/shBrushCss.js'></script>
+    <script language='javascript' src='http://tardate.com/syntaxhighlighter/js/shBrushXml.js'></script>
+    <style type='text/css'>
+    .dp-highlighter ol li {
+      background: #F8F8F8 url(http://tardate.com/images/wrap-cont-l.png) no-repeat 0 14px; 
+      padding-left: 14px !important;
+    }
+    .dp-highlighter ol li.alt {
+      background: #FFFFFF url(http://tardate.com/images/wrap-cont-l.png) no-repeat 0 14px; 
+      padding-left: 14px !important;
+    }
+    .dp-highlighter .bar, .dp-highlighter .bar .tools {
+      margin-bottom:0;
+    }
+    </style>
+    <!-- END: for syntaxhighlighter -->
+
+  </head>
+  <body>
+
+<div id="header">
+<h1>jTab - Guitar Chord and Tab Notation for the Web</h1>
+<p>
+jTab is a javascript-based library that allows you to easily render arbitrary guitar chord and tabulature (tab)
+notation on the web. Automatically. It works in most modern browsers that support javascript, CSS and scalable vector graphics (SVG) - 
+for example, Internet Explorer 7 and Firefox 3.
+</p>
+
+</div>
+
+<div id="menu">
+<ul>
+<li><a href="#">About jTab</a></li>
+<li><a href="#examples">Live Examples</a></li>
+<li><a href="#notation">Notation Reference</a></li>
+<li><a href="#download">Download</a></li>
+<li><a href="#install">How To Install</a></li>
+<li><a href="#help">Troubleshooting and Tips</a></li>
+<li><a href="#feedback">Feedback &amp; Contribute</a></li>
+<li><a href="#limitations">Limitations</a></li>
+</ul>
+</div>
+
+
+
+
+<div id="content">
+<a name="about"><h2>About jTab</h2></a>
+<p>
+Guitar tab is all over the internet, but it is usually in either a fixed/non-interactive form, or painstaking ASCII format.
+jTab is a javascript-based library that lets you change that. It automatically converts a simple text notation 
+into a web-friendly graphical representation on the fly. 
+</p>
+<p>
+You can use it to post snippets on your blog, host user contributions on a web site, or just for personal transcription purposes.
+It is also scriptable with javascript for more sophisticated applications.
+</p>
+<p>
+Technically, jTab is a javascript-based library that renders notation using CSS and scalable vector graphics (SVG).
+It works in most modern browsers that support javascript, CSS and scalable vector graphics (SVG) - 
+for example, Internet Explorer 7 and Firefox 3.
+</p>
+<p>
+jTab is written and maintained by <a href="http://tardate.com">Paul Gallagher</a> and release as open source for all to exploit.
+Aside from scratching a personal itch, jTab was greatly inspired by 
+Dmitry Baranovskiy's fantastic work on the <a href="http://raphaeljs.com/">Rapha&euml;l</a> SVG library,
+and Alex Gorbatchev's <a href="http://www.dreamprojections.com/syntaxhighlighter/">syntaxhighlighter</a> (for opening the door to what is possible).
+</p>
+
+
+
+<a name="examples"><h2>Live Examples</h2></a>
+<p>
+Show don't tell! So before going further, here are some examples of jTab in action. 
+More examples are available <a href="http://tardate.com/jtab/examples.htm">here</a>.
+</p>
+
+<h3>Interactive/Explicit Rendering using Javascript</h3>
+<p>
+jTab can be used to reander notation in real-time using Javascript. This could be based on user input (like here), or with the notation feed
+being generated or retrieved from some system or web service.
+</p>
+<span>Try it out. Enter a phrase here (see <a href="#notation">notation</a> for help):</span><input id="notation" size="40"><input type="button" value="Notate this!" onclick="jtab.render('tab',$('notation').value);">
+<div id="tab"><i>jTab will render your phrase here</i></div>
+
+
+<h3>Implicit Rendering using CSS</h3>
+<p>
+jTab implicitly renders tab notation on a web page that is contained in blocks marked with the special class name 'jtab'.
+This can be used for posting transcriptions to your blog for example - just include jTab in your blog template then 
+when posting you don't need to remember anything else except to set the class name on your notation.
+</p>
+
+<p>Here, a chord phrase is written directly into the web page..</p>
+<div class="jtab chordonly"> E / / / | A7 / B7 / || </div>
+<p>Here's an example combining chords and tab notation..</p>
+<div class="jtab">Bm $3 4 4h5p3h4 5 $2 3 5 7 7h8p7 5/7 | A $4 7 9 $3 7 6 $5 9 $4 7h9 7 $5 9\7 5/7 | </div>
+<p>Or just tab notation..</p>
+<div class="jtab tabonly">$4.7/9.$3.6/8.$2.5/7 9p7 $2.9.$3.9.$4.9 </div>
+
+
+<a name="notation"><h2>Notation Reference</h2></a>
+<p>
+If you find this a little dry to read,
+see the <a href="http://tardate.com/jtab/examples.htm">examples</a> page which demostrate all these features and more.
+</p>
+<h3>Chord Notation</h3>
+<p>
+Chord notation is quite conventional e.g. C Gm F#7 Db. 
+</p>  
+  <ul>
+  <li>The root note (A..G) must be uppercase</li>
+  <li>Seperate every item with spaces</li>
+  <li><strong>#</strong> indicates sharp</li>
+  <li><strong>b</strong> (lowercase B) indicates flat</li>
+  <li><strong>m</strong> (lowercase) indicates minor</li>
+  <li><strong>maj</strong> (lowercase) indicates major</li>
+  <li>Numbers (6,7,9) to indicate 6ths, 7ths, 9ths etc</li>
+  <li><strong>/</strong> indicates repeat of the previous chord</li>
+  <li><strong>|</strong> is a standard <a href="http://en.wikipedia.org/wiki/Bar_(music)" target="_blank">bar line</a></li>
+  <li><strong>||</strong> is an ending bar line</li>
+  <li>The chord library is a little limited at this point but will grow over time (see <a href="#limitations">limitations</a>)</li>
+  </ul>
+
+<h3>Tab Notation</h3> 
+<p> 
+Representing <a href="http://en.wikipedia.org/wiki/Tablature" target="_blank">tab notation</a> is little special to jTab, 
+but aims to be as simple as possible.
+</p>
+<p>
+Basic entry of notes on a single string is done by setting the string and then following with the notation (separated by spaces).
+  <ul>
+  <li>Indicating the string is done with the dollar sign ("$") followed by the string number (1-6, high to low). 
+  e.g. $2 is the B string in standard tuning</li>
+  <li>Then you can in fact follow with anything you like - fret position, slides ( / \ ) hammerons (h), pulloffs (p) etc (just avoid uppercase characters to avoid confusion with chords)</li>
+  <li>Examples:
+     <ul>
+      <li>$2 0 1 3 (a simple three note sequence on the B string)</li>
+      <li>$2 0 1 3 $1 0 1 3/5 (a sequence of notes starting on the B string, continuing on the high E string, finishing with a slide to A)</li>
+     </ul>
+  </li>
+  </ul>
+
+</p>
+<p>
+What about more than one note at the same time?
+To handle multiple notes played on different strings, join all the individual string notation together with periods (".")
+</p>
+<p>Examples:
+   <ul>
+    <li>$3.6.$2.5h7 $1 5 $2 7 (start with two notes on G and B strings followed by a hammeron and two individual notes)</li>
+    <li>$4.7/9.$3.6/8.$2.5/7 9p7 $2.9.$3.9.$4.9 (three notes across D,G,B strings with a slide up two steps and a twist)</li>
+   </ul>
+</p>
+
+
+
+<h3>Mixing Chord &amp; Tab Notation</h3> 
+<p> 
+You can mix chord and tab notation without restriction in the one phrase. 
+This will result in a tab line being drawn, with chord charts above where relevant.
+</p>
+
+
+<a name="download"><h2>Downloading/obtaining jTab </h2></a>
+<p>
+jTab is open source and free to use. You are welcome to use and reuse it however you like.
+</p>
+<p>
+The project home page is at <a href="http://tardate.com/jtab">http://tardate.com/jtab</a>
+</p>
+<p>
+The master source code repository is on github (<a href="http://github.com/tardate/jtab/tree/master">http://github.com/tardate/jtab/tree/master</a>). 
+Here you will always find the latest version and be able to <a href="#feedback">contribute</a> to the project yourself.
+</p>
+
+
+<a name="install"><h2>How To Install jTab on your Web Page or Site</h2></a>
+<h3>1. Include jTab Javascript files</h3>
+<p>
+jTab is provided as a single javascript source file (jtab.js) that needs to be included on your page.
+It depends on two additional libraries that must also be included: <a href="http://www.prototypejs.org/" target="_blank">Prototype</a> (prototype.js) 
+and <a href="http://raphaeljs.com/" target="_blank">Rapha&euml;l</a> (raphael.js). 
+Compatible versions of these libraries located along with jtab.js, or if you are already using a version of these libraries
+you probably do not need to include them again.
+</p>
+
+<pre name="code" class="xml:wraplines">
+&lt;head&gt;
+    ... (other stuff) ...
+    &lt;meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" /&gt; &lt;!-- recommended to avoid security warnings with SVG in IE8 --&gt
+    &lt;link type="text/css" rel="stylesheet" media="screen" href="css/jtab-helper.css"/&gt; &lt;!-- optional: helpers to preset jtab region heights to avoid rendering jitter --&gt
+    
+    &lt;script src="javascripts/prototype.js" type="text/javascript"&gt;&lt;/script&gt;
+    &lt;script src="javascripts/raphael.js" type="text/javascript"&gt;&lt;/script&gt;
+    &lt;script src="javascripts/jtab.js" type="text/javascript"&gt;&lt;/script&gt;
+    
+&lt;/head&gt;
+&lt;body&gt;
+    ... 
+</pre>
+<p>
+Note the optional jtab-helper.css file. It is used to preset jtab region heights to avoid screen layout resizing during rendering. 
+More information about that <a href="#help">here</a>. 
+</p>
+
+
+
+<h3>2. Performing Implicit Rendering</h3>
+Seriously, how easy is this? Just put your notation text inside any block tag (e.g. DIV) and give it the class name "jtab"..
+<pre name="code" class="xml:wraplines:nocontrols">
+&lt;div class="jtab"&gt; E / / / | Am / B / || &lt;/div&gt;
+</pre>
+<p>
+The HTML code above produces the following (view the source of this page to prove it yourself!):
+</p>
+<div class="jtab chordonly"> E / / / | Am / B / || </div>
+
+<h3>3. Explicit Rendering with Scripting</h3>
+<p>
+You can script the rendering of a guitar tab phrase into any HTML block using a line of javascript to call the jtab.render() function.
+jtab.render() takes two parameters. The first is the ID or name of the HTML element to render the tab into, and the second is the actual line of tab notation (a string).
+Obviously, you can bring all your javascripting expertise to bear: the tab notation may be preset in the page, pulled from a database, the result of a web services call, entered by the user, or ... 
+</p>
+<pre name="code" class="xml:wraplines:nocontrols">
+&lt;div id="mytab"&gt;&lt;/div&gt;
+&lt;script type="text/javascript"&gt;
+    jtab.render('mytab','Am7 C');
+&lt;/script&gt;
+</pre>
+<p>
+Actual result is this:
+</p>
+
+<div id="mytab"><i>jTab rendering here..</i></div>
+<script type="text/javascript">
+    jtab.render('mytab','Am7 C');
+</script>
+
+
+
+
+<a name="help"><h2>Troubleshooting and Tips</h2></a>
+
+<h3>Page layout jitters while rendering jTab</h3>
+<p>
+jTab automatically resize HTML DOM objects to fit the notation it is rendering.
+Because of this, page layout main jitter around as the page elements are changing size.
+To avoid this, you can pre-size your jtab elements to avoid the resizing.
+</p>
+<p>
+At the moment, the standard height of jTab renderings is as follows:
+  <ul>
+  <li>Chord and tab diagram: 218px</li>
+  <li>Chord-only diagram: 118px</li>
+  <li>Tab-only diagram: 100px</li>
+  </ul>
+Note that width is indeterminate - it depends on your notation.
+</p>
+<p>  
+An optional stylesheet is included in the jTab kit (css/jtab-helper.css)and can be included in you pages:
+</p>
+<pre name="code" class="xml:wraplines:nocontrols">&lt;link type="text/css" rel="stylesheet" media="screen" href="http://tardate.com/jtab/css/jtab-helper.css"/&gt;
+</pre>
+<p>
+The stylesheet presets the jtab class to the maximum possible height, and provides class modifiers if you know you
+will only have tab or chord elements present.
+</p>
+<pre name="code" class="xml:wraplines:nocontrols">&lt;div class="jtab"&gt;(pre-sized for chord and tab)&lt;/div&gt;
+&lt;div class="jtab chordonly"&gt;(pre-sized for chord only)&lt;/div&gt;
+&lt;div class="jtab tabonly"&gt;(pre-sized for tab only)&lt;/div&gt;
+</pre>
+
+
+<h3>Inline blocks and IE</h3>
+<p>
+Implicit rendering with normally inline blocks (like a SPAN tag) can be an issue in IE. 
+Rendering a series of SPAN tags may result in the guitar tabs being written over each other (it seems IE does not automatically
+adjust the size of the block to fit the rendered guitar tab, whereas Firefox does for example).
+</p>
+<p>
+Solution: just avoid inline blocks. Hold your guitar tab in a DIV tag for instance. 
+</p>
+
+<h3>Implicit rendering isn't happening?</h3>
+<p>
+jTab hooks the window.onload function in order to "automagically" do its implicit, CSS-based rendering. 
+It plays well with other onload handlers installed <i>before</i> jTab, however if anything on your page
+installs an onload handler <i>after</i> jTab, it may overwrite the jTab hook and prevent it running.
+</p>
+<p>
+Solution 1: restructure your page so that jtab.js is included after anything else that may interfere with it.
+<br/>
+Solution 2: include an explicit call to the rendering function at the end of your page:
+</p>
+<pre name="code" class="xml:wraplines">
+    &lt;script type="text/javascript"&gt;
+    jtab.renderimplicit();
+    &lt;/script&gt;   
+</pre>
+
+<a name="feedback"><h2>Feedback &amp; Contribute</h2></a>
+<p>
+jTab is officially a 'weekend' project, hence there's always more that could be done (see 'limitations' below) ;-)
+Feedback is eagerly sought, particularly for things like:
+<ul>
+<li>Additional chords you want to see supported</li>
+<li>Spotted any incorrect fingerings?</li>
+<li>Features you'd really like to see included</li>
+<li>Or just let me know how you are using jTab and what you think!</li>
+</ul>
+</p>
+
+<a name="limitations"><h3>Limitations</h3></a>
+<p>
+jTab is a new project, so there are definitely some things it can't do at the moment. Some of the main things to note:
+</p>
+<ul>
+<li>Chord library is relatively limited at the moment (expanding .. they just need typing in!)</li>
+<li>Chord diagrams don't support variations: generally only the most common, usually open fingering is supported</li>
+<li>Chord diagrams don't render a barre symbol or other common annotations.</li>
+<li>No explicit support for alternate tunings</li>
+<li>Currently only six-string beasts. No bass, lutes, mandolins, banjoes etc etc.. sorry ;-) </li>
+</ul>
+</div>
+
+<div id="footer">
+</div>
+<!-- START: for syntaxhighlighter -->
+<script language='javascript'>
+dp.SyntaxHighlighter.ClipboardSwf = 'http://tardate.com/syntaxhighlighter/js/clipboard.swf';
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+<!-- END: for syntaxhighlighter -->
+
+  </body>
+</html>
