@@ -28,10 +28,12 @@
 // define extensions to the Raphael class
 //
   
-Raphael.fn.scale = 1; 
 Raphael.fn.tabtype = 0;  // 0 = none, 1 = tab & chord, 2 = chord, 3 = tab
 Raphael.fn.has_chord = false;
 Raphael.fn.has_tab = false;
+
+Raphael.fn.debug = false;
+Raphael.fn.scale = 1; 
 Raphael.fn.margin_top = 36;
 Raphael.fn.margin_bottom = 10;
 Raphael.fn.margin_left = 16;
@@ -64,9 +66,30 @@ Raphael.fn.note_text_color = "#fff";
 Raphael.fn.tab_text_color = "#000";
 
 
+// debug helper - puts grid marks on the rendered image
+Raphael.fn.debug_grid = function (width) {
+  // h ticks
+  this.path({stroke: this.color, "stroke-width":0.2 }).relatively().moveTo(
+    this.current_offset, 0).lineTo(0, 4);
+  this.path({stroke: this.color, "stroke-width":0.2 }).relatively().moveTo(
+    this.current_offset + this.margin_left, 0).lineTo(0, 2);
+  this.path({stroke: this.color, "stroke-width":0.2 }).relatively().moveTo(
+    this.current_offset + width - this.margin_right, 0).lineTo(0, 2);
+  // v ticks
+  if (this.tabtype == 3) {
+    this.path({stroke: this.color, "stroke-width":0.2 }).relatively().moveTo(
+      this.current_offset, this.tab_margin_top).lineTo(2, 0);
+  } else {
+    this.path({stroke: this.color, "stroke-width":0.2 }).relatively().moveTo(
+      this.current_offset, this.margin_top).lineTo(2, 0);
+  }
+}
+
+
 // step the current position for drawing
 Raphael.fn.increment_offset = function (width) {
   w = ( width === undefined ) ? this.chord_width : width;
+  if (this.debug) this.debug_grid(w);
   this.current_offset += w;
   this.setSize( this.current_offset, this.total_height );
 }
@@ -136,14 +159,12 @@ Raphael.fn.stroke = function () {
 
     this.increment_offset(width);    
   } else if (this.has_chord) {
-    var fret_left = this.current_offset + this.margin_left;
     var dx = this.string_spacing;
     var dy = 2 * this.fret_spacing;     
     this.path({stroke: this.color, "stroke-width":4 }).relatively().moveTo( 
-        fret_left + this.string_spacing, 
+        this.current_offset + this.margin_left, 
         this.margin_top + this.fret_spacing + dy ).lineTo(
-        dx, 
-        - dy );
+        dx, -dy );
     
     this.increment_offset(  this.margin_left + dx + this.margin_right ); 
   }
@@ -163,10 +184,10 @@ Raphael.fn.bar = function () {
   } else if (this.has_chord) { 
     var fret_left = this.current_offset + this.margin_left;
     this.path({stroke: this.color, "stroke-width":1 }).relatively().moveTo( 
-        fret_left + this.string_spacing, this.margin_top  ).lineTo(
+        this.current_offset + this.margin_left, this.margin_top  ).lineTo(
         0, this.fret_height );
     
-    this.increment_offset( this.string_spacing + this.margin_left + this.margin_right );  
+    this.increment_offset( this.margin_left + this.margin_right );  
   }
 }
 
@@ -186,15 +207,15 @@ Raphael.fn.doublebar = function () {
     this.increment_offset(width);    
 
   } else if (this.has_chord) { 
-    var fret_left = this.current_offset + this.margin_left;
+    var left = this.current_offset + this.margin_left;
     this.path({stroke: this.color, "stroke-width":1 }).relatively().moveTo( 
-        fret_left + this.string_spacing, this.margin_top  ).lineTo(
+        left, this.margin_top  ).lineTo(
         0, this.fret_height );
     this.path({stroke: this.color, "stroke-width":4 }).relatively().moveTo( 
-        fret_left + this.string_spacing + 6, this.margin_top  ).lineTo(
+        left + 6, this.margin_top  ).lineTo(
         0, this.fret_height );
     
-    this.increment_offset( this.string_spacing + 6 + this.margin_left + this.margin_right );  
+    this.increment_offset( this.margin_left + 6 + this.margin_right );  
   }
 }
 
@@ -216,8 +237,6 @@ Raphael.fn.chord_note = function (position, string_number, note) {
     this.circle(
       fret_left + (string_number - 1) * this.string_spacing, 
       this.margin_top + fret_dy, this.note_radius).attr({stroke: this.color, fill: this.color});
-    //circle.attr("fill", "#000");
-    //circle.attr("stroke", "#000");
     if ( ! (note[1] === undefined) ) {
       this.text( fret_left + (string_number - 1) * this.string_spacing, 
       this.margin_top + fret_dy, note[1] ).attr({stroke: this.note_text_color, "font-size":"12px"});
@@ -251,31 +270,6 @@ Raphael.fn.tab_start = function () {
   this.text(this.current_offset + this.tab_char_width, this.tab_top + this.tab_spacing * 3.5, "B").attr({stroke: this.color, "font-size":"14px"});
   this.increment_offset(width);
 }
-
-/*
-// set the tab type and initialize measures
-Raphael.fn.set_tabtype = function (tabtype) {
-  this.tabtype = tabtype;
-  switch  (tabtype) {
-    case 1: // chord and tab - already set by default
-      this.has_chord = true;
-      this.has_tab = true;
-      break;
-    case 2: // chord only
-      this.has_chord = true;
-      this.has_tab = false;
-      this.total_height = this.chord_height;
-      break;
-    case 3: // tab only
-      this.has_chord = false;
-      this.has_tab = true;
-      this.tab_top = this.tab_margin_top
-      this.total_height = this.tab_top + Raphael.fn.tab_height + Raphael.fn.margin_bottom;
-      break;
-  }
-  this.tab_start();
-}
-*/
 
 
 // draw an individual note in the tab
@@ -514,7 +508,9 @@ jtab.characterize = function (notation) {
   var tabtype = 0;
   var gotChord = ( notation.match( /[A-G]/ ) != null );
   var gotTab = ( notation.match( /\$/ ) != null );
-  if ( gotChord && gotTab ) { // chord and tab - already set by default
+  // set defaults - apply scaling here (TODO)
+  Raphael.fn.current_offset = Raphael.fn.margin_left;
+  if ( gotChord && gotTab ) { // chord and tab
     tabtype = 1;
     Raphael.fn.has_chord = true;
     Raphael.fn.has_tab = true;
