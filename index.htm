@@ -10,7 +10,7 @@
 
     <style type="text/css" media="screen">
     body {
-      background: #fff url(http://tardate.com/images/bg-black-gradient.jpg) repeat-x fixed top;
+      background: #fff url(images/bg-black-gradient.jpg) repeat-x fixed top;
       color:#000;
       font-family: helvetica, arial, sans-serif;
     }
@@ -57,6 +57,12 @@
       width: 1030px;
       clear: both;
     }
+
+    pre {
+      background-color: #000;
+      color: #EEE;
+      padding: 10px;
+    } 
     
     </style>
     
@@ -74,28 +80,6 @@
     <script src="javascripts/raphael.js" type="text/javascript"></script>
     <script src="javascripts/jtab.js" type="text/javascript"></script>
     <!-- END: for jtab -->
-
-    <!-- START: for syntaxhighlighter -->
-    <link href='http://tardate.com/syntaxhighlighter/css/SyntaxHighlighter.css' rel='stylesheet' type='text/css'/>
-    <script language='javascript' src='http://tardate.com/syntaxhighlighter/js/shCore.js'></script>
-    <script language='javascript' src='http://tardate.com/syntaxhighlighter/js/shBrushJScript.js'></script>
-    <script language='javascript' src='http://tardate.com/syntaxhighlighter/js/shBrushCss.js'></script>
-    <script language='javascript' src='http://tardate.com/syntaxhighlighter/js/shBrushXml.js'></script>
-    <style type='text/css'>
-    .dp-highlighter ol li {
-      background: #F8F8F8 url(http://tardate.com/images/wrap-cont-l.png) no-repeat 0 14px; 
-      padding-left: 14px !important;
-    }
-    .dp-highlighter ol li.alt {
-      background: #FFFFFF url(http://tardate.com/images/wrap-cont-l.png) no-repeat 0 14px; 
-      padding-left: 14px !important;
-    }
-    .dp-highlighter .bar, .dp-highlighter .bar .tools {
-      margin-bottom:0;
-    }
-    </style>
-    <!-- END: for syntaxhighlighter -->
-
   </head>
   <body>
 
@@ -198,6 +182,7 @@ Chord notation is quite conventional e.g. C Gm F#7 Db.
   <li><strong>maj</strong> (lowercase) indicates major</li>
   <li><strong>sus</strong> (lowercase) indicates suspended</li>
   <li><strong>dim</strong> (lowercase) indicates diminished</li>
+  <li><strong>aug</strong> (lowercase) indicates augmented</li>
   <li><strong>add</strong> (lowercase) indicates extensions</li>
   <li>Numbers (6,7,9) to indicate 6ths, 7ths, 9ths etc</li>
   <li><strong>/</strong> indicates repeat of the previous chord</li>
@@ -276,7 +261,7 @@ There is also a version located at http://tardate.com/jtab that you can point to
 The example below shows how to pull the files direct from tardate.com.
 </p>
 
-<pre name="code" class="xml:wraplines">
+<pre>
 &lt;head&gt;
     ... (other stuff) ...
     &lt;meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" /&gt; &lt;!-- recommended to avoid security warnings with SVG in IE8 --&gt
@@ -299,7 +284,7 @@ More information about that <a href="#help">here</a>.
 
 <h3>2. Performing Implicit Rendering</h3>
 Seriously, how easy is this? Just put your notation text inside any block tag (e.g. DIV) and give it the class name "jtab"..
-<pre name="code" class="xml:wraplines:nocontrols">
+<pre>
 &lt;div class="jtab"&gt; E / / / | Am / B / || &lt;/div&gt;
 </pre>
 <p>
@@ -313,7 +298,7 @@ You can script the rendering of a guitar tab phrase into any HTML block using a 
 jtab.render() takes two parameters. The first is the ID or name of the HTML element to render the tab into, and the second is the actual line of tab notation (a string).
 Obviously, you can bring all your javascripting expertise to bear: the tab notation may be preset in the page, pulled from a database, the result of a web services call, entered by the user, or ... 
 </p>
-<pre name="code" class="xml:wraplines:nocontrols">
+<pre>
 &lt;div id="mytab"&gt;&lt;/div&gt;
 &lt;script type="text/javascript"&gt;
     jtab.render('mytab','Am7 C');
@@ -351,13 +336,13 @@ Note that width is indeterminate - it depends on your notation.
 <p>  
 An optional stylesheet is included in the jTab kit (css/jtab-helper.css)and can be included in you pages:
 </p>
-<pre name="code" class="xml:wraplines:nocontrols">&lt;link type="text/css" rel="stylesheet" media="screen" href="http://tardate.com/jtab/css/jtab-helper.css"/&gt;
+<pre>&lt;link type="text/css" rel="stylesheet" media="screen" href="http://tardate.com/jtab/css/jtab-helper.css"/&gt;
 </pre>
 <p>
 The stylesheet presets the jtab class to the maximum possible height, and provides class modifiers if you know you
 will only have tab or chord elements present.
 </p>
-<pre name="code" class="xml:wraplines:nocontrols">&lt;div class="jtab"&gt;(pre-sized for chord and tab)&lt;/div&gt;
+<pre>&lt;div class="jtab"&gt;(pre-sized for chord and tab)&lt;/div&gt;
 &lt;div class="jtab chordonly"&gt;(pre-sized for chord only)&lt;/div&gt;
 &lt;div class="jtab tabonly"&gt;(pre-sized for tab only)&lt;/div&gt;
 </pre>
@@ -384,7 +369,7 @@ Solution 1: restructure your page so that jtab.js is included after anything els
 <br/>
 Solution 2: include an explicit call to the rendering function at the end of your page:
 </p>
-<pre name="code" class="xml:wraplines">
+<pre>
     &lt;script type="text/javascript"&gt;
     jtab.renderimplicit();
     &lt;/script&gt;   
@@ -417,25 +402,6 @@ jTab is a new project, so there are definitely some things it can't do at the mo
 
 <div id="footer">
 </div>
-
-<!-- START: for syntaxhighlighter -->
-<script language='javascript'>
-dp.SyntaxHighlighter.ClipboardSwf = 'http://tardate.com/syntaxhighlighter/js/clipboard.swf';
-dp.SyntaxHighlighter.HighlightAll('code');
-</script>
-<!-- END: for syntaxhighlighter -->
-
-<!-- START: for google analytics -->
- <script type="text/javascript">
-var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
-document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
-</script>
-<script type="text/javascript">
-try {
-var pageTracker = _gat._getTracker("UA-4894631-6");
-pageTracker._trackPageview();
-} catch(err) {}</script>
-<!-- END: for google analytics -->
 
   </body>
 </html>
