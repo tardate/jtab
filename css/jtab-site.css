@@ -1,0 +1,56 @@
+
+body {
+  background: #fff url(../images/bg-black-gradient.jpg) repeat-x fixed top;
+  color:#000;
+  font-family: helvetica, arial, sans-serif;
+}
+p, div, span, li {
+  font-size: 13px;
+}
+
+#header {
+  width: 1030px;
+  clear: both;
+  padding:0 10px;
+  margin-bottom:10px;
+  color: #FEFAFA;
+}
+#header h1 {
+  color: #FFFF33;
+}
+
+#menu {
+  float: left;
+  position:relative;
+  width: 180px;
+  background-color: transparent;
+  color: #FEFAFA;
+}
+#menu ul {
+  margin-left:10px;
+  padding-left:10px;
+}
+#menu a,
+#menu a:visited,
+#menu a:hover {
+  color: #FEFAFA;
+}
+  
+
+#content {
+  margin-left: 180px;
+  padding:1px 10px 10px;
+  width: 850px;
+  background-color: #F4EFFE;
+}
+
+#footer {
+  width: 1030px;
+  clear: both;
+}
+
+pre {
+  background-color: #000;
+  color: #EEE;
+  padding: 10px;
+} 

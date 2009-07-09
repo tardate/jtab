@@ -8,74 +8,11 @@
     <meta name="description" content="jTab is a javascript-based library that allows you to easily render arbitrary guitar chord and tabulature (tab) notation on the web"/>
     <meta name="keywords"    content="guitar,chord,tab,tabulature,music,notation,javascript,css,svg,html,xhtml"/>
 
-    <style type="text/css" media="screen">
-    body {
-      background: #fff url(images/bg-black-gradient.jpg) repeat-x fixed top;
-      color:#000;
-      font-family: helvetica, arial, sans-serif;
-    }
-    p, div, span, li {
-      font-size: 13px;
-    }
-    
-    #header {
-      width: 1030px;
-      clear: both;
-      padding:0 10px;
-      color: #FEFAFA;
-    }
-    #header h1 {
-      color: #FFFF33;
-    }
-    
-    #menu {
-      float: left;
-      position:relative;
-      width: 180px;
-      background-color: transparent;
-      color: #FEFAFA;
-    }
-    #menu ul {
-      margin-left:10px;
-      padding-left:10px;
-    }
-    #menu a,
-    #menu a:visited,
-    #menu a:hover {
-      color: #FEFAFA;
-    }
-      
-    
-    #content {
-      margin-left: 180px;
-      padding:1px 10px 10px;
-      width: 850px;
-      background-color: #F4EFFE;
-    }
-    
-    #footer {
-      width: 1030px;
-      clear: both;
-    }
-
-    pre {
-      background-color: #000;
-      color: #EEE;
-      padding: 10px;
-    } 
-    
-    </style>
-    
-    <script type="text/javascript">
-    window.onload=function(){
-      // just to make sure we can chain onload handlers correctly
-      // alert('original onload');
-    }
-    </script>
+    <link type="text/css" rel="stylesheet" href="css/jtab-site.css"/>
 
     <!-- START: for jtab -->
     <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
-    <link type="text/css" rel="stylesheet" media="screen" href="css/jtab-helper.css"/>
+    <link type="text/css" rel="stylesheet" href="css/jtab-helper.css"/>
     <script src="javascripts/prototype.js" type="text/javascript"></script>
     <script src="javascripts/raphael.js" type="text/javascript"></script>
     <script src="javascripts/jtab.js" type="text/javascript"></script>
@@ -145,7 +82,8 @@ More examples are available <a href="examples.htm">here</a>.
 jTab can be used to render notation in real-time using Javascript. This could be based on user input (like here), or with the notation feed
 being generated or retrieved from some system or web service.
 </p>
-<span>Try it out. Enter a phrase here (see <a href="#notation">notation</a> for help):</span><input id="notation" size="40"><input type="button" value="Notate this!" onclick="jtab.render('tab',$('notation').value);">
+<span>Try it out. Enter a phrase here (see <a href="#notation">notation</a> for help):</span>
+<input id="notation" size="40"><input type="button" value="jTab this!" onclick="jtab.render('tab',$('notation').value);">
 <div id="tab"><i>jTab will render your phrase here</i></div>
 
 
@@ -263,13 +201,16 @@ The example below shows how to pull the files direct from tardate.com.
 
 <pre>
 &lt;head&gt;
-    ... (other stuff) ...
-    &lt;meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" /&gt; &lt;!-- recommended to avoid security warnings with SVG in IE8 --&gt
-    &lt;link type="text/css" rel="stylesheet" media="screen" href="http://tardate.com/jtab/css/jtab-helper.css"/&gt; &lt;!-- optional: helpers to preset jtab region heights to avoid rendering jitter --&gt
+  ... (other stuff) ...
+  &lt;!-- recommended to avoid security warnings with SVG in IE8 --&gt
+  &lt;meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" /&gt; 
+  &lt;!-- optional: helpers to preset jtab region heights to avoid rendering jitter --&gt
+  &lt;link type="text/css" rel="stylesheet" href="http://tardate.com/jtab/css/jtab-helper.css"/&gt; 
     
-    &lt;script src="http://tardate.com/jtab/javascripts/prototype.js" type="text/javascript"&gt;&lt;/script&gt;
-    &lt;script src="http://tardate.com/jtab/javascripts/raphael.js" type="text/javascript"&gt;&lt;/script&gt;
-    &lt;script src="http://tardate.com/jtab/javascripts/jtab.js" type="text/javascript"&gt;&lt;/script&gt;
+  &lt;!-- mandatory script includes for jtab --&gt
+  &lt;script src="http://tardate.com/jtab/javascripts/prototype.js" type="text/javascript"&gt;&lt;/script&gt;
+  &lt;script src="http://tardate.com/jtab/javascripts/raphael.js" type="text/javascript"&gt;&lt;/script&gt;
+  &lt;script src="http://tardate.com/jtab/javascripts/jtab.js" type="text/javascript"&gt;&lt;/script&gt;
     
 &lt;/head&gt;
 &lt;body&gt;

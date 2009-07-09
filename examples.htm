@@ -8,93 +8,15 @@
     <meta name="description" content="jTab is a javascript-based library that allows you to easily render arbitrary guitar chord and tabulature (tab) notation on the web"/>
     <meta name="keywords"    content="guitar,chord,tab,tabulature,music,notation,javascript,css,svg,html,xhtml"/>
 
-    <style type="text/css" media="screen">
-    body {
-      background: #fff url(http://tardate.com/images/bg-black-gradient.jpg) repeat-x fixed top;
-      color:#000;
-      font-family: helvetica, arial, sans-serif;
-    }
-    p, div, span, li {
-      font-size: 13px;
-    }
-    
-    #header {
-      width: 1030px;
-      clear: both;
-      padding:0 10px;
-      color: #FEFAFA;
-    }
-    #header h1 {
-      color: #FFFF33;
-    }
-    
-    #menu {
-      float: left;
-      position:relative;
-      width: 180px;
-      background-color: transparent;
-      color: #FEFAFA;
-    }
-    #menu ul {
-      margin-left:10px;
-      padding-left:10px;
-    }
-    #menu a,
-    #menu a:visited,
-    #menu a:hover {
-      color: #FEFAFA;
-    }
-      
-    
-    #content {
-      margin-left: 180px;
-      padding:1px 10px 10px;
-      width: 850px;
-      background-color: #F4EFFE;
-    }
-    
-    #footer {
-      width: 1030px;
-      clear: both;
-    }
-    
-    </style>
-    
-    <script type="text/javascript">
-    window.onload=function(){
-      // just to make sure we can chain onload handlers correctly
-      // alert('original onload');
-    }
-    </script>
+    <link type="text/css" rel="stylesheet" href="css/jtab-site.css"/>
 
     <!-- START: for jtab -->
     <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
-    <link type="text/css" rel="stylesheet" media="screen" href="css/jtab-helper.css"/>
+    <link type="text/css" rel="stylesheet" href="css/jtab-helper.css"/>
     <script src="javascripts/prototype.js" type="text/javascript"></script>
     <script src="javascripts/raphael.js" type="text/javascript"></script>
     <script src="javascripts/jtab.js" type="text/javascript"></script>
     <!-- END: for jtab -->
-
-    <!-- START: for syntaxhighlighter -->
-    <link href='http://tardate.com/syntaxhighlighter/css/SyntaxHighlighter.css' rel='stylesheet' type='text/css'/>
-    <script language='javascript' src='http://tardate.com/syntaxhighlighter/js/shCore.js'></script>
-    <script language='javascript' src='http://tardate.com/syntaxhighlighter/js/shBrushJScript.js'></script>
-    <script language='javascript' src='http://tardate.com/syntaxhighlighter/js/shBrushCss.js'></script>
-    <script language='javascript' src='http://tardate.com/syntaxhighlighter/js/shBrushXml.js'></script>
-    <style type='text/css'>
-    .dp-highlighter ol li {
-      background: #F8F8F8 url(http://tardate.com/images/wrap-cont-l.png) no-repeat 0 14px; 
-      padding-left: 14px !important;
-    }
-    .dp-highlighter ol li.alt {
-      background: #FFFFFF url(http://tardate.com/images/wrap-cont-l.png) no-repeat 0 14px; 
-      padding-left: 14px !important;
-    }
-    .dp-highlighter .bar, .dp-highlighter .bar .tools {
-      margin-bottom:0;
-    }
-    </style>
-    <!-- END: for syntaxhighlighter -->
 
   </head>
   <body>
@@ -123,8 +45,6 @@ for example, Internet Explorer 7 and Firefox 3.
 </div>
 
 
-
-
 <div id="content">
 
 <h2>Live Examples</h2>
@@ -136,7 +56,9 @@ Show don't tell! This page is a bit of a sandbox demonstrating the things you ca
 <h3>Render notation provided by a user</h3>
 <p>
 </p>
-<span>Try it out. Enter a phrase here (see <a href="index.htm#notation">notation</a> for help):</span><input id="notation" size="40"><input type="button" value="Notate this!" onclick="jtab.render('tab',$('notation').value);">
+<span>Try it out. Enter a phrase here (see <a href="index.htm#notation">notation</a> for help):</span>
+<input id="notation" size="40">
+<input type="button" value="jTab this!" onclick="jtab.render('tab',$('notation').value);">
 <div id="tab"><i>jTab will render your phrase here</i></div>
 
 
@@ -175,7 +97,7 @@ Show don't tell! This page is a bit of a sandbox demonstrating the things you ca
 <h3>Scripted rendering</h3>
 <p>
 </p>
-<pre name="code" class="xml:wraplines:nocontrols">
+<pre>
 &lt;div id="mytab"&gt;&lt;/div&gt;
 &lt;script type="text/javascript"&gt;
     jtab.render('mytab','Am7 C');
@@ -195,24 +117,6 @@ Actual result is this:
 
 <div id="footer">
 </div>
-<!-- START: for syntaxhighlighter -->
-<script language='javascript'>
-dp.SyntaxHighlighter.ClipboardSwf = 'http://tardate.com/syntaxhighlighter/js/clipboard.swf';
-dp.SyntaxHighlighter.HighlightAll('code');
-</script>
-<!-- END: for syntaxhighlighter -->
-
-<!-- START: for google analytics -->
- <script type="text/javascript">
-var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
-document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
-</script>
-<script type="text/javascript">
-try {
-var pageTracker = _gat._getTracker("UA-4894631-6");
-pageTracker._trackPageview();
-} catch(err) {}</script>
-<!-- END: for google analytics -->
 
   </body>
 </html>
