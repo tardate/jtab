@@ -3,7 +3,7 @@
  * Version 1.0
  * Written by Paul Gallagher (http://tardate.com), 2009.
  * See:
- *   http://tardate.com/jtab : more information on availability, configuration and use.
+ *   http://jtab.tardate.com : more information on availability, configuration and use.
  *   http://github.com/tardate/jtab/tree/master : source code repository, wiki, documentation
  *
  * This library also depends on the following two libraries that must be loaded for it to work:
@@ -30,7 +30,7 @@
 var jtab = {
   Version : '1.0',
   Strings : {
-  	AboutDialog : '<html><head><title>About jTab</title></head><body style=""><p style="">jTab version: {V}</p><p><a href="http://tardate.com/jtab" target="_blank">http://tardate.com/jtab</a></p><p><input type="button" class="close" value="OK" onClick="window.close()"/></p></body></html>'
+  	AboutDialog : '<html><head><title>About jTab</title></head><body style=""><p style="">jTab version: {V}</p><p><a href="http://jtab.tardate.com" target="_blank">http://jtab.tardate.com</a></p><p><input type="button" class="close" value="OK" onClick="window.close()"/></p></body></html>'
   },
   Chords : {
              // chord data - currently explicit representation for 6 string guitar, standard tuning only, and 
