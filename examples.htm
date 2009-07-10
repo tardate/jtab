@@ -61,6 +61,13 @@ Show don't tell! This page is a bit of a sandbox demonstrating the things you ca
 <input type="button" value="jTab this!" onclick="jtab.render('tab',$('notation').value);">
 <div id="tab"><i>jTab will render your phrase here</i></div>
 
+<script type='text/javascript'>
+  $('notation').observe('keypress', function(e){
+    if (e.keyCode == 13) {
+      jtab.render('tab',$('notation').value);
+    }    
+  });
+</script>
 
 <h3>Implicitly render a chord-only phrase</h3>
 <p>
