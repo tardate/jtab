@@ -96,7 +96,12 @@ var jtab = {
     Cadd9  : [ [ 1, [-1 ],  [3,2],  [2,1],  [0  ],  [3,3],  [0  ] ], [  ] ],
     Csus2  : [ [ 1, [ -1],  [3,1],  [5,3],  [5,4],  [3,1],  [3,1] ], [  ] ],
     Csus4  : [ [ 1, [ -1],  [3,1],  [5,2],  [5,3],  [6,4],  [3,1] ], [  ] ],
-    Cdim   : [ [ 1, [-1],  [3,3],  [4,4],  [2,2],  [1,1],  [-1 ] ], [  ] ],
+    Cdim   : [ [ 1, [-1 ],  [3,3],  [4,4],  [2,2],  [1,1],  [-1 ] ], [  ] ],
+    "C:1"  : [ [ 1, [-1 ],  [3,3],  [2,2],  [0  ],  [1,1],  [0  ] ], [  ] ],
+    "C:2"  : [ [ 3, [-1 ],  [3,1],  [5,2],  [5,3],  [5,4],  [3,1] ], [  ] ],
+    "C:3"  : [ [ 5, [8,3],  [7,2],  [5,1],  [5,1],  [5,1],  [8,4] ], [  ] ],
+    "C:4"  : [ [ 7, [8,1],  [10,3],  [10,4],  [9,2],  [8,1],  [8,1] ], [  ] ],
+    "C:5"  : [ [ 10, [-1],  [-1],  [10,1],  [12,2],  [13,4],  [12,3] ], [  ] ],
 
     "C#"    : [ [ 1, [-1 ],  [4,4],  [3,4],  [1,1],  [2,2],  [1,1] ], [  ] ],
     "C#6"   : [ [ 1, [-1 ],  [-1 ],  [3,2],  [3,3],  [2,1],  [4,4] ], [  ] ],
@@ -330,12 +335,18 @@ Raphael.fn.chord_fretboard = function ( position, chord_name ) {
     case 7:
       pos="VII";
       break;
+    case 9:
+      pos="IX";
+      break;
+    case 12:
+      pos="XII";
+      break;
     default:
       pos="";
     }
     if ( pos.length > 0 ) { // draw fret position
       this.text(
-        fret_left + this.fret_width + this.string_spacing * 0.5, 
+        fret_left + this.fret_width + this.string_spacing * 1.0, 
         this.margin_top + ( ( i - 0.5 ) * this.fret_spacing), 
         pos).attr({stroke: this.color, "font-size":"12px"});
     }
@@ -537,8 +548,10 @@ Raphael.fn.render_token = function (token) {
   } else {
     
     // draw chord
-    var ch = jtab.Chords[token][0];    
-    this.chord_fretboard(ch[0], token);
+    var chordArray = jtab.Chords[token];
+    var ch = chordArray[0];    
+    var chordName = token.gsub(/:./, '');
+    this.chord_fretboard(ch[0], chordName);
     for (var i = 1; i < ch.length ; i++) {  
       this.chord_note(ch[0], i, ch[i]);
     }
