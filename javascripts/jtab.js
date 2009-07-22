@@ -282,7 +282,8 @@ var jtabChord = Class.create({
   setCagedChordArray: function() {
     var caged_index = "CAGED".indexOf(this.chordName) + 1; // get 1-based index
     var fret_widths = [3,2,3,2,2];
-    
+
+        
     var starting_fret = 0;
 
     for (var i = 1; i < this.cagedPos ; i++) {
@@ -295,16 +296,26 @@ var jtabChord = Class.create({
     //alert( caged_index + ' ' + starting_fret);
     var modelChord =  "CAGED".charAt( caged_index - 1 );
     this.setChordArray(modelChord);
-    this.shiftChordArray(starting_fret);
+    this.shiftChordArray(starting_fret,modelChord);
     
   },
-  shiftChordArray: function(atFret) { // shift chord to new fret position
+  shiftChordArray: function(atFret,modelChord) { // shift chord to new fret position
+    var caged_fingering = { 
+         C : [ -1, 4, 3, 1, 2, 1 ],
+         A : [ -1, 1, 2, 3, 4, 1 ],
+         G : [  3, 2, 1, 1, 1, 4 ],
+         E : [  1, 3, 4, 2, 1, 1 ],
+         D : [ -1, 1, 1, 2, 4, 3 ]
+        };
+        
     var initFret = this.chordArray[0];
     if (atFret > initFret) {
+      var use_caged_fingering = ( (this.isCaged) && (this.cagedPos > 1) && ( ! ( caged_fingering[modelChord] === undefined ) )  );
+
       this.chordArray[0] = atFret;
       for (var i = 1; i < this.chordArray.length ; i++) {
         var fret = (this.chordArray[i][0] >= 0 ) ? this.chordArray[i][0] + atFret - initFret + 1 : this.chordArray[i][0];
-        var finger = (this.cagedPos > 1) ? '' : this.chordArray[i][1];
+        var finger = (use_caged_fingering) ? caged_fingering[modelChord][i - 1] : this.chordArray[i][1];
         this.chordArray[i] = [ fret ,  finger ];  
       }  
     }
@@ -651,10 +662,6 @@ Raphael.fn.render_token = function (token) {
 //
 
 
-
-
-
-
 // determine nature of the token stream
 jtab.characterize = function (notation) {
   var tabtype = 0;
@@ -685,6 +692,7 @@ jtab.characterize = function (notation) {
   return tabtype;
 }
 
+
 // main render entry point
 jtab.render = function (element,notation) {
 
@@ -703,10 +711,12 @@ jtab.render = function (element,notation) {
   }
 }
 
+
 // process implicit rendering of tags with class 'jtab'
 jtab.renderimplicit = function() {
   $$('.jtab').each( function(name, index) { jtab.render(name,name.innerHTML); } );
 }
+
 
 // initialize jtab - setup to run implicit rendering on window.onload
 jtab.init = function() {
@@ -722,6 +732,7 @@ jtab.init = function() {
     }
   }
 }
+
 
 // bootstrap jtab
 jtab.init();
