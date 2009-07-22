@@ -399,7 +399,8 @@ Raphael.fn.increment_offset = function (width) {
 // draw the fretboard
 Raphael.fn.chord_fretboard = function ( position, chord_name ) {
   var fret_left = this.current_offset + this.margin_left;
-
+  var fret_labels = [ '', '', '', 'III', '', 'V', '', 'VII', '', 'IX', '', '', 'XII', '', '', 'XV', '', 'XVII', '', 'XIX', '', 'XXI', '' ];
+  
   this.text( // chord name
     fret_left + 2.5 * this.string_spacing,
     this.margin_top - 20, 
@@ -416,25 +417,9 @@ Raphael.fn.chord_fretboard = function ( position, chord_name ) {
     this.path({stroke: this.color}).relatively().moveTo(
       fret_left, 
       this.margin_top + (i * this.fret_spacing) ).lineTo(this.string_spacing * (this.strings_drawn - 1), 0 );
-    switch ( position - 1 + i ) {
-    case 3:
-      pos="III";
-      break;
-    case 5:
-      pos="V";
-      break;
-    case 7:
-      pos="VII";
-      break;
-    case 9:
-      pos="IX";
-      break;
-    case 12:
-      pos="XII";
-      break;
-    default:
-      pos="";
-    }
+
+    pos = ( fret_labels[ position - 1 + i ] === undefined ) ? '' : fret_labels[ position - 1 + i ];
+
     if ( pos.length > 0 ) { // draw fret position
       this.text(
         fret_left + this.fret_width + this.string_spacing * 1.0, 
