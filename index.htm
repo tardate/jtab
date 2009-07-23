@@ -40,6 +40,7 @@ for example, Internet Explorer 7 and Firefox 3.
 <li><a href="#help">Troubleshooting and Tips</a></li>
 <li><a href="#feedback">Feedback &amp; Contribute</a></li>
 <li><a href="#limitations">Limitations</a></li>
+<li><a href="#inthewild">jTab in the Wild</a></li>
 </ul>
 </div>
 
@@ -50,8 +51,8 @@ for example, Internet Explorer 7 and Firefox 3.
 <a name="about"><h2>About jTab</h2></a>
 <p>
 Guitar tab is all over the internet, but it is usually in either a fixed/non-interactive form, or painstaking ASCII format.
-jTab is a javascript-based library that lets you change that. It automatically converts a simple text notation 
-into a web-friendly graphical representation on the fly. 
+jTab is an open source, javascript-based library that lets you change that. It automatically converts a simple text notation 
+to a web-friendly graphical presentation on the fly. 
 </p>
 <p>
 You can use it to post snippets on your blog, host user contributions on a web site, or just for personal transcription purposes.
@@ -62,13 +63,6 @@ Technically, jTab is a javascript-based library that renders notation using CSS 
 It works in most modern browsers that support javascript, CSS and scalable vector graphics (SVG) - 
 for example, Internet Explorer 7 and Firefox 3.
 </p>
-<p>
-jTab is written and maintained by <a href="http://tardate.com">Paul Gallagher</a> and released as open source for all to exploit.
-Aside from just scratching a personal itch, jTab was greatly inspired by 
-Dmitry Baranovskiy's fantastic work on the <a href="http://raphaeljs.com/">Rapha&euml;l</a> SVG library,
-and Alex Gorbatchev's <a href="http://www.dreamprojections.com/syntaxhighlighter/">syntaxhighlighter</a> (for opening the door to what is possible!).
-</p>
-
 
 
 <a name="examples"><h2>Live Examples</h2></a>
@@ -135,6 +129,16 @@ Chord notation is quite conventional e.g. C Gm F#7 Db.
   <li><strong>||</strong> is an ending bar line</li>
   <li>The chord library is a little limited at this point but will grow over time (see <a href="#limitations">limitations</a>)</li>
   </ul>
+<p>
+jTab also supports <a href="http://en.wikipedia.org/wiki/Guitar_chord#CAGED_major_chords" target="_blank">CAGED major chord notation</a>.
+This is a convenient method for indicating major chords at various positions on the fretboard.
+</p>  
+  <ul>
+  <li>Applied only to root chords C, A, G, E, and D</li>
+  <li>Position is indicated by following the chord with a colon and the position number 1,2,3...</li>
+  <li>e.g. C:1, C:5, E:2, D:3</li>
+  </ul>
+
 
 <h3>Tab Notation</h3> 
 <p> 
@@ -325,8 +329,17 @@ Solution 2: include an explicit call to the rendering function at the end of you
 
 <a name="feedback"><h2>Feedback &amp; Contribute</h2></a>
 <p>
-jTab is officially a 'weekend' project, hence there's always more that could be done (see 'limitations' below) ;-)
-Feedback is eagerly sought, particularly for things like:
+jTab is written and maintained by <a href="http://tardate.com" target="_blank">Paul Gallagher</a> and released as open source for all to exploit. 
+Main contributors: <a href="http://twitter.com/tardate" target="_blank">@tardate</a>, <a href="http://twitter.com/jasonong" target="_blank">@jasonong</a>.
+</p>
+<p>
+Aside from just scratching a personal itch, jTab was greatly inspired by 
+Dmitry Baranovskiy's fantastic work on the <a href="http://raphaeljs.com/" target="_blank">Rapha&euml;l</a> SVG library,
+and Alex Gorbatchev's <a href="http://www.dreamprojections.com/syntaxhighlighter/" target="_blank">syntaxhighlighter</a> (for opening the door to what is possible!).
+</p>
+
+<p>
+Feedback and contributions are eagerly sought, particularly for things like:
 <ul>
 <li>Additional chords you want to see supported</li>
 <li>Spotted any incorrect fingerings?</li>
@@ -336,7 +349,7 @@ Feedback is eagerly sought, particularly for things like:
 </ul>
 </p>
 <p>
-The best way to contribute is to join in the project on <a href="http://github.com/tardate/jtab/tree/master">github</a>. Fork and update, or just log an issue in the issues list.
+The best way to contribute is to join in the project on <a href="http://github.com/tardate/jtab/tree/master" target="_blank">github</a>. Fork and update, or just log an issue in the issues list.
 </p>
 
 <a name="limitations"><h3>Limitations</h3></a>
@@ -350,6 +363,18 @@ jTab is a new project, so there are definitely some things it can't do at the mo
 <li>No explicit support for alternate tunings</li>
 <li>Currently only six-string beasts. No bass, lutes, mandolins, banjoes etc etc.. sorry ;-) </li>
 </ul>
+
+
+<a name="inthewild"><h2>jTab in the Wild</h2></a>
+<p>
+Here are some places where you can see jTab in action:
+</p>
+<ul>
+<li><a href="http://chordmaster.tardate.com/" target="_blank">ChordMaster 2000</a> - a tool to help you learn chord fingerings for guitar</li>
+</ul>
+<p>
+Let us know if you find more to be listed here.
+</p>
 </div>
 
 <div id="footer">

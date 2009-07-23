@@ -245,6 +245,102 @@ var jtab = {
 
 
 //
+// define jtabChord class
+//
+/*
+    var chordArray = jtab.get_chord_array(token);
+    var chord = chordArray[1];
+    this.chord_fretboard(chord[0], chordArray[0]);
+    for (var i = 1; i < chord.length ; i++) {  
+      this.chord_note(chord[0], i, chord[i]);
+    }
+    */
+
+var jtabChord = Class.create({
+  initialize: function(token) {
+    this.chordArray = null;
+    this.chordName = '';
+    this.isValid = false;
+    this.isCaged = false;
+    this.cagedPos = 1;
+    
+    if ( token.match( /:/ ) != null ) {
+      var parts = token.split(':');
+      this.chordName = parts[0];
+      this.cagedPos = parts[1]; 
+      if ( ( this.cagedPos > 0 ) && ( this.chordName.match( /[CAGED]/ ) ) ) {
+        this.isValid = true;
+        this.isCaged = true;
+        this.setCagedChordArray();
+      }
+    } else {
+      this.chordName = token;
+      if ( this.chordName.match( /[A-G]/ ) ) {
+        this.isValid = true;
+        this.isCaged = false;
+        this.setChordArray(this.chordName);
+      }      
+    }
+  },
+  setChordArray: function(chordName) { // clones chord array (position 1) from chord ref data into this object
+    this.chordArray = new Array();
+    if (jtab.Chords[chordName] === undefined ) {
+      this.isValid = false;
+      return;
+    }
+    var modelRef = jtab.Chords[chordName][0];
+    this.chordArray[0] = modelRef[0]
+    for (var i = 1; i < modelRef.length ; i++) {
+      this.chordArray[i] = modelRef[i].clone();  
+    }   
+  },
+  setCagedChordArray: function() {
+    var caged_index = "CAGED".indexOf(this.chordName) + 1; // get 1-based index
+    var fret_widths = [3,2,3,2,2];
+
+        
+    var starting_fret = 0;
+
+    for (var i = 1; i < this.cagedPos ; i++) {
+      var index = (caged_index - 1) % 5;
+      caged_index  = ( caged_index >= 5) ? 1 : caged_index + 1;
+      starting_fret += fret_widths[index];
+    }
+    if (starting_fret < 1) starting_fret = 1;
+    
+    //alert( caged_index + ' ' + starting_fret);
+    var modelChord =  "CAGED".charAt( caged_index - 1 );
+    this.setChordArray(modelChord);
+    this.shiftChordArray(starting_fret,modelChord);
+    
+  },
+  shiftChordArray: function(atFret,modelChord) { // shift chord to new fret position
+    var caged_fingering = { 
+         C : [ -1, 4, 3, 1, 2, 1 ],
+         A : [ -1, 1, 2, 3, 4, 1 ],
+         G : [  3, 2, 1, 1, 1, 4 ],
+         E : [  1, 3, 4, 2, 1, 1 ],
+         D : [ -1, 1, 1, 2, 4, 3 ]
+        };
+        
+    var initFret = this.chordArray[0];
+    if (atFret > initFret) {
+      var use_caged_fingering = ( (this.isCaged) && (this.cagedPos > 1) && ( ! ( caged_fingering[modelChord] === undefined ) )  );
+
+      this.chordArray[0] = atFret;
+      for (var i = 1; i < this.chordArray.length ; i++) {
+        var fret = (this.chordArray[i][0] >= 0 ) ? this.chordArray[i][0] + atFret - initFret + 1 : this.chordArray[i][0];
+        var finger = (use_caged_fingering) ? caged_fingering[modelChord][i - 1] : this.chordArray[i][1];
+        this.chordArray[i] = [ fret ,  finger ];  
+      }  
+    }
+  }
+});
+
+
+
+
+//
 // define extensions to the Raphael class
 //
   
@@ -318,7 +414,8 @@ Raphael.fn.increment_offset = function (width) {
 // draw the fretboard
 Raphael.fn.chord_fretboard = function ( position, chord_name ) {
   var fret_left = this.current_offset + this.margin_left;
-
+  var fret_labels = [ '', '', '', 'III', '', 'V', '', 'VII', '', 'IX', '', '', 'XII', '', '', 'XV', '', 'XVII', '', 'XIX', '', 'XXI', '' ];
+  
   this.text( // chord name
     fret_left + 2.5 * this.string_spacing,
     this.margin_top - 20, 
@@ -335,25 +432,9 @@ Raphael.fn.chord_fretboard = function ( position, chord_name ) {
     this.path({stroke: this.color}).relatively().moveTo(
       fret_left, 
       this.margin_top + (i * this.fret_spacing) ).lineTo(this.string_spacing * (this.strings_drawn - 1), 0 );
-    switch ( position - 1 + i ) {
-    case 3:
-      pos="III";
-      break;
-    case 5:
-      pos="V";
-      break;
-    case 7:
-      pos="VII";
-      break;
-    case 9:
-      pos="IX";
-      break;
-    case 12:
-      pos="XII";
-      break;
-    default:
-      pos="";
-    }
+
+    pos = ( fret_labels[ position - 1 + i ] === undefined ) ? '' : fret_labels[ position - 1 + i ];
+
     if ( pos.length > 0 ) { // draw fret position
       this.text(
         fret_left + this.fret_width + this.string_spacing * 1.0, 
@@ -368,6 +449,7 @@ Raphael.fn.chord_fretboard = function ( position, chord_name ) {
   }
   this.tab_extend(this.chord_width); // extend the tab if present
 }
+
 
 // draw a stroke (/)
 Raphael.fn.stroke = function () {
@@ -396,6 +478,7 @@ Raphael.fn.stroke = function () {
   }
 }
 
+
 // draw a bar
 Raphael.fn.bar = function () {
 
@@ -416,6 +499,7 @@ Raphael.fn.bar = function () {
     this.increment_offset( this.margin_left + this.margin_right );  
   }
 }
+
 
 // draw double bar
 Raphael.fn.doublebar = function () {
@@ -444,6 +528,7 @@ Raphael.fn.doublebar = function () {
     this.increment_offset( this.margin_left + 6 + this.margin_right );  
   }
 }
+
 
 // draw a note in a chord
 Raphael.fn.chord_note = function (position, string_number, note) {
@@ -474,6 +559,7 @@ Raphael.fn.chord_note = function (position, string_number, note) {
   }
 }
 
+
 // extend the tab drawing area
 Raphael.fn.tab_extend = function (width) {
   if (this.has_tab == false) return;
@@ -481,6 +567,7 @@ Raphael.fn.tab_extend = function (width) {
     this.path({stroke: this.color}).relatively().moveTo(this.current_offset, this.tab_top  + (i * this.tab_spacing) ).lineTo( width, 0 );
   }
 }
+
 
 // start the tab
 Raphael.fn.tab_start = function () {
@@ -506,12 +593,12 @@ Raphael.fn.draw_tab_note = function (string_number, token, left_offset) {
           token).attr({stroke: this.color, "font-size":"16px"});
 }
 
+
 // draw a token on the tab
 Raphael.fn.tab_note = function (token) {
   if (this.has_tab == false) return;
   
-  
-  if ( token.match( /^\$/ ) != null ) { // contains a string specifier
+  if ( token.match( /\$/ ) != null ) { // contains a string specifier
     if ( token.match( /\./ ) != null ) { // is a multi-string specifier
       var parts = token.split(".");
       var width = 2;
@@ -542,10 +629,20 @@ Raphael.fn.tab_note = function (token) {
   }
 }
 
+
 // main drawing routine entry point: to render a token - chord or tab
 Raphael.fn.render_token = function (token) {
+  var c = new jtabChord(token);
 
-  if (jtab.Chords[token] === undefined) { //(typeof(a) != "undefined")
+  if ( c.isValid ) { // draw chord
+    var chord = c.chordArray;
+    this.chord_fretboard(chord[0], c.chordName );
+    for (var i = 1; i < chord.length ; i++) {  
+      this.chord_note(chord[0], i, chord[i]);
+    }
+    this.increment_offset();
+
+  } else {
     if (token == "/" ) {
       this.stroke();
     } else if (token == "|" ) {
@@ -555,17 +652,7 @@ Raphael.fn.render_token = function (token) {
     } else if ( this.has_tab ) {
       this.tab_note( token );
     }
-  } else {
     
-    // draw chord
-    var chordArray = jtab.Chords[token];
-    var ch = chordArray[0];    
-    var chordName = token.gsub(/:./, '');
-    this.chord_fretboard(ch[0], chordName);
-    for (var i = 1; i < ch.length ; i++) {  
-      this.chord_note(ch[0], i, ch[i]);
-    }
-    this.increment_offset();
   }
 }
 
@@ -573,6 +660,7 @@ Raphael.fn.render_token = function (token) {
 //
 // add jtab class methods
 //
+
 
 // determine nature of the token stream
 jtab.characterize = function (notation) {
@@ -604,6 +692,7 @@ jtab.characterize = function (notation) {
   return tabtype;
 }
 
+
 // main render entry point
 jtab.render = function (element,notation) {
 
@@ -616,17 +705,18 @@ jtab.render = function (element,notation) {
   canvas = Raphael(canvas_holder, 80, Raphael.fn.total_height );
   canvas.tab_start();
   
-  //canvas.render_notation( notation );
   var tokens = notation.split(/\s/);
   for(var i = 0; i < tokens.length; i++) {
     canvas.render_token(tokens[i]);
   }
 }
 
+
 // process implicit rendering of tags with class 'jtab'
 jtab.renderimplicit = function() {
   $$('.jtab').each( function(name, index) { jtab.render(name,name.innerHTML); } );
 }
+
 
 // initialize jtab - setup to run implicit rendering on window.onload
 jtab.init = function() {
@@ -642,6 +732,7 @@ jtab.init = function() {
     }
   }
 }
+
 
 // bootstrap jtab
 jtab.init();
