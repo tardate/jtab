@@ -144,13 +144,12 @@ var jtabChord = Class.create({
     this.isCaged = false;
     this.cagedPos = 1;
     this.cagedName = '';
-    this.rootNote = '';
     
     if ( token.match( /:/ ) != null ) {
       var parts = token.split(':');
       this.chordName = parts[0];
-      this.cagedPos = parts[1]; 
       this.rootNote = this.chordName.match(/^.#|^.b|^./)[0];
+      this.cagedPos = parts[1]; 
       if ( this.cagedPos > 0 ) {
         this.isValid = true;
         this.isCaged = true;
@@ -158,15 +157,19 @@ var jtabChord = Class.create({
       }
     } else {
       this.chordName = token;
+      this.rootNote = this.chordName.match(/^.#|^.b|^./)[0];
+      this.cagedPos = "CAGED".indexOf(this.rootNote) + 1;
       this.isValid = true;
       this.isCaged = false;
-      this.setChordArray();
+      this.setCagedChordArray();
     }
   },
   setCagedChordArray: function() {
+
     this.cagedNote = "CAGED".charAt( this.cagedPos - 1 );
+
     // get CAGED chord by replacing rootnote of actual chord
-    this.cagedName = this.chordName.replace(/^.#|^.b|^./, "CAGED".charAt( this.cagedPos - 1 )); 
+    this.cagedName = this.chordName.replace(/^.#|^.b|^./, this.cagedNote); 
 
     var caged_index = "CAGED".indexOf(this.chordName) + 1; // get 1-based index
     var fret_widths = [3,2,3,2,2];
