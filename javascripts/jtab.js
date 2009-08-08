@@ -38,7 +38,6 @@ var jtab = {
              // each position is an array comprising: 1. base fret (1==nut); 2. 6x note definitions (strings 6,5,4,3,2,1)
              // each note is an array: (fret position), (left hand fingering if applicable 1,2,3,4,T)
              // fret position: -1 = muted/not played; 0 = open; 1,2,3... = fret position
-
       
     C      : [ [ 1, [-1 ],  [3,4],  [2,3],  [0  ],  [1,2],  [0  ] ], [  ] ],
     C6     : [ [ 1, [-1 ],  [0  ],  [2,2],  [2,3],  [1,1],  [3,4] ], [  ] ],
@@ -126,14 +125,6 @@ var jtab = {
 //
 // define jtabChord class
 //
-/*
-    var chordArray = jtab.get_chord_array(token);
-    var chord = chordArray[1];
-    this.chord_fretboard(chord[0], chordArray[0]);
-    for (var i = 1; i < chord.length ; i++) {  
-      this.chord_note(chord[0], i, chord[i]);
-    }
-    */
 
 var jtabChord = Class.create({
   initialize: function(token) {
