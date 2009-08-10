@@ -117,7 +117,7 @@ var jtab = {
       'Bb': 'Bb',
       'B' : 'B'  
     },
-    BaseInterval: ['C', 'C#', 'D', 'Eb', 'E', 'F', 'F#', 'G', 'G#', 'A', 'Bb', 'B']
+    BaseIntervals: ['C', 'C#', 'D', 'Eb', 'E', 'F', 'F#', 'G', 'G#', 'A', 'Bb', 'B']
   }
 };
 
@@ -128,6 +128,8 @@ var jtab = {
 
 var jtabChord = Class.create({
   initialize: function(token) {
+    this.scale = jtab.WesternScale;
+    this.baseNotes = this.scale.BaseNotes;
     this.chordArray = null;
     this.chordName = '';
     this.baseChords = jtab.Chords;
@@ -139,7 +141,7 @@ var jtabChord = Class.create({
     if ( token.match( /:/ ) != null ) {
       var parts = token.split(':');
       this.chordName = parts[0];
-      this.rootNote = this.chordName.match(/^.#|^.b|^./)[0];
+      this.rootNote = this.baseNotes[this.chordName.match(/^.#|^.b|^./)[0]];
       this.cagedPos = parts[1]; 
       if ( this.cagedPos > 0 ) {
         this.isValid = true;
@@ -148,8 +150,15 @@ var jtabChord = Class.create({
       }
     } else {
       this.chordName = token;
-      this.rootNote = this.chordName.match(/^.#|^.b|^./)[0];
+      this.rootNote = this.baseNotes[this.chordName.match(/^.#|^.b|^./)[0]];
       this.cagedPos = "CAGED".indexOf(this.rootNote) + 1;
+      var rn = jtab.WesternScale.BaseNotes[this.rootNote];
+      if (rn == 'C#' || rn == 'Eb' || rn == 'Bb' || rn == 'B') {
+        this.cagedPos = 2;
+      } 
+      else if (rn == 'F' || rn == 'F#' || rn == 'G#') {
+        this.cagedPos = 4;
+      };
       this.isValid = true;
       this.isCaged = false;
       this.setCagedChordArray();
@@ -199,9 +208,9 @@ var jtabChord = Class.create({
     var cagedChordArray = this.chordArray;
     var cagedChordRootNote = "CAGED".charAt( this.cagedPos - 1 );
     var cagedChordStartFret = this.chordArray[0];
-    var cagedChordIntervalicFretPosition = jtab.WesternScale.BaseInterval.indexOf(cagedChordRootNote);
+    var cagedChordIntervalicFretPosition = jtab.WesternScale.BaseIntervals.indexOf(cagedChordRootNote);
 
-    var noteIntervals = jtab.WesternScale.BaseInterval.clone();
+    var noteIntervals = jtab.WesternScale.BaseIntervals.clone();
     var noteIntervalsRebased = [];
     var notesShifted = [];
     for (var i = 0; i < cagedChordIntervalicFretPosition; i++) {
