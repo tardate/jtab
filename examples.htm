@@ -71,36 +71,63 @@ Show don't tell! This page is a bit of a sandbox demonstrating the things you ca
 </script>
 
 <h3>Implicitly render a chord-only phrase</h3>
-<p>
+<p>Note that the "chordonly" class is optional (it just pre-adjusts display size to reduce screen jitter).
 </p>
+<pre>
+&lt;div class="jtab chordonly"&gt; E / / / | A7 / B7 / || &lt;/div&gt;
+</pre>
 <div class="jtab chordonly"> E / / / | A7 / B7 / || </div>
 
 <h3>Implicitly render a tab-only phrase</h3>
-<p>
+<p>Note that the "tabonly" class is optional (it just pre-adjusts display size to reduce screen jitter). 
 </p>
+<pre>
+&lt;div class="jtab tabonly"&gt;$4.7/9.$3.6/8.$2.5/7 9p7 $2.9.$3.9.$4.9 &lt;/div&gt;
+</pre>
 <div class="jtab tabonly">$4.7/9.$3.6/8.$2.5/7 9p7 $2.9.$3.9.$4.9 </div>
 
 <h3>Implicitly render a mixed chord and tab phrase</h3>
-<p>
+<p> 
 </p>
-<div class="jtab">Bm $3 4 4h5p3h4 5 $2 3 5 7 7h8p7 5/7 | A $4 7 9 $3 7 6 $5 9 $4 7h9 7 $5 9\7 5/7 | </div>
+<pre>
+&lt;div class="jtab"&gt;Bm $3 4 4h5p3h4 5 $2 3 5 7 7h8p7 5/7 | A $4 7 9 $3 7 6 $5 9 $4 7h9 7 $5 9\7 5/7 | &lt;/div&gt;
+</pre>
+<div class="jtab">Bm $3 4 4h5p3h4 5 $2 3 5 7 7h8p7 5/7 | A $4 7 9 $3 7 6 $5 9 $4 7h9 7 $5 9\7 5/7 |</div>
 
 <h3>A simple three note sequence on the B string</h3>
 <p>
 </p>
+<pre>
+&lt;div class="jtab tabonly"&gt;$2 0 1 3&lt;/div&gt;
+</pre>
 <div class="jtab tabonly">$2 0 1 3 </div>
 
 <h3>A sequence of notes across two strings</h3>
-<p>
+<p>Demonstrates using both 654321 and EADGBe for string numbering..
 </p>
+<pre>
+&lt;div class="jtab tabonly"&gt;$2 0 1 3 $1 0 1 3/5 | $B 0 1 3 $e 0 1 3/5 &lt;/div&gt;
+</pre>
 <div class="jtab tabonly">$2 0 1 3 $1 0 1 3/5 | $B 0 1 3 $e 0 1 3/5</div>
 
 <h3>More than one note at a time in tab</h3>
 <p>
 </p>
+<pre>
+&lt;div class="jtab tabonly"&gt;$3.6.$2.5h7 $1 5 $2 7 &lt;/div&gt;
+&lt;div class="jtab tabonly"&gt;$4.7/9.$3.6/8.$2.5/7 9p7 $2.9.$3.9.$4.9 &lt;/div&gt;
+</pre>
 <div class="jtab tabonly">$3.6.$2.5h7 $1 5 $2 7 </div>
 <div class="jtab tabonly">$4.7/9.$3.6/8.$2.5/7 9p7 $2.9.$3.9.$4.9 </div>
 
+<h3>Shorthand tab notation for all strings</h3>
+<p>Tab for a whole or partial chord can be easier to enter as a full six-string block.
+Periods are required when you go above the 9th fret, and use X or x to indicate an unused string.
+</p>
+<pre>
+&lt;div class="jtab tabonly"&gt;022100 / / / X02220 / 8.10.10.9.8.8 /&lt;/div&gt;
+</pre>
+<div class="jtab tabonly">022100 / / / X02220 / 8.10.10.9.8.8 /</div>
 
 <h3>Scripted rendering</h3>
 <p>

@@ -77,7 +77,7 @@ jTab can be used to render notation in real-time using Javascript. This could be
 being generated or retrieved from some system or web service.
 </p>
 <span>Try it out. Enter a phrase here (see <a href="#notation">notation</a> for help):</span>
-<input id="notation" size="40"><input type="button" value="jTab this!" onclick="jtab.render('tab',$('notation').value);">
+<input id="user_notation" size="40"><input type="button" value="jTab this!" onclick="jtab.render('tab',$('user_notation').value);">
 <div id="tab"><i>jTab will render your phrase here</i></div>
 
 <script type='text/javascript'>
@@ -173,7 +173,16 @@ To handle multiple notes played on different strings, join all the individual st
     <li>$4.7/9.$3.6/8.$2.5/7 9p7 $2.9.$3.9.$4.9 (three notes across D,G,B strings with a slide up two steps and a twist)</li>
    </ul>
 </p>
-
+<p>
+Tab for a whole or partial chord can be easier to enter as a full six-string block.
+A shorthand is possible if you want to enter notes across all 6 strings:
+   <ul>
+    <li>Below the 10th fret, just concatenate the six string fret positions (from low string to high) e.g. 022100 is E chord at the nut.</li>
+    <li>Periods are required to separate each string e.g. 8.10.10.9.8.8 is C chord at the 8th fret (which can also be written as C:4 in CAGED notation)</li>
+    <li>substitute an X or x for mute strings e.g. X02220 is an A chord</li>
+   </ul>
+  
+</p>
 
 
 <h3>Mixing Chord &amp; Tab Notation</h3> 

@@ -86,7 +86,10 @@
       assertEqual( 1, tabtype, "not recognised as chord and tab notation: '" + notation + "'" );
       notation = "A7 $e 2 3 $B.3.$e.2";
       tabtype = jtab.characterize( notation );   
-      assertEqual( 3, tabtype, "not recognised as chord and tab notation: '" + notation + "'" );
+      assertEqual( 1, tabtype, "not recognised as chord and tab notation: '" + notation + "'" );
+      notation = "Bm $3 4 4h5p3h4 5 $2 3 5 7 7h8p7 5/7 ";
+      tabtype = jtab.characterize( notation );   
+      assertEqual( 1, tabtype, "not recognised as chord and tab notation: '" + notation + "'" );      
     }},
 
     testRecognizeChordOnlyNotation: function() {  with(this) {
@@ -100,6 +103,9 @@
       var tabtype = jtab.characterize( notation );   
       assertEqual( 3, tabtype, "not recognised as tab-only notation: '" + notation + "'" );
       notation = "$e 2 3 $B.3.$e.2";
+      tabtype = jtab.characterize( notation );   
+      assertEqual( 3, tabtype, "not recognised as tab-only notation: '" + notation + "'" );
+      notation = "X02220  8.10.10.9.8.8";
       tabtype = jtab.characterize( notation );   
       assertEqual( 3, tabtype, "not recognised as tab-only notation: '" + notation + "'" );
     }},

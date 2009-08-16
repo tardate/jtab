@@ -432,6 +432,17 @@ var jtab = {
   }
 };
 
+//
+// define Array utility functions
+//
+
+Array.prototype.max_chars = function() {
+  var max = this[0].length;
+  var len = this.length;
+  for (var i = 1; i < len; i++) if (this[i].length > max) max = this[i].length;
+  return max;
+}
+
 
 //
 // define jtabChord class
@@ -786,6 +797,26 @@ Raphael.fn.get_string_number = function (token) {
 }
 
 
+// identify if full chord of notes specified i.e. A:1 = X02220 or C:4 = 8.10.10.9.8.8
+// returns:
+//   false = not a full chord representation
+//   array = array of notes (low to high)
+Raphael.fn.get_fullchord_notes = function (token) {
+  var rc = false;
+  if ( token.match( /[^\.xX0-9]/ ) != null ) {
+    rc = false;
+  } else {
+    if ( token.match( /\./ ) != null ) {
+       rc = token.split('.');
+    } else {
+      rc = token.split('');
+    }
+    if (rc.length != 6) rc = false;
+  } 
+  return rc;
+}
+
+
 // draw a token on the tab
 Raphael.fn.tab_note = function (token) {
   if (this.has_tab == false) return;
@@ -813,12 +844,22 @@ Raphael.fn.tab_note = function (token) {
     } else { // just a string setting
       this.tab_current_string = this.get_string_number(token);
     }
-  } else if ( this.tab_current_string > 0 ) { // else draw literal, but only if a current string selected
-    var width = this.tab_char_width * ( token.length + 2 );
-    //var left_offset = width * 0.5;
-    this.tab_extend( width );
-    this.draw_tab_note( this.tab_current_string, token, width * 0.5 ); 
-    this.increment_offset( width );
+  } else {
+    var fullchord_notes = this.get_fullchord_notes(token);
+    if ( fullchord_notes ) {
+      var max_chars = fullchord_notes.max_chars();
+      var width = this.tab_char_width * (max_chars + 2);
+      this.tab_extend( width );
+      for (var i = 0; i < fullchord_notes.length ; i++) {
+        this.draw_tab_note( 6 - i, fullchord_notes[i], width * 0.5 ); 
+      }
+      this.increment_offset( width );
+    } else if ( this.tab_current_string > 0 ) { // else draw literal, but only if a current string selected
+      var width = this.tab_char_width * ( token.length + 2 );
+      this.tab_extend( width );
+      this.draw_tab_note( this.tab_current_string, token, width * 0.5 ); 
+      this.increment_offset( width );
+    }
   }
 }
 
@@ -863,8 +904,8 @@ Raphael.fn.render_token = function (token) {
 //   0 : unknown
 jtab.characterize = function (notation) {
   var tabtype = 0;
-  var gotChord = ( notation.match( /[^\$][A-G]/ ) != null );
-  var gotTab = ( notation.match( /\$/ ) != null );
+  var gotChord = ( notation.match( /[^\$][A-G]|^[A-G]/ ) != null );
+  var gotTab = ( ( notation.match( /\$/ ) != null ) || ( notation.match( /[0-9|Xx|\.]{6,}/ ) != null ) );
   // set defaults - apply scaling here (TODO)
   Raphael.fn.current_offset = Raphael.fn.margin_left;
   if ( gotChord && gotTab ) { // chord and tab
