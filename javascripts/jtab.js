@@ -774,6 +774,17 @@ Raphael.fn.draw_tab_note = function (string_number, token, left_offset) {
           token).attr({stroke: this.color, "font-size":"16px"});
 }
 
+// gets string number from token $[1-6|EADGBe]
+Raphael.fn.get_string_number = function (token) {
+  var string_number = null;
+  if ( token.match( /^\$[1-6]/ ) != null ) {
+     string_number = token.substr(1,1); 
+  } else if ( token.match( /^\$[EADGBe]/ ) != null ) {
+     string_number =  6 - "EADGBe".indexOf(token.substr(1,1));
+  } 
+  return string_number;
+}
+
 
 // draw a token on the tab
 Raphael.fn.tab_note = function (token) {
@@ -790,8 +801,9 @@ Raphael.fn.tab_note = function (token) {
       this.tab_extend( width );
       for (var i = 0; i < parts.length ; i++) {
         var part = parts[i];
-        if ( part.match( /^\$/ ) != null ) {
-          this.tab_current_string = part.substr(1,1); 
+        var string_number = this.get_string_number(part);
+        if (string_number != null) {
+          this.tab_current_string = string_number;
         } else if ( this.tab_current_string > 0 )  {
           this.draw_tab_note( this.tab_current_string, part, width * 0.5 );
         }
@@ -799,7 +811,7 @@ Raphael.fn.tab_note = function (token) {
       this.increment_offset( width );
         
     } else { // just a string setting
-      this.tab_current_string = token.substr(1,1);
+      this.tab_current_string = this.get_string_number(token);
     }
   } else if ( this.tab_current_string > 0 ) { // else draw literal, but only if a current string selected
     var width = this.tab_char_width * ( token.length + 2 );
@@ -844,9 +856,14 @@ Raphael.fn.render_token = function (token) {
 
 
 // determine nature of the token stream
+// returns:
+//   1 : chord and tab present
+//   2 : chord only
+//   3 : tab only
+//   0 : unknown
 jtab.characterize = function (notation) {
   var tabtype = 0;
-  var gotChord = ( notation.match( /[A-G]/ ) != null );
+  var gotChord = ( notation.match( /[^\$][A-G]/ ) != null );
   var gotTab = ( notation.match( /\$/ ) != null );
   // set defaults - apply scaling here (TODO)
   Raphael.fn.current_offset = Raphael.fn.margin_left;
