@@ -570,7 +570,7 @@ Raphael.fn.tab_char_width = 8;
 Raphael.fn.total_height = Raphael.fn.tab_top + Raphael.fn.tab_height + Raphael.fn.margin_bottom;
 
 Raphael.fn.color = "#000";
-Raphael.fn.note_text_color = "#fff";
+Raphael.fn.fingering_text_color = "#fff";
 Raphael.fn.tab_text_color = "#000";
 
 
@@ -611,7 +611,7 @@ Raphael.fn.chord_fretboard = function ( position, chord_name ) {
   this.text( // chord name
     fret_left + 2.5 * this.string_spacing,
     this.margin_top - 20, 
-    chord_name).attr({stroke: this.color, "font-size":"20px"});
+    chord_name).attr({stroke: this.tab_text_color, "font-size":"20px"});
   
   if ( position == 1 ) { // nut
     this.path({stroke: this.color, "stroke-width":3 }).relatively().moveTo(
@@ -631,7 +631,7 @@ Raphael.fn.chord_fretboard = function ( position, chord_name ) {
       this.text(
         fret_left + this.fret_width + this.string_spacing * 1.0, 
         this.margin_top + ( ( i - 0.5 ) * this.fret_spacing), 
-        pos).attr({stroke: this.color, "font-size":"12px"});
+        pos).attr({stroke: this.tab_text_color, "font-size":"12px"});
     }
   }
   for (var i = 0; i < this.strings_drawn; i++ ) { // strings
@@ -651,7 +651,7 @@ Raphael.fn.stroke = function () {
     // extend tab
     this.tab_extend(width);
     //  stroke
-    this.path({stroke: this.color, "stroke-width":4 }).relatively().moveTo( 
+    this.path({stroke: this.tab_text_color, "stroke-width":4 }).relatively().moveTo( 
         this.current_offset + this.tab_char_width, 
         this.tab_top  + (3.5 * this.tab_spacing) ).lineTo(
         this.tab_char_width, 
@@ -661,7 +661,7 @@ Raphael.fn.stroke = function () {
   } else if (this.has_chord) {
     var dx = this.string_spacing;
     var dy = 2 * this.fret_spacing;     
-    this.path({stroke: this.color, "stroke-width":4 }).relatively().moveTo( 
+    this.path({stroke: this.tab_text_color, "stroke-width":4 }).relatively().moveTo( 
         this.current_offset + this.margin_left, 
         this.margin_top + this.fret_spacing + dy ).lineTo(
         dx, -dy );
@@ -730,10 +730,10 @@ Raphael.fn.chord_note = function (position, string_number, note) {
     
   if (fret_number < 0 ) {
     // muted/not played
-    this.text(fret_left + (string_number - 1) * this.string_spacing, this.margin_top - 8, "x").attr({stroke: this.color, "font-size":"9px"});
+    this.text(fret_left + (string_number - 1) * this.string_spacing, this.margin_top - 8, "x").attr({stroke: this.tab_text_color, "font-size":"9px"});
   } else if (fret_number == 0 ) {
     // open
-    this.text(fret_left + (string_number - 1) * this.string_spacing, this.margin_top - 8, "o").attr({stroke: this.color, "font-size":"9px"});
+    this.text(fret_left + (string_number - 1) * this.string_spacing, this.margin_top - 8, "o").attr({stroke: this.tab_text_color, "font-size":"9px"});
   } else {
     var fret_dy = (fret_number - position + 0.5) * this.fret_spacing;
     //var circle = 
@@ -742,7 +742,7 @@ Raphael.fn.chord_note = function (position, string_number, note) {
       this.margin_top + fret_dy, this.note_radius).attr({stroke: this.color, fill: this.color});
     if ( ! (note[1] === undefined) ) {
       this.text( fret_left + (string_number - 1) * this.string_spacing, 
-      this.margin_top + fret_dy, note[1] ).attr({stroke: this.note_text_color, "font-size":"12px"});
+      this.margin_top + fret_dy, note[1] ).attr({stroke: this.fingering_text_color, "font-size":"12px"});
     }
   }
   
@@ -931,16 +931,43 @@ jtab.characterize = function (notation) {
   return tabtype;
 }
 
+// utility function to get calculated style based on given element
+jtab.getStyle = function (element, style) {
+  var value = element.style[style];
+  if(!value) {
+    if(document.defaultView) {
+      value = document.defaultView.getComputedStyle(element, "").getPropertyValue(style);
+    } else if(element.currentStyle) {
+      value = element.currentStyle[style];
+    }
+  }
+  return value;
+}
+
+// set color pallette for the jtab rendering
+jtab.setPalette = function (element) {
+  var elStyle = jtab.getStyle( $(element), 'color' );
+  if (! elStyle) elStyle='#000';
+  Raphael.fn.color = elStyle;
+  Raphael.fn.tab_text_color = elStyle;
+    
+  elStyle = jtab.getStyle( $(element), 'backgroundColor' );
+  if (! elStyle) elStyle='#fff';
+  if (elStyle == 'transparent') elStyle = '#fff';  
+  Raphael.fn.fingering_text_color = elStyle;
+
+}
 
 // main render entry point
 jtab.render = function (element,notation) {
 
   var tabtype = jtab.characterize( notation );
   if (tabtype == 0 ) return;
-  
+    
   // add the Raphael canvas in its own DIV. this gets around an IE6 issue with not removing previous renderings
   var canvas_holder = new Element('div').setStyle({height: Raphael.fn.total_height});
   $(element).update(canvas_holder);
+  jtab.setPalette(element);
   canvas = Raphael(canvas_holder, 80, Raphael.fn.total_height );
   canvas.tab_start();
   
