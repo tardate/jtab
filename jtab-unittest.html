@@ -110,6 +110,240 @@
       assertEqual( 3, tabtype, "not recognised as tab-only notation: '" + notation + "'" );
     }},
 
+/*
+The western scale is commonly found in 'western pop' music. 
+It consists of 12 notes that are 1 intervals apart to form an octave.
+  
+  Eg. C, C#, D, Eb, E, F, F#, G, G#, A, Bb, C
+
+Other notable scales such as the Pentatonic scale which consists of only 5 notes and
+the Indian scale which has 24 notes.
+
+We need to normalize the notes available to our western scale into base notes because 
+the following pairs are equivalent.
+
+  C# = Db
+  D# = Eb
+  F# = Gb
+  G# = Ab
+  A# = Bb
+
+It is just a matter of convention when we favoured C#, Eb, F#, G#, Bb over their 
+equivalents in rendering our base notes.
+*/
+    
+    testWesternScale: function() { with(this) {
+      var scale = jtab.WesternScale;
+      assertNotUndefined( scale, "jtab.WesternScale should be valid" );
+    }},
+
+    testWesternScaleBaseNotes: function() { with(this) {
+      var baseNotes = jtab.WesternScale.BaseNotes;
+      assertNotUndefined( baseNotes, "jtab.WesternScale.BaseNotes should be valid" );  
+
+      var validBaseNotes = {
+      'C' : 'C',
+      'C#': 'C#',
+      'Db': 'C#',
+      'D' : 'D',
+      'D#': 'Eb',
+      'Eb': 'Eb',
+      'E' : 'E',
+      'F' : 'F',
+      'F#': 'F#',
+      'Gb': 'F#',
+      'G' : 'G',
+      'G#': 'G#',
+      'Ab': 'G#',
+      'A' : 'A',
+      'A#': 'Bb',
+      'Bb': 'Bb',
+      'B' : 'B'  
+      };
+      assertHashEqual( validBaseNotes, baseNotes, "jtab.WesternScale.BaseNotes should have correct mappings" );
+
+    }},
+
+    testWesternScaleBaseIntervals: function() { with(this) {
+      var baseIntervals = jtab.WesternScale.BaseIntervals; 
+      assertNotUndefined( baseIntervals, "jtab.WesternScale.BaseIntervals should be valid" );
+
+      var validBaseIntervals = ['C', 'C#', 'D', 'Eb', 'E', 'F', 'F#', 'G', 'G#', 'A', 'Bb', 'B'];
+      assertHashEqual( validBaseIntervals, baseIntervals, "jtab.WesternScale.BaseIntervals should have correct 12 notes" );
+    }},
+    
+    testChordsAreBasedOnWesternScale: function() { with(this) {
+      var msg = "Chords should be based on the western scale";
+
+      var chord = new jtabChord('C');
+      assertEqual( jtab.WesternScale, chord.scale, msg );
+      assertEqual( jtab.WesternScale.BaseNotes, chord.baseNotes, msg );
+    }},
+
+/*
+In our CAGED system, we'll be using positions as defined in the following matrix
+
+  C = position 1
+  A = position 2
+  G = position 3
+  E = position 4
+  D = position 5
+
+As such position 1 can also be called the 'C shape' position, position 2 the 
+'A shape' position, etc.
+
+Playing different chord voicings then becomes nothing more than just shifting the
+appropriate shapes around to coincide the shape's root note with the desired chord's
+root note on the fretboard.
+
+Eg.
+  
+  Fret 0        X_R_______O 
+                |_|_|_|_|_|
+                |_|_1_2_3_|
+  Fret 3        |_|_|_|_|_|
+                |_|_|_|_|_|
+
+          An 'A shaped' A major where its root note is at 'R'
+
+  Fret 0        X__________
+                |_|_|_|_|_|
+                |_R_|_|_|_1
+  Fret 3        |_|_|_|_|_|
+                |_|_2_3_4_|
+
+          An 'A shaped' B major with root of A shape over B note on 5th string
+
+Position/shape can be defined in our chord token,
+
+Eg. C:1, Cmaj7:3, etc.
+
+where the numbers 1-5 after the ':' in token reflects the desired position/shape.
+
+If in the absence of specified position/shape in token, we'll use the most playable
+shape as the desired chord's position/shape. In general,
+
+- Chords with root note within C, A, G, E, D will take the shape of it's root note except
+  * major 7ths
+  * minor chords
+  * dominants above 7ths, eg. C9, C11, etc.
+  * augmented chords
+  * diminished chords
+- E & A shapes (good for barred chords) will be considered for exceptions above
+- Chords with root note that falls within B, Bb, C#, Eb will use  A shape
+- Chords with root note that falls within F, F#, G# will take E shape
+*/
+
+    testRecognizingRootNoteOfChordFromToken: function() { with(this) {
+      var msg = "Root note of chord should be correct";
+
+      var chord = new jtabChord('C');
+      assertEqual( 'C', chord.rootNote, msg );
+
+      chord = new jtabChord('C#');
+      assertEqual( 'C#', chord.rootNote, msg );
+
+      chord = new jtabChord('C#m');
+      assertEqual( 'C#', chord.rootNote, msg );
+
+      chord = new jtabChord('C#maj7');
+      assertEqual( 'C#', chord.rootNote, msg );
+
+      chord = new jtabChord('C#maj7:1');
+      assertEqual( 'C#', chord.rootNote, msg );
+
+      chord = new jtabChord('Db');
+      assertEqual( 'C#', chord.rootNote, msg );
+
+      chord = new jtabChord('Dbmaj7');
+      assertEqual( 'C#', chord.rootNote, msg );
+
+      chord = new jtabChord('Dbmaj7:2');
+      assertEqual( 'C#', chord.rootNote, msg );
+    }},
+
+    testSettingCagedPositionBasedOnPositionInToken: function() { with(this) {
+      var msg = "Caged position should follow position found in token";
+
+      var chord = new jtabChord('C:1');
+      var cagedPos = chord.cagedPos;
+      assertNotUndefined( cagedPos );
+      assertEqual( 1, cagedPos, msg );
+
+      chord = new jtabChord('C:2');
+      cagedPos = chord.cagedPos;
+      assertEqual( 2, cagedPos, msg );
+
+      chord = new jtabChord('C:3');
+      cagedPos = chord.cagedPos;
+      assertEqual( 3, cagedPos, msg );
+
+      chord = new jtabChord('C:4');
+      cagedPos = chord.cagedPos;
+      assertEqual( 4, cagedPos, msg );
+    }}, 
+
+    testSettingCagedPositionBasedOnRootNoteInToken: function() { with(this) {
+      var msg = "Caged position should derived from root note if position is not found in token";
+
+      var chord = new jtabChord('C');
+      var cagedPos = chord.cagedPos;
+      assertNotUndefined( cagedPos );
+      assertEqual( 1, cagedPos, msg );
+
+      chord = new jtabChord('C#');
+      cagedPos = chord.cagedPos;
+      assertEqual( 2, cagedPos, msg);
+
+      chord = new jtabChord('D');
+      cagedPos = chord.cagedPos;
+      assertEqual( 5, cagedPos, msg);
+
+      chord = new jtabChord('D#');
+      cagedPos = chord.cagedPos;
+      assertEqual( 2, cagedPos, msg);
+
+      chord = new jtabChord('E');
+      cagedPos = chord.cagedPos;
+      assertEqual( 4, cagedPos, msg);
+
+      chord = new jtabChord('Eb');
+      cagedPos = chord.cagedPos;
+      assertEqual( 2, cagedPos, msg);
+
+      chord = new jtabChord('F');
+      cagedPos = chord.cagedPos;
+      assertEqual( 4, cagedPos, msg);
+
+      chord = new jtabChord('F#');
+      cagedPos = chord.cagedPos;
+      assertEqual( 4, cagedPos, msg);
+
+      chord = new jtabChord('G');
+      cagedPos = chord.cagedPos;
+      assertEqual( 3, cagedPos, msg);
+
+      chord = new jtabChord('G#');
+      cagedPos = chord.cagedPos;
+      assertEqual( 4, cagedPos, msg);
+
+      chord = new jtabChord('A');
+      cagedPos = chord.cagedPos;
+      assertEqual( 2, cagedPos, msg);
+      
+      chord = new jtabChord('A#');
+      cagedPos = chord.cagedPos;
+      assertEqual( 2, cagedPos, msg);
+
+      chord = new jtabChord('Bb');
+      cagedPos = chord.cagedPos;
+      assertEqual( 2, cagedPos, msg);
+
+      chord = new jtabChord('B');
+      cagedPos = chord.cagedPos;
+      assertEqual( 2, cagedPos, msg);
+    }},
+      
     testChord_C_fingering: function() {  with(this) {
       var token = 'C';  
       var modelChordArray = [ 1, [-1 ],  [3,3],  [2,2],  [0  ],  [1,1],  [0  ] ];
