@@ -429,6 +429,27 @@ var jtab = {
     "Abdim7" : [ [ 1, [-1 ],  [-1 ],  [0  ],  [1,1],  [0  ],  [1,2] ], [  ] ],      
     "Abaug"  : [ [ 1, [0  ],  [3  ],  [2  ],  [1  ],  [1  ],  [0  ] ], [  ] ]    
 
+  },
+  WesternScale: {
+    BaseNotes:  { // for each: array[ base shape, base fret ]
+      'C' : [ 'C', 0 ],
+      'C#': [ 'C', 1 ],
+      'Db': [ 'C', 1 ],
+      'D' : [ 'D', 0 ],
+      'D#': [ 'D', 1 ],
+      'Eb': [ 'E', -1],
+      'E' : [ 'E', 0 ],
+      'F' : [ 'E', 1 ],
+      'F#': [ 'E', 2 ],
+      'Gb': [ 'E', 2 ],
+      'G' : [ 'G', 0 ],
+      'G#': [ 'G', 1 ],
+      'Ab': [ 'A', -1],
+      'A' : [ 'A', 0 ],
+      'A#': [ 'A', 1 ],
+      'Bb': [ 'A', 1 ],
+      'B' : [ 'A', 2 ]
+    }
   }
 };
 
@@ -452,6 +473,7 @@ var jtabChord = Class.create({
   initialize: function(token) {
     this.chordArray = null;
     this.chordName = '';
+    this.baseShape = '';
     this.isValid = false;
     this.isCaged = false;
     this.cagedPos = 1;
@@ -461,17 +483,13 @@ var jtabChord = Class.create({
       this.chordName = parts[0];
       this.cagedPos = parts[1]; 
       if ( ( this.cagedPos > 0 ) && ( this.chordName.match( /[CAGED]/ ) ) ) {
-        this.isValid = true;
         this.isCaged = true;
         this.setCagedChordArray();
       }
     } else {
       this.chordName = token;
-      if ( this.chordName.match( /[A-G]/ ) ) {
-        this.isValid = true;
-        this.isCaged = false;
-        this.setChordArray(this.chordName);
-      }      
+      this.isCaged = false;
+      this.setChordArray(this.chordName);
     }
   },
   setChordArray: function(chordName) { // clones chord array (position 1) from chord ref data into this object
@@ -480,6 +498,7 @@ var jtabChord = Class.create({
       this.isValid = false;
       return;
     }
+    this.isValid = true;
     var modelRef = jtab.Chords[chordName][0];
     this.chordArray[0] = modelRef[0]
     for (var i = 1; i < modelRef.length ; i++) {
