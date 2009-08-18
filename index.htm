@@ -81,9 +81,9 @@ being generated or retrieved from some system or web service.
 <div id="tab"><i>jTab will render your phrase here</i></div>
 
 <script type='text/javascript'>
-  $('notation').observe('keypress', function(e){
+  $('user_notation').observe('keypress', function(e){
     if (e.keyCode == 13) {
-      jtab.render('tab',$('notation').value);
+      jtab.render('tab',$('user_notation').value);
     }    
   });
 </script>
