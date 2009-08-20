@@ -346,7 +346,7 @@ shape as the desired chord's position/shape. In general,
       
     testChord_C_fingering: function() {  with(this) {
       var token = 'C';  
-      var modelChordArray = [ 1, [-1 ],  [3,3],  [2,2],  [0  ],  [1,1],  [0  ] ];
+      var modelChordArray = [ 0, [-1 ],  [3,3],  [2,2],  [0  ],  [1,1],  [0  ] ];
       var c = new jtabChord(token);
       assert( c.isValid, "jtabChord('" + token + "') should be valid" );
       assert( ! c.isCaged, "jtabChord('" + token + "') should not be CAGED" );
@@ -355,7 +355,7 @@ shape as the desired chord's position/shape. In general,
       
     testChord_C1_fingering: function() { with(this) {
       var token = 'C:1'; 
-      var modelChordArray = [ 1, [-1 ],  [3,3],  [2,2],  [0  ],  [1,1],  [0  ] ];
+      var modelChordArray = [ 0, [-1 ],  [3,3],  [2,2],  [0  ],  [1,1],  [0  ] ];
       
       var c = new jtabChord(token);
       assert( c.isValid, "jtabChord('" + token + "') should be valid" );
@@ -365,13 +365,53 @@ shape as the desired chord's position/shape. In general,
 
     testChord_C2_fingering: function() { with(this) {
       var token = 'C:2'; 
-      var modelChordArray = [ 3, [-1,-1 ],  [3,1],  [5,2],  [5,3],  [5,4],  [3,1] ];
+      var modelChordArray = [ 2, [-1,-1 ],  [3,1],  [5,2],  [5,3],  [5,4],  [3,1] ];
       
       var c = new jtabChord(token);
       assert( c.isValid, "jtabChord('" + token + "') should be valid" );
       assert( c.isCaged, "jtabChord('" + token + "') should be CAGED" );
       assertHashEqual( modelChordArray, c.chordArray, "jtabChord('" + token + "') returned incorrect chordArray" );
     }},
+
+    testChord_A_fingering: function() {  with(this) {
+      var token = 'A';  
+      var modelChordArray = [ 0, [-1],  [0  ],  [2,2],  [2,1],  [2,3],  [0  ] ];
+      var c = new jtabChord(token);
+      assert( c.isValid, "jtabChord('" + token + "') should be valid" );
+      assert( ! c.isCaged, "jtabChord('" + token + "') should not be CAGED" );
+      assertHashEqual( modelChordArray, c.chordArray, "jtabChord('" + token + "') returned incorrect chordArray" );
+    }},
+      
+    testChord_A1_fingering: function() { with(this) {
+      var token = 'A:1'; 
+      var modelChordArray = [ 0, [-1],  [0  ],  [2,2],  [2,1],  [2,3],  [0  ] ];
+      
+      var c = new jtabChord(token);
+      assert( c.isValid, "jtabChord('" + token + "') should be valid" );
+      assert( c.isCaged, "jtabChord('" + token + "') should be CAGED" );
+      assertHashEqual( modelChordArray, c.chordArray, "jtabChord('" + token + "') returned incorrect chordArray" );
+    }},
+
+    testChord_A2_fingering: function() { with(this) {
+      var token = 'A:2'; 
+      var modelChordArray = [ 1, [5,3],  [4,2],  [2,1],  [2,1],  [2,1],  [5,4  ] ];
+      
+      var c = new jtabChord(token);
+      assert( c.isValid, "jtabChord('" + token + "') should be valid" );
+      assert( c.isCaged, "jtabChord('" + token + "') should be CAGED" );
+      assertHashEqual( modelChordArray, c.chordArray, "jtabChord('" + token + "') returned incorrect chordArray" );
+    }},
+
+    testChord_A3_fingering: function() { with(this) {
+      var token = 'A:3'; 
+      var modelChordArray = [ 4, [5,1],  [7,3],  [7,4],  [6,2],  [5,1],  [5,1  ] ];
+      
+      var c = new jtabChord(token);
+      assert( c.isValid, "jtabChord('" + token + "') should be valid" );
+      assert( c.isCaged, "jtabChord('" + token + "') should be CAGED" );
+      assertHashEqual( modelChordArray, c.chordArray, "jtabChord('" + token + "') returned incorrect chordArray" );
+    }},
+      
   }); 
 // ]]>
 </script>
