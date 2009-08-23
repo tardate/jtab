@@ -34,12 +34,15 @@ var jtab = {
   },
   Chords : {
              // chord data - currently explicit representation for 6 string guitar, standard tuning only, and 
-             // each chord is an array of alternate positions, currently only 1st position used
+             // each chord is an array of alternate positions
+             //   0 : 1st (open) position
+             //   1 : 1st barre position, generally at 12/13/14th fret
+             //   2.. : alternative positions/fingerings
              // each position is an array comprising: 1. base fret (0==nut); 2. 6x note definitions (strings 6,5,4,3,2,1)
              // each note is an array: (fret position), (left hand fingering if applicable 1,2,3,4,T)
              // fret position: -1 = muted/not played; 0 = open; 1,2,3... = fret position
-    A       : [ [ 0, [-1],  [0  ],  [2,2],  [2,1],  [2,3],  [0  ] ], [  ] ],
-    Am      : [ [ 0, [-1],  [0  ],  [2,2],  [2,3],  [1,1],  [0  ] ], [  ] ],
+    A       : [ [ 0, [-1],  [0  ],  [2,2],  [2,1],  [2,3],  [0  ] ], [ 12, [-1,-1], [12,1], [14,2], [14,3], [14,4], [12,1] ] ],
+    Am      : [ [ 0, [-1],  [0  ],  [2,2],  [2,3],  [1,1],  [0  ] ], [ 12, [-1,-1], [12,1], [14,3], [14,4], [13,2], [12,1] ] ],
     A6      : [ [ 0, [-1],  [0  ],  [2,1],  [2,1],  [2,1],  [2,1] ], [  ] ],
     Am6     : [ [ 0, [-1],  [0  ],  [2,2],  [2,3],  [1,1],  [2,4] ], [  ] ],
     A69     : [ [ 3, [5,2], [4,1],  [4,1],  [4,1],  [5,3],  [5,4] ], [  ] ],
@@ -130,8 +133,8 @@ var jtab = {
     Bdim7   : [ [ 0, [-1],  [-1 ],  [0  ],  [1,1],  [0  ],  [1,2] ], [  ] ],
     Baug    : [ [ 0, [-1],  [2,1],  [5,4],  [4,2],  [4,3],  [3,1] ], [  ] ],
 
-    C       : [ [ 0, [-1 ],  [3,3],  [2,2],  [0  ],  [1,1],  [0  ] ], [  ] ],
-    Cm      : [ [ 0, [-1 ],  [3,4],  [1,2],  [0  ],  [1,1],  [-1 ] ], [  ] ],
+    C       : [ [ 0, [-1 ],  [3,3],  [2,2],  [0  ],  [1,1],  [0  ] ], [ 12, [-1,-1],  [15,4],  [14,3],  [12,1],  [13,2],  [12,1 ] ] ],
+    Cm      : [ [ 0, [-1 ],  [3,4],  [1,2],  [0  ],  [1,1],  [-1 ] ], [ 12, [-1,-1],  [15,4],  [13,3],  [12,1],  [13,2],  [-1,-1] ] ],
     C6      : [ [ 0, [-1 ],  [0  ],  [2,2],  [2,3],  [1,1],  [3,4] ], [  ] ],
     Cm6     : [ [ 0, [-1 ],  [-1 ],  [1,1],  [2,3],  [1,2],  [3,4] ], [  ] ],
     C69     : [ [ 0, [-1 ],  [3,2],  [2,1],  [2,1],  [3,3],  [3,4] ], [  ] ],
@@ -199,8 +202,8 @@ var jtab = {
     "Dbdim7": [ [ 0, [-1 ],  [-1 ],  [2,1],  [3,3],  [2,2],  [3,4] ], [  ] ],
     "Dbaug" : [ [ 0, [-1 ],  [4,4],  [3,3],  [2,1],  [2,2],  [-1 ] ], [  ] ],
       
-    D      : [ [ 0, [-1 ],  [0  ],  [0  ],  [2,1],  [3,3],  [2,2] ], [  ] ],
-    Dm     : [ [ 0, [-1 ],  [0  ],  [0  ],  [2,2],  [3,3],  [1,1] ], [  ] ],
+    D      : [ [ 0, [-1 ],  [0  ],  [0  ],  [2,1],  [3,3],  [2,2] ], [ 12, [-1,-1],  [12,1],  [12,1],  [14,3],  [15,4],  [14,3] ] ],
+    Dm     : [ [ 0, [-1 ],  [0  ],  [0  ],  [2,2],  [3,3],  [1,1] ], [ 12, [-1,-1],  [12,1],  [12,1],  [14,3],  [15,4],  [13,2] ] ],
     D6     : [ [ 0, [-1 ],  [0  ],  [0  ],  [2,2],  [0  ],  [2,3] ], [  ] ],
     Dm6    : [ [ 0, [-1 ],  [2,2],  [0  ],  [2,3],  [0  ],  [1,1] ], [  ] ],
     D69    : [ [ 3, [-1 ],  [5,2],  [4,1],  [4,1],  [5,3],  [5,4] ], [  ] ],
@@ -268,8 +271,8 @@ var jtab = {
     "Ebdim7": [ [ 0, [-1 ],  [-1 ],  [1,1],  [2,3],  [1,2],  [2,4] ], [  ] ],
     "Ebaug" : [ [ 0, [3,3],  [2,2],  [1,1],  [0  ],  [0  ],  [3,4] ], [  ] ],
 
-    E       : [ [ 0, [ 0 ],  [2,2],  [2,3],  [1,1],  [0  ],  [0  ] ], [  ] ],
-    Em      : [ [ 0, [ 0 ],  [2,2],  [2,3],  [0  ],  [0  ],  [0  ] ], [  ] ],
+    E       : [ [ 0, [ 0 ],  [2,2],  [2,3],  [1,1],  [0  ],  [0  ] ], [ 12, [ 12,1],  [14,3],  [14,4],  [13,2],  [12,1],  [12,1] ] ],
+    Em      : [ [ 0, [ 0 ],  [2,2],  [2,3],  [0  ],  [0  ],  [0  ] ], [ 12, [ 12,1],  [14,3],  [14,4],  [12,1],  [12,1],  [12,1] ] ],
     E6      : [ [ 0, [ 0 ],  [2,2],  [2,3],  [1,1],  [2,4],  [0  ] ], [  ] ],
     Em6     : [ [ 0, [ 0 ],  [2,1],  [2,2],  [0  ],  [2,3],  [0  ] ], [  ] ],
     E69     : [ [ 0, [-1 ],  [2,2],  [2,2],  [1,1],  [2,3],  [2,3] ], [  ] ],
@@ -360,15 +363,15 @@ var jtab = {
     "Gbdim7": [ [ 0, [-1 ],  [-1 ],  [1,1],  [2,3],  [1,2],  [2,4] ], [  ] ],
     "Gbaug" : [ [ 0, [2,1],  [-1 ],  [4,4],  [3,2],  [3,3],  [2,1] ], [  ] ],
 
-    G       : [ [ 0, [3,3],  [2,2],  [0  ],  [0  ],  [0  ],  [3,4] ], [  ] ],
-    Gm      : [ [ 0, [2,3],  [1,1],  [0  ],  [0  ],  [3,3],  [3,4] ], [  ] ],
+    G       : [ [ 0, [3,3],  [2,2],  [0  ],  [0  ],  [0  ],  [3,4] ], [ 12, [15,3], [14,2], [12,1], [12,1], [12,1], [15,4] ] ],
+    Gm      : [ [ 0, [3,2],  [1,1],  [0  ],  [0  ],  [3,3],  [3,4] ], [ 12, [15,3], [13,2], [12,1], [12,1], [15,4], [15,4] ] ],
     G6      : [ [ 0, [3,3],  [2,2],  [0  ],  [0  ],  [0  ],  [0  ] ], [  ] ],
     Gm6     : [ [ 0, [-1 ],  [-1 ],  [2,1],  [3,3],  [3,3],  [3,3] ], [  ] ],
     G69     : [ [ 0, [3,3],  [2,1],  [0  ],  [2,2],  [0  ],  [0  ] ], [  ] ],
     G7      : [ [ 0, [3,3],  [2,2],  [0  ],  [0  ],  [0  ],  [1,1] ], [  ] ],
     Gm7     : [ [ 0, [-1 ],  [1,1],  [3,3],  [0  ],  [3,4],  [-1 ] ], [  ] ],
     Gmaj7   : [ [ 0, [3,3],  [2,2],  [0  ],  [0  ],  [0  ],  [2,1] ], [  ] ],
-    "G7b5"  : [ [ 0, [3,2],  [-1 ],  [3,3],  [4,4],  [2,1],  [-1 ] ], [ 4, [-1 ],  [-1 ],  [5,1],  [6,2],  [6,3],  [7,4] ] ],
+    "G7b5"  : [ [ 0, [3,2],  [-1 ],  [3,3],  [4,4],  [2,1],  [-1 ] ], [  ], [ 4, [-1 ],  [-1 ],  [5,1],  [6,2],  [6,3],  [7,4] ] ],
     "G7#5"  : [ [ 0, [3,1],  [-1 ],  [3,2],  [4,3],  [4,4],  [-1 ] ], [  ] ],
     Gm7b5   : [ [ 4, [-1 ],  [-1 ],  [5,1],  [6,2],  [6,3],  [6,4] ], [  ] ],
     G7b9    : [ [ 0, [3,4],  [2,3],  [0  ],  [1,1],  [0  ],  [1,2] ], [  ] ],
@@ -431,25 +434,33 @@ var jtab = {
 
   },
   WesternScale: {
-    BaseNotes:  { // for each: array[ base shape, base fret ]
+    BaseNotes:  { // for each: array[ caged base, base fret ]
       'C' : [ 'C', 0 ],
       'C#': [ 'C', 1 ],
       'Db': [ 'C', 1 ],
       'D' : [ 'D', 0 ],
       'D#': [ 'D', 1 ],
-      'Eb': [ 'E', -1],
+      'Eb': [ 'D', 1 ],
       'E' : [ 'E', 0 ],
       'F' : [ 'E', 1 ],
       'F#': [ 'E', 2 ],
       'Gb': [ 'E', 2 ],
       'G' : [ 'G', 0 ],
       'G#': [ 'G', 1 ],
-      'Ab': [ 'A', -1],
+      'Ab': [ 'G', 1 ],
       'A' : [ 'A', 0 ],
       'A#': [ 'A', 1 ],
       'Bb': [ 'A', 1 ],
       'B' : [ 'A', 2 ]
-    }
+    },
+    BaseIntervals: ['C', 'C#', 'D', 'Eb', 'E', 'F', 'F#', 'G', 'G#', 'A', 'Bb', 'B']
+  },
+  ChordList : function() {
+  	var list = [];
+  	for (var key in jtab.Chords) {
+  		list.push( key );
+  	}
+  	return list;
   }
 };
 
@@ -467,50 +478,72 @@ Array.prototype.max_chars = function() {
 
 //
 // define jtabChord class
+// public members:
+//  isValid        = whether valid chord defined
+//  isCaged        = whether chord is CAGED type
+//  chordName      = full chord name, including position e.g. C#m7:3
+//  baseName       = chord name, without position e.g. C#m7
+//  rootNote       = root note e.g. C#
+//  rootExt        = root note extension e.g. m7
+//  cagedBaseShape = caged base shape e.g. C
+//  cagedBaseFret  = caged base fret e.g. C
+//  cagedPos       = caged position e.g. 3
 //
 
 var jtabChord = Class.create({
   initialize: function(token) {
+    this.scale = jtab.WesternScale;
+    this.baseNotes = this.scale.BaseNotes;
+    this.baseChords = jtab.Chords;
     this.chordArray = null;
-    this.chordName = '';
-    this.baseShape = '';
     this.isValid = false;
-    this.isCaged = false;
-    this.cagedPos = 1;
-    
-    if ( token.match( /:/ ) != null ) {
+
+    this.chordName = token;  
+    this.isCaged = ( token.match( /:/ ) != null )
+    if (this.isCaged) {
       var parts = token.split(':');
-      this.chordName = parts[0];
-      this.cagedPos = parts[1]; 
-      if ( ( this.cagedPos > 0 ) && ( this.chordName.match( /[CAGED]/ ) ) ) {
-        this.isCaged = true;
-        this.setCagedChordArray();
-      }
+      this.baseName = parts[0];
+      this.cagedPos = parts[1];
     } else {
-      this.chordName = token;
-      this.isCaged = false;
-      this.setChordArray(this.chordName);
+      this.baseName = this.chordName;
+      this.cagedPos = 1;
+    }    
+    this.rootExt = this.baseName.replace(/^[A-G#b]{1,2}/,''); 
+    this.rootNote = this.baseName.substr(0, this.baseName.length - this.rootExt.length); 
+    var baseNoteInfo = this.baseNotes[this.rootNote];
+    if (baseNoteInfo) {
+      this.cagedBaseShape = baseNoteInfo[0];
+      this.cagedBaseFret = baseNoteInfo[1];
+    } else {
+      this.cagedBaseShape ='';
+      this.cagedBaseFret = 0;
+    }
+    
+    if ( ( this.isCaged ) && ( this.cagedPos > 1 ) ) {
+        this.setCagedChordArray();
+    } else {
+      this.setChordArray(this.baseName);
     }
   },
   setChordArray: function(chordName) { // clones chord array (position 0) from chord ref data into this object
     this.chordArray = new Array();
-    if (jtab.Chords[chordName] === undefined ) {
+    if (this.baseChords[chordName] === undefined ) {
       this.isValid = false;
       return;
     }
     this.isValid = true;
-    var modelRef = jtab.Chords[chordName][0];
+    var modelRef = this.baseChords[chordName][0];
     this.chordArray[0] = modelRef[0]
     for (var i = 1; i < modelRef.length ; i++) {
       this.chordArray[i] = modelRef[i].clone();  
     }   
   },
   setCagedChordArray: function() {
-    var caged_index = "CAGED".indexOf(this.chordName) + 1; // get 1-based index
+    if ( ! this.cagedBaseShape.match( /[CAGED]/ ) ) return;
+    var caged_index = "CAGED".indexOf(this.cagedBaseShape) + 1; // get 1-based index
     var fret_widths = [3,2,3,2,2];
-
-        
-    var starting_fret = 0;
+  
+    var starting_fret = this.cagedBaseFret;
 
     for (var i = 1; i < this.cagedPos ; i++) {
       var index = (caged_index - 1) % 5;
@@ -518,28 +551,21 @@ var jtabChord = Class.create({
       starting_fret += fret_widths[index];
     }
    
-    var modelChord =  "CAGED".charAt( caged_index - 1 );
+    var modelChord =  "CAGED".charAt( caged_index - 1 ) + this.rootExt;
     this.setChordArray(modelChord);
     this.shiftChordArray(starting_fret,modelChord);
     
   },
   shiftChordArray: function(atFret,modelChord) { // shift chord to new fret position
-    var caged_fingering = { 
-         C : [ -1, 4, 3, 1, 2, 1 ],
-         A : [ -1, 1, 2, 3, 4, 1 ],
-         G : [  3, 2, 1, 1, 1, 4 ],
-         E : [  1, 3, 4, 2, 1, 1 ],
-         D : [ -1, 1, 1, 2, 4, 3 ]
-        };
         
     var initFret = this.chordArray[0];
-    if (atFret > initFret) {
-      var use_caged_fingering = ( (this.isCaged) && (this.cagedPos > 0) && ( ! ( caged_fingering[modelChord] === undefined ) )  );
+    if (atFret != initFret) {
+      var use_caged_fingering = ( (this.isCaged) && (this.cagedPos > 0) && ( ! ( this.baseChords[modelChord][1][0] === undefined ) )  );
 
       this.chordArray[0] = atFret - 1;
       for (var i = 1; i < this.chordArray.length ; i++) {
         var fret = (this.chordArray[i][0] >= 0 ) ? this.chordArray[i][0] + atFret - initFret : this.chordArray[i][0];
-        var finger = (use_caged_fingering) ? caged_fingering[modelChord][i - 1] : this.chordArray[i][1];
+        var finger = (use_caged_fingering) ? this.baseChords[modelChord][1][i][1] : this.chordArray[i][1];
         this.chordArray[i] = [ fret ,  finger ];  
       }  
     }
