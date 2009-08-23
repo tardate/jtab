@@ -1,0 +1,83 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+
+    <title>jTab - Chord Chart</title>
+    <meta name="description" content="jTab is a javascript-based library that allows you to easily render arbitrary guitar chord and tabulature (tab) notation on the web"/>
+    <meta name="keywords"    content="guitar,chord,tab,tabulature,music,notation,javascript,css,svg,html,xhtml"/>
+
+    <link type="text/css" rel="stylesheet" href="css/jtab-site.css"/>
+
+    <!-- START: for jtab -->
+    <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+    <link type="text/css" rel="stylesheet" href="css/jtab-helper.css"/>
+    <script src="javascripts/prototype.js" type="text/javascript"></script>
+    <script src="javascripts/raphael.js" type="text/javascript"></script>
+    <script src="javascripts/jtab.js" type="text/javascript"></script>
+    <!-- END: for jtab -->
+
+<script type='text/javascript'>
+
+var chordList = jtab.ChordList();
+function render_chord_chart(start) {
+  
+  var startAt = (start === undefined) ? 0 : start;
+  var endAt = startAt + 5;
+  var tokens = '';  
+  
+  for (var key = startAt; key < endAt; key++) {
+    if ( chordList[key] === undefined ) break;
+    var token = chordList[key];
+    // accumulate row tokens
+    tokens += token + ' ';
+  }
+
+  // emit a new child to hold a row
+  var rowHolder = new Element('div');
+  Element.insert( $('chart'), rowHolder );
+  jtab.render(rowHolder,tokens);
+  // yeild/async continuation of the chord chart if not yet complete
+  if (endAt < chordList.length) setTimeout('render_chord_chart(' + endAt + ')', 0 );
+  
+}
+
+</script>
+
+  </head>
+  <body onload="setTimeout('render_chord_chart()', 50 );">
+
+<div id="header">
+<h1>jTab - Chord Chart</h1>
+<p>
+This page generates a complete chord chart for all chords supported by jTab.
+</p>
+
+</div>
+
+<div id="menu">
+<ul>
+<li><a href="index.htm#">About jTab</a></li>
+<li><a href="examples.htm">Live Examples</a></li>
+<li><a href="index.htm#notation">Notation Reference</a></li>
+<li><a href="index.htm#download">Download</a></li>
+<li><a href="index.htm#install">How To Install</a></li>
+<li><a href="index.htm#help">Troubleshooting and Tips</a></li>
+<li><a href="index.htm#feedback">Feedback &amp; Contribute</a></li>
+<li><a href="index.htm#limitations">Limitations</a></li>
+<li><a href="index.htm#inthewild">jTab in the Wild</a></li>
+</ul>
+</div>
+
+
+<div id="content">
+  <div id="chart">
+  </div>
+</div>
+
+<div id="footer">
+</div>
+
+  </body>
+</html>
