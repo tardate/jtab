@@ -142,23 +142,23 @@ equivalents in rendering our base notes.
       assertNotUndefined( baseNotes, "jtab.WesternScale.BaseNotes should be valid" );  
 
       var validBaseNotes = {
-      'C' : [ 'C', 0 ],
-      'C#': [ 'C', 1 ],
-      'Db': [ 'C', 1 ],
-      'D' : [ 'D', 0 ],
-      'D#': [ 'D', 1 ],
-      'Eb': [ 'D', 1 ],
-      'E' : [ 'E', 0 ],
-      'F' : [ 'E', 1 ],
-      'F#': [ 'E', 2 ],
-      'Gb': [ 'E', 2 ],
-      'G' : [ 'G', 0 ],
-      'G#': [ 'G', 1 ],
-      'Ab': [ 'G', 1 ],
-      'A' : [ 'A', 0 ],
-      'A#': [ 'A', 1 ],
-      'Bb': [ 'A', 1 ],
-      'B' : [ 'A', 2 ]
+      'C' : [ 'C' , 'C', 0 ],
+      'C#': [ 'C#', 'C', 1 ],
+      'Db': [ 'C#', 'C', 1 ],
+      'D' : [ 'D' , 'D', 0 ],
+      'D#': [ 'Eb', 'D', 1 ],
+      'Eb': [ 'Eb', 'D', 1 ],
+      'E' : [ 'E' , 'E', 0 ],
+      'F' : [ 'F' , 'E', 1 ],
+      'F#': [ 'F#', 'E', 2 ],
+      'Gb': [ 'F#', 'E', 2 ],
+      'G' : [ 'G' , 'G', 0 ],
+      'G#': [ 'G#', 'G', 1 ],
+      'Ab': [ 'G#', 'G', 1 ],
+      'A' : [ 'A' , 'A', 0 ],
+      'A#': [ 'Bb', 'A', 1 ],
+      'Bb': [ 'Bb', 'A', 1 ],
+      'B' : [ 'B' , 'A', 2 ]
       };
       assertHashEqual( validBaseNotes, baseNotes, "jtab.WesternScale.BaseNotes should have correct mappings" );
 
