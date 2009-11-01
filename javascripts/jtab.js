@@ -29,6 +29,7 @@
 
 var jtab = {
   Version : '1.1',
+  element_count:0, //TODO: 
   Strings : {
   	AboutDialog : '<html><head><title>About jTab</title></head><body style=""><p style="">jTab version: {V}</p><p><a href="http://jtab.tardate.com" target="_blank">http://jtab.tardate.com</a></p><p><input type="button" class="close" value="OK" onClick="window.close()"/></p></body></html>'
   },
@@ -378,7 +379,7 @@ Array.prototype.max_chars = function() {
 //  cagedPos       = caged position e.g. 3
 //
 
-var jtabChord = Class.create({
+var jtabChord = $.klass({
   initialize: function(token) {
     this.scale = jtab.WesternScale;
     this.baseNotes = this.scale.BaseNotes;
@@ -424,7 +425,7 @@ var jtabChord = Class.create({
     var modelRef = this.baseChords[chordName][0];
     this.chordArray[0] = modelRef[0]
     for (var i = 1; i < modelRef.length ; i++) {
-      this.chordArray[i] = modelRef[i].clone();  
+      this.chordArray[i] = modelRef[i];    // TODO: this.chordArray[i] = modelRef[i].clone();  
     }   
   },
   setCagedChordArray: function() {
@@ -836,7 +837,8 @@ Raphael.fn.render_token = function (token) {
 //   0 : unknown
 jtab.characterize = function (notation) {
   var tabtype = 0;
-  var gotChord = ( notation.match( /[^\$][A-G]|^[A-G]/ ) != null );
+  if(notation == undefined) notation = ''
+  var gotChord = ( notation.match( /[^\$][A-G]|^[A-G]/ ) != undefined ); //TODO: NULL TO undefined
   var gotTab = ( ( notation.match( /\$/ ) != null ) || ( notation.match( /[0-9|Xx|\.]{6,}/ ) != null ) );
   // set defaults - apply scaling here (TODO)
   Raphael.fn.current_offset = Raphael.fn.margin_left;
@@ -865,7 +867,7 @@ jtab.characterize = function (notation) {
 
 // utility function to get calculated style based on given element
 jtab.getStyle = function (element, style) {
-  var value = element.style[style];
+  var value = element.css(style);
   if(!value) {
     if(document.defaultView) {
       value = document.defaultView.getComputedStyle(element, "").getPropertyValue(style);
@@ -895,12 +897,15 @@ jtab.render = function (element,notation) {
 
   var tabtype = jtab.characterize( notation );
   if (tabtype == 0 ) return;
+  
+  var rndID="builder_"+jtab.element_count++;
     
   // add the Raphael canvas in its own DIV. this gets around an IE6 issue with not removing previous renderings
-  var canvas_holder = new Element('div').setStyle({height: Raphael.fn.total_height});
-  $(element).update(canvas_holder);
+  var canvas_holder = $('<div id="'+rndID+'"></div>').css({height: Raphael.fn.total_height});
+  
+  $(element).html(canvas_holder);
   jtab.setPalette(element);
-  canvas = Raphael(canvas_holder, 80, Raphael.fn.total_height );
+  canvas = Raphael(rndID, 80, Raphael.fn.total_height );
   canvas.tab_start();
   
   var tokens = notation.split(/\s/);
@@ -912,20 +917,19 @@ jtab.render = function (element,notation) {
 
 // process implicit rendering of tags with class 'jtab'
 jtab.renderimplicit = function() {
-  $$('.jtab').each( function(name, index) { jtab.render(name,name.innerHTML); } );
+    $('.jtab').each( function(name, index) { jtab.render(this,this.innerHTML); } ); //TODO: $('.jtab').each( function(name, index) { jtab.render(name,name.innerHTML); } );
 }
 
 
 // initialize jtab - setup to run implicit rendering on window.onload
 jtab.init = function() {
+
   if (typeof window.onload != 'function') {
     window.onload = jtab.renderimplicit;
   } else {
     var oldonload = window.onload;
     window.onload = function() {
-      if (oldonload) {
-        oldonload();
-      }
+      if (oldonload) oldonload();
       jtab.renderimplicit();
     }
   }
