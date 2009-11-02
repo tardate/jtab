@@ -510,14 +510,14 @@ Raphael.fn.tab_text_color = "#000";
 // debug helper - puts grid marks on the rendered image
 Raphael.fn.debug_grid = function (width) {
   // h ticks
-  this.path(path_cords(this.current_offset, 0,0,4)).attr({stroke: this.color, "stroke-width":0.2 })
-  this.path(path_cords(  this.current_offset + this.margin_left, 0,0,2)).attr({stroke: this.color, "stroke-width":0.2 })
-  this.path(path_cords(  this.current_offset + width - this.margin_right, 0,0,2)).attr({stroke: this.color, "stroke-width":0.2 })
+  this.path(this.svg_params(this.current_offset, 0,0,4)).attr({stroke: this.color, "stroke-width":0.2 })
+  this.path(this.svg_params(  this.current_offset + this.margin_left, 0,0,2)).attr({stroke: this.color, "stroke-width":0.2 })
+  this.path(this.svg_params(  this.current_offset + width - this.margin_right, 0,0,2)).attr({stroke: this.color, "stroke-width":0.2 })
   // v ticks
   if (this.tabtype == 3) {
-    this.path(path_cords(this.current_offset, this.tab_margin_top,2,0)).attr({stroke: this.color, "stroke-width":0.2 })
+    this.path(this.svg_params(this.current_offset, this.tab_margin_top,2,0)).attr({stroke: this.color, "stroke-width":0.2 })
   } else {
-    this.path(path_cords(this.current_offset, this.margin_top,2, 0)).attr({stroke: this.color, "stroke-width":0.2 })
+    this.path(this.svg_params(this.current_offset, this.margin_top,2, 0)).attr({stroke: this.color, "stroke-width":0.2 })
   }
 }
 
@@ -530,9 +530,9 @@ Raphael.fn.increment_offset = function (width) {
   this.setSize( this.current_offset, this.total_height );
 }
 
-Raphael.fn.path_cords = function(x,y,l1,l2) {
-  // http://www.w3.org/TR/SVG/paths.html#PathData --helpful reading
-  move_line_to = "m"+x+" "+y+"l"+l1+" "+l2 
+Raphael.fn.svg_params = function(x,y,l1,l2) {
+  // http://www.w3.org/TR/SVG/paths.html#PathData --helpful reading 
+  var move_line_to = "m"+x+" "+y+"l"+l1+" "+l2 
   if(arguments.length == 4) return move_line_to
 }
 
@@ -547,12 +547,12 @@ Raphael.fn.chord_fretboard = function ( position, chord_name ) {
     chord_name).attr({stroke: this.tab_text_color, "font-size":"20px"});
 
   var stroke_width = position == 0 ? 3 : 0  // nut
-  var chord_fretboard_path = this.path(path_cords(fret_left,this.margin_top,this.string_spacing * (this.strings_drawn - 1),0))
+  var chord_fretboard_path = this.path(this.svg_params(fret_left,this.margin_top,this.string_spacing * (this.strings_drawn - 1),0))
         chord_fretboard_path.attr({stroke: this.color, "stroke-width":stroke_width })
 
   for (var i = 0; i <= this.frets_drawn; i++ ) { // frets
     
-    this.path(path_cords(fret_left,this.margin_top + (i * this.fret_spacing),this.string_spacing * (this.strings_drawn - 1), 0))
+    this.path(this.svg_params(fret_left,this.margin_top + (i * this.fret_spacing),this.string_spacing * (this.strings_drawn - 1), 0))
     
     pos = ( fret_labels[ position + i ] === undefined ) ? '' : fret_labels[ position + i ];
 
@@ -564,7 +564,7 @@ Raphael.fn.chord_fretboard = function ( position, chord_name ) {
     }
   }
   for (var i = 0; i < this.strings_drawn; i++ ) { 
-    this.path(path_cords(fret_left + (i * this.string_spacing),this.margin_top,0, this.fret_spacing * (this.frets_drawn + 0.5)))  // strings
+    this.path(this.svg_params(fret_left + (i * this.string_spacing),this.margin_top,0, this.fret_spacing * (this.frets_drawn + 0.5)))  // strings
   }
   this.tab_extend(this.chord_width); // extend the tab if present
 }
@@ -578,14 +578,14 @@ Raphael.fn.stroke = function () {
     // extend tab
     this.tab_extend(width);
     //  stroke
-    var stroke_path = this.path(path_cords(this.current_offset + this.tab_char_width, this.tab_top  + (3.5 * this.tab_spacing),this.tab_char_width, - 2 * this.tab_spacing))
+    var stroke_path = this.path(this.svg_params(this.current_offset + this.tab_char_width, this.tab_top  + (3.5 * this.tab_spacing),this.tab_char_width, - 2 * this.tab_spacing))
         stroke_path.attr({stroke: this.tab_text_color, "stroke-width":4 })
 
     this.increment_offset(width);    
   } else if (this.has_chord) {
     var dx = this.string_spacing;
     var dy = 2 * this.fret_spacing;     
-    this.path(path_cords(this.current_offset + this.margin_left, 
+    this.path(this.svg_params(this.current_offset + this.margin_left, 
                          this.margin_top + this.fret_spacing + dy,dx,-dy)).attr({stroke: this.tab_text_color, "stroke-width":4 })  
     
     this.increment_offset(  this.margin_left + dx + this.margin_right ); 
@@ -600,12 +600,12 @@ Raphael.fn.bar = function () {
     var width = this.tab_char_width * 2;
     // extend tab
     this.tab_extend(width);    
-    var bar_stroke=this.path(path_cords(this.current_offset + this.tab_char_width, this.tab_top,0, this.tab_height))
+    var bar_stroke=this.path(this.svg_params(this.current_offset + this.tab_char_width, this.tab_top,0, this.tab_height))
     this.increment_offset(width);    
 
   } else if (this.has_chord) { 
     var fret_left = this.current_offset + this.margin_left;
-    var bar_stroke=this.path(path_cords(this.current_offset + this.margin_left, this.margin_top,0, 0, this.fret_height))    
+    var bar_stroke=this.path(this.svg_params(this.current_offset + this.margin_left, this.margin_top,0, 0, this.fret_height))    
     this.increment_offset( this.margin_left + this.margin_right );  
   }
     bar_stroke.attr({stroke: this.color, "stroke-width":1 })
@@ -620,15 +620,15 @@ Raphael.fn.doublebar = function () {
     // extend tab
     this.tab_extend(width);
     //  bar
-    var path_1 = this.path(path_cords(this.current_offset + this.tab_char_width, this.tab_top,0, this.tab_height))
-    var path_2 = this.path(path_cords(this.current_offset + this.tab_char_width + 6, this.tab_top,0, this.tab_height  ))
+    var path_1 = this.path(this.svg_params(this.current_offset + this.tab_char_width, this.tab_top,0, this.tab_height))
+    var path_2 = this.path(this.svg_params(this.current_offset + this.tab_char_width + 6, this.tab_top,0, this.tab_height  ))
     this.increment_offset(width);    
 
   } else if (this.has_chord) { 
     var left = this.current_offset + this.margin_left;
     
-    var path_1 = this.path(path_cords(left, this.margin_top,0, this.fret_height))
-    var path_2 = this.path(path_cords(left + 6, this.margin_top,0, this.fret_height))
+    var path_1 = this.path(this.svg_params(left, this.margin_top,0, this.fret_height))
+    var path_2 = this.path(this.svg_params(left + 6, this.margin_top,0, this.fret_height))
 
     this.increment_offset( this.margin_left + 6 + this.margin_right );  
   }
@@ -671,7 +671,7 @@ Raphael.fn.chord_note = function (position, string_number, note) {
 Raphael.fn.tab_extend = function (width) {
   if (this.has_tab == false) return;
   for (var i = 0; i < this.strings_drawn; i++ ) {
-    this.path(path_cords(this.current_offset, this.tab_top  + (i * this.tab_spacing),width, 0)).attr({stroke: this.color})
+    this.path(this.svg_params(this.current_offset, this.tab_top  + (i * this.tab_spacing),width, 0)).attr({stroke: this.color})
   }
 }
 
@@ -681,7 +681,7 @@ Raphael.fn.tab_start = function () {
   if (this.has_tab == false) return;
   var width = this.tab_char_width * 3;
   //  start bar
-  this.path(path_cords(this.current_offset, this.tab_top,0, this.tab_height)).attr({stroke: this.color, "stroke-width":1 })
+  this.path(this.svg_params(this.current_offset, this.tab_top,0, this.tab_height)).attr({stroke: this.color, "stroke-width":1 })
 
   // extend tab
   this.tab_extend(width);
