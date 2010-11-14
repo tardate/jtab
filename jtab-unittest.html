@@ -459,7 +459,25 @@ shape as the desired chord's position/shape. In general,
       assertHashEqual( modelChordArray, c.chordArray, "jtabChord('" + token + "') returned incorrect chordArray" );
     }},
       
-      
+    testChord_Dm7b5_fingering: function() {  with(this) {
+      var token = 'Dm7b5';
+      var modelChordArray = [ 0, [-1 ],  [-1 ],  [0  ],  [1,1],  [1,1],  [1,1] ];
+      var c = new jtabChord(token);
+      assert( c.isValid, "jtabChord('" + token + "') should be valid" );
+      assert( ! c.isCaged, "jtabChord('" + token + "') should not be CAGED" );
+      assertHashEqual( modelChordArray, c.chordArray, "jtabChord('" + token + "') returned incorrect chordArray" );
+    }},
+
+    testChord_Dm7b5p2_fingering: function() {  with(this) {
+      var token = 'Dm7b5:2';
+      var modelChordArray = [ 1, [-1, null], [5,1 ],  [6,3],  [5,2],  [6,4],  [-1, null] ];
+      var c = new jtabChord(token);
+      assert( c.isValid, "jtabChord('" + token + "') should be valid" );
+      assert( c.isCaged, "jtabChord('" + token + "') should be CAGED" );
+      assertHashEqual( modelChordArray, c.chordArray, "jtabChord('" + token + "') returned incorrect chordArray" );
+    }},
+
+
   }); 
 // ]]>
 </script>
