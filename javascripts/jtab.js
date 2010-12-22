@@ -368,6 +368,7 @@ Array.prototype.max_chars = function() {
 // public members:
 //  isValid        = whether valid chord defined
 //  isCaged        = whether chord is CAGED type
+//  isCustom       = whether chord is a custom fingering
 //  fullChordName  = full chord name, including position e.g. D#m7:3
 //  chordName      = chord name, without position e.g. D#m7
 //  baseName       = translated chord name (B <-> #), without position e.g. Ebm7
@@ -388,12 +389,17 @@ var jtabChord = Class.create({
 
     this.fullChordName = token;  
     this.isCaged = ( this.fullChordName.match( /:/ ) != null )
+    this.isCustom = ( this.fullChordName.match( /\[(.+?)\]/ ) != null )
+    
     if (this.isCaged) {
       var parts = this.fullChordName.split(':');
       this.chordName = parts[0];
       this.cagedPos = parts[1];
+    } else if (this.isCustom){
+      var parts = this.fullChordName.match( /\[(.+?)\]/ );
+      this.chordName = parts[1];
     } else {
-      this.chordName = this.fullChordName
+      this.chordName = this.fullChordName;
       this.cagedPos = 1;
     }    
     this.rootExt = this.chordName.replace(/^[A-G#b]{1,2}/,''); 
@@ -409,10 +415,38 @@ var jtabChord = Class.create({
     }
     
     if ( ( this.isCaged ) && ( this.cagedPos > 1 ) ) {
-        this.setCagedChordArray();
+      this.setCagedChordArray();
+    } else if (this.isCustom){
+      this.setCustomChordArray();
     } else {
       this.setChordArray(this.baseName);
     }
+  },
+  setCustomChordArray: function(){
+    this.chordArray = new Array();
+    this.chordArray = this.parseCustomChordArrayFromToken();
+  },
+  parseCustomChordArrayFromToken: function() {
+    notes = this.fullChordName.replace(/(\%|\[.+\])/g, '');
+    pairs = notes.split('.');
+    if (pairs.length < 6){
+      this.isValid = false;      
+      return;
+    }
+    this.isValid = true;    
+    
+    array = new Array();
+    for (var i = 0; i < pairs.length; i++){
+      pair = pairs[i].split('/')
+      if (pair[0] == 'X'){
+        pair = [-1]
+      }
+      array.push(pair)
+    }
+    fingeredFrets = array.reject(function(p){ return p.length === 1 }).collect(function(p){return p[0]}).flatten().without(0,-1)
+    //find all the fret positions which arent X or 0. I'm sure there's a better way to do this.
+    array.unshift(fingeredFrets.min()-1);
+    return array;
   },
   setChordArray: function(chordName) { // clones chord array (position 0) from chord ref data into this object
     this.chordArray = new Array();
@@ -802,7 +836,8 @@ Raphael.fn.render_token = function (token) {
 
   if ( c.isValid ) { // draw chord
     var chord = c.chordArray;
-    this.chord_fretboard(chord[0], c.fullChordName );
+    // this.chord_fretboard(chord[0], c.fullChordName );
+    this.chord_fretboard(chord[0], c.chordName );    
     for (var i = 1; i < chord.length ; i++) {  
       this.chord_note(chord[0], i, chord[i]);
     }
@@ -836,8 +871,13 @@ Raphael.fn.render_token = function (token) {
 //   0 : unknown
 jtab.characterize = function (notation) {
   var tabtype = 0;
-  var gotChord = ( notation.match( /[^\$][A-G]|^[A-G]/ ) != null );
-  var gotTab = ( ( notation.match( /\$/ ) != null ) || ( notation.match( /[0-9|Xx|\.]{6,}/ ) != null ) );
+  
+  var gotCustomChord = ( notation.match( /[\%][0-4|T|X]/ ) != null );
+  var gotNormalChord = ( notation.match( /[^\$][A-G]|^[A-G]/ ) != null );
+  var gotChord =  gotNormalChord || gotCustomChord ;
+
+  var gotTab = ( ( notation.match( /\$/ ) != null ) || ( notation.match( /[^\%][0-9|Xx|\.]{6,}/ ) != null ) );
+
   // set defaults - apply scaling here (TODO)
   Raphael.fn.current_offset = Raphael.fn.margin_left;
   if ( gotChord && gotTab ) { // chord and tab
