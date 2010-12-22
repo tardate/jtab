@@ -143,6 +143,25 @@ This is a convenient method for indicating major chords at various positions on 
 A full chart of chords supported by jTab as available <a href="jtab-chordchart.htm">here</a>.
 </p>
 
+<h3>Custom Chord Notation</h3>
+
+<p>jTab also supports custom chord notation, where the frets and fingers for any arbitrary chord can be explicitly defined.
+	<pre>%Fret/Finger.Fret/Finger.Fret/Finger.Fret/Finger.Fret/Finger.Fret/Finger[Name]</pre>
+	<ul>
+	<li>Frets: Numeric position on the fretboard</li>
+	<li>Fingers: 1,2,3,4,T (uppercase)</li>
+	<li>For open strings, enter: 0/0</li>
+	<li>Muted or not played strings: X/X (uppercase)</li>
+	<li>Name: enclose the name of the chord in square brackets</li>
+	</ul>
+	You must always include all six strings.	
+</p>
+<p>Here's an example:
+	<pre>%7/2.X/X.7/3.7/4.6/1.X/X[Bm7b5]</pre>
+	<div class="jtab chordonly">%7/2.X/X.7/3.7/4.6/1.X/X[Bm7b5]</div>	
+</p>
+
+
 <h3>Tab Notation</h3> 
 <p> 
 Representing <a href="http://en.wikipedia.org/wiki/Tablature" target="_blank">tab notation</a> is little special to jTab, 
