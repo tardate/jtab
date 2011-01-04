@@ -107,6 +107,14 @@
       assertEqual( 2, tabtype, "not recognised as custom-chord-only notation: '" + notation + "'" );
     }},
 
+    testRecognizeCustomChordNoNameNotation: function() {  with(this) {
+			// let's try a C chord, but don't include the name
+      var notation = "%X/X.4/3.2/2.0/0.1/1.0/0";
+      var tabtype = jtab.characterize( notation );   
+      assertEqual( 2, tabtype, "not recognised as custom-chord-only notation: '" + notation + "'" );
+    }},
+
+
 
     testRecognizeTabOnlyNotation: function() {  with(this) {
       var notation = "$1 2 3 $2.3.$1.2";
@@ -391,6 +399,16 @@ shape as the desired chord's position/shape. In general,
       assert( c.isCustom, "jtabChord('" + token + "') should be custom chord" );
 			assertHashEqual( modelChordArray, c.chordArray, "jtabChord('" + token + "') returned incorrect chordArray" );
     }},
+
+		testCustomChord_No_Name: function() {  with(this) {
+		  var token = "%0/0.2/2.3/2.1/1.0/0.0/0";  
+
+		  var modelChordArray = [ 0, [0,0],  [2,2],  [3,2],  [1,1],  [0,0],  [0,0]]
+		  var c = new jtabChord(token);
+			assert( c.isValid, "jtabChord('" + token + "') should be valid" );
+		  assert( c.isCustom, "jtabChord('" + token + "') should be custom chord" );
+			assertHashEqual( modelChordArray, c.chordArray, "jtabChord('" + token + "') returned incorrect chordArray" );
+		}},
 
 
 		testCustomChord_E_fingering: function() {  with(this) {

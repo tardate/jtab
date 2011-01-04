@@ -388,8 +388,9 @@ var jtabChord = Class.create({
     this.isValid = false;
 
     this.fullChordName = token;  
-    this.isCaged = ( this.fullChordName.match( /:/ ) != null )
-    this.isCustom = ( this.fullChordName.match( /\[(.+?)\]/ ) != null )
+    this.isCustom = ( this.fullChordName.match( /\%/ ) != null )        
+    this.isCaged = ( this.fullChordName.match( /\:/ ) != null )
+
     
     if (this.isCaged) {
       var parts = this.fullChordName.split(':');
@@ -397,7 +398,11 @@ var jtabChord = Class.create({
       this.cagedPos = parts[1];
     } else if (this.isCustom){
       var parts = this.fullChordName.match( /\[(.+?)\]/ );
-      this.chordName = parts[1];
+      if(parts){
+        this.chordName = parts[1];        
+      } else {
+        this.chordName = '';
+      }
     } else {
       this.chordName = this.fullChordName;
       this.cagedPos = 1;
@@ -438,11 +443,12 @@ var jtabChord = Class.create({
     array = new Array();
     for (var i = 0; i < pairs.length; i++){
       pair = pairs[i].split('/')
-      if (pair[0] == 'X'){
+      if (pair[0].match(/X/)){
         pair = [-1]
       }
       array.push(pair)
     }
+
     fingeredFrets = array.reject(function(p){ return p.length === 1 }).collect(function(p){return p[0]}).flatten().without(0,-1)
     //find all the fret positions which arent X or 0. I'm sure there's a better way to do this.
     array.unshift(fingeredFrets.min()-1);
@@ -837,7 +843,7 @@ Raphael.fn.render_token = function (token) {
   if ( c.isValid ) { // draw chord
     var chord = c.chordArray;
     // this.chord_fretboard(chord[0], c.fullChordName );
-    this.chord_fretboard(chord[0], c.chordName );    
+    this.chord_fretboard(chord[0], c.chordName );
     for (var i = 1; i < chord.length ; i++) {  
       this.chord_note(chord[0], i, chord[i]);
     }
@@ -872,7 +878,7 @@ Raphael.fn.render_token = function (token) {
 jtab.characterize = function (notation) {
   var tabtype = 0;
   
-  var gotCustomChord = ( notation.match( /[\%][0-4|T|X]/ ) != null );
+  var gotCustomChord = ( notation.match( /[\%]([0-4|T|X])?/ ) != null );
   var gotNormalChord = ( notation.match( /[^\$][A-G]|^[A-G]/ ) != null );
   var gotChord =  gotNormalChord || gotCustomChord ;
 
