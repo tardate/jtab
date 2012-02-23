@@ -400,6 +400,18 @@ shape as the desired chord's position/shape. In general,
 			assertHashEqual( modelChordArray, c.chordArray, "jtabChord('" + token + "') returned incorrect chordArray" );
     }},
 
+
+    testCustomChord_F_fingering: function() {  with(this) {
+      var token = "%8/2.X/X.7/1.10/4.X/X.X/X[F]";  
+
+      var modelChordArray = [ 6, [8,2],  [-1 ],  [7,1],  [10,4],  [-1 ],  [-1  ]]
+      var c = new jtabChord(token);
+
+			assert( c.isValid, "jtabChord('" + token + "') should be valid" );
+      assert( c.isCustom, "jtabChord('" + token + "') should be custom chord" );
+			assertHashEqual( modelChordArray, c.chordArray, "jtabChord('" + token + "') returned incorrect chordArray" );
+    }},
+
 		testCustomChord_No_Name: function() {  with(this) {
 		  var token = "%0/0.2/2.3/2.1/1.0/0.0/0";  
 

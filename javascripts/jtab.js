@@ -449,7 +449,7 @@ var jtabChord = Class.create({
       array.push(pair)
     }
 
-    fingeredFrets = array.reject(function(p){ return p.length === 1 }).collect(function(p){return p[0]}).flatten().without(0,-1)
+    fingeredFrets = array.reject(function(p){ return p.length === 1 }).collect(function(p){return parseInt(p[0])}).flatten().without(0,-1)
     //find all the fret positions which arent X or 0. I'm sure there's a better way to do this.
     array.unshift(fingeredFrets.min()-1);
     return array;
@@ -486,7 +486,7 @@ var jtabChord = Class.create({
     
   },
   shiftChordArray: function(atFret,modelChord) { // shift chord to new fret position
-        
+
     var initFret = this.chordArray[0];
     if (atFret != initFret) {
       var use_caged_fingering = ( (this.isCaged) && (this.cagedPos > 0) && ( ! ( this.baseChords[modelChord][1][0] === undefined ) )  );
