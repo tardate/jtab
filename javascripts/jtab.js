@@ -380,7 +380,7 @@ Array.prototype.max_chars = function() {
 //  cagedPos       = caged position e.g. 3
 //
 
-var jtabChord = $.klass({
+var jtabChord = jQuery.klass({
   initialize: function(token) {
     this.scale = jtab.WesternScale;
     this.baseNotes = this.scale.BaseNotes;
@@ -458,7 +458,7 @@ var jtabChord = $.klass({
 
     // `array` is an array of string/fretnumber pairs like [0,1]. 
 
-    fingeredFrets = $.grep(array, function(pair){ 
+    fingeredFrets = jQuery.grep(array, function(pair){ 
       // get only the pairs with two elements
       return (pair.length != 1);
     }).map(function(pair){
@@ -471,7 +471,7 @@ var jtabChord = $.klass({
         }
       })
       
-    fingeredFrets = $.grep(fingeredFrets,function(n){
+    fingeredFrets = jQuery.grep(fingeredFrets,function(n){
       return(n);
     });  
     
@@ -942,14 +942,14 @@ jtab.getStyle = function (element, style) {
 
 // set color pallette for the jtab rendering
 jtab.setPalette = function (element) {
-  var fgColor = jtab.getStyle( $(element), 'color' );
+  var fgColor = jtab.getStyle( jQuery(element), 'color' );
   if (!fgColor) {
     fgColor = '#000';
   }
   Raphael.fn.color = fgColor;
   Raphael.fn.tab_text_color = fgColor;
 
-  bgColor = jtab.getStyle( $(element), 'background-color' );
+  bgColor = jtab.getStyle( jQuery(element), 'background-color' );
   if (!bgColor || (bgColor == 'rgba(0, 0, 0, 0)')) {
     bgColor = '#fff';
   }
@@ -965,9 +965,9 @@ jtab.render = function (element,notation) {
   var rndID="builder_"+jtab.element_count++;
     
   // add the Raphael canvas in its own DIV. this gets around an IE6 issue with not removing previous renderings
-  var canvas_holder = $('<div id="'+rndID+'"></div>').css({height: Raphael.fn.total_height});
+  var canvas_holder = jQuery('<div id="'+rndID+'"></div>').css({height: Raphael.fn.total_height});
   
-  $(element).html(canvas_holder);
+  jQuery(element).html(canvas_holder);
   jtab.setPalette(element);
   canvas = Raphael(rndID, 80, Raphael.fn.total_height );
   canvas.tab_start();
@@ -981,7 +981,7 @@ jtab.render = function (element,notation) {
 
 // process implicit rendering of tags with class 'jtab'
 jtab.renderimplicit = function() {
-    $('.jtab').each( function(name, index) { jtab.render(this,this.innerHTML); } ); //TODO: $('.jtab').each( function(name, index) { jtab.render(name,name.innerHTML); } );
+  jQuery('.jtab').each( function(name, index) { jtab.render(this,this.innerHTML); } ); //TODO: $('.jtab').each( function(name, index) { jtab.render(name,name.innerHTML); } );
 }
 
 
