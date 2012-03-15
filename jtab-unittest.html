@@ -13,7 +13,8 @@
     <!-- START: for jtab -->
     <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
     <link type="text/css" rel="stylesheet" href="css/jtab-helper.css"/>
-    <script src="javascripts/prototype.js" type="text/javascript"></script>
+    <script src="javascripts/jquery.js" type="text/javascript"></script>
+    <script src="javascripts/lowpro.js" type="text/javascript"></script>
     <script src="javascripts/raphael.js" type="text/javascript"></script>
     <script src="javascripts/jtab.js" type="text/javascript"></script>
     <!-- END: for jtab -->
@@ -92,11 +93,29 @@
       assertEqual( 1, tabtype, "not recognised as chord and tab notation: '" + notation + "'" );      
     }},
 
+
     testRecognizeChordOnlyNotation: function() {  with(this) {
       var notation = "A B C D E F G / | Ab Bb Db Eb Gb | A# C# D# F# G# || Am A6 Am6 A69 A7 Am7 Amaj7 A7b5 A7#5 Am7b5 A7b9 A9 Am9 Amaj9 Aadd9 A13 Asus2 Asus4 Adim Adim7 Aaug";
       var tabtype = jtab.characterize( notation );   
       assertEqual( 2, tabtype, "not recognised as chord-only notation: '" + notation + "'" );
     }},
+
+
+    testRecognizeCustomChordOnlyNotation: function() {  with(this) {
+			// let's try a C chord
+      var notation = "%X/X.4/3.2/2.0/0.1/1.0/0[C]";
+      var tabtype = jtab.characterize( notation );   
+      assertEqual( 2, tabtype, "not recognised as custom-chord-only notation: '" + notation + "'" );
+    }},
+
+    testRecognizeCustomChordNoNameNotation: function() {  with(this) {
+			// let's try a C chord, but don't include the name
+      var notation = "%X/X.4/3.2/2.0/0.1/1.0/0";
+      var tabtype = jtab.characterize( notation );   
+      assertEqual( 2, tabtype, "not recognised as custom-chord-only notation: '" + notation + "'" );
+    }},
+
+
 
     testRecognizeTabOnlyNotation: function() {  with(this) {
       var notation = "$1 2 3 $2.3.$1.2";
@@ -370,6 +389,51 @@ shape as the desired chord's position/shape. In general,
       assert( ! c.isCaged, "jtabChord('" + token + "') should not be CAGED" );
       assertHashEqual( modelChordArray, c.chordArray, "jtabChord('" + token + "') returned incorrect chordArray" );
     }},
+
+    testCustomChord_Bm7b5_fingering: function() {  with(this) {
+      var token = "%7/2.X/X.7/3.7/4.6/1.X/X[Bm7b5]";  
+
+      var modelChordArray = [ 5, [7,2],  [-1 ],  [7,3],  [7,4],  [6,1],  [-1  ]]
+      var c = new jtabChord(token);
+
+			assert( c.isValid, "jtabChord('" + token + "') should be valid" );
+      assert( c.isCustom, "jtabChord('" + token + "') should be custom chord" );
+			assertHashEqual( modelChordArray, c.chordArray, "jtabChord('" + token + "') returned incorrect chordArray" );
+    }},
+
+
+    testCustomChord_F_fingering: function() {  with(this) {
+      var token = "%8/2.X/X.7/1.10/4.X/X.X/X[F]";  
+
+      var modelChordArray = [ 6, [8,2],  [-1 ],  [7,1],  [10,4],  [-1 ],  [-1  ]]
+      var c = new jtabChord(token);
+
+			assert( c.isValid, "jtabChord('" + token + "') should be valid" );
+      assert( c.isCustom, "jtabChord('" + token + "') should be custom chord" );
+			assertHashEqual( modelChordArray, c.chordArray, "jtabChord('" + token + "') returned incorrect chordArray" );
+    }},
+
+		testCustomChord_No_Name: function() {  with(this) {
+		  var token = "%0/0.2/2.3/2.1/1.0/0.0/0";  
+
+		  var modelChordArray = [ 0, [0,0],  [2,2],  [3,2],  [1,1],  [0,0],  [0,0]]
+		  var c = new jtabChord(token);
+			assert( c.isValid, "jtabChord('" + token + "') should be valid" );
+		  assert( c.isCustom, "jtabChord('" + token + "') should be custom chord" );
+			assertHashEqual( modelChordArray, c.chordArray, "jtabChord('" + token + "') returned incorrect chordArray" );
+		}},
+
+
+		testCustomChord_E_fingering: function() {  with(this) {
+		  var token = "%0/0.2/2.3/2.1/1.0/0.0/0[E]";  
+
+		  var modelChordArray = [ 0, [0,0],  [2,2],  [3,2],  [1,1],  [0,0],  [0,0]]
+		  var c = new jtabChord(token);
+
+			assert( c.isValid, "jtabChord('" + token + "') should be valid" );
+		  assert( c.isCustom, "jtabChord('" + token + "') should be custom chord" );
+			assertHashEqual( modelChordArray, c.chordArray, "jtabChord('" + token + "') returned incorrect chordArray" );
+		}},
       
     testChord_C1_fingering: function() { with(this) {
       var token = 'C:1'; 
