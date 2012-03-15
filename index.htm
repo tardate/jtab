@@ -13,7 +13,8 @@
     <!-- START: for jtab -->
     <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
     <link type="text/css" rel="stylesheet" href="css/jtab-helper.css"/>
-    <script src="javascripts/prototype.js" type="text/javascript"></script>
+    <script src="javascripts/jquery.js" type="text/javascript"></script>
+    <script src="javascripts/lowpro.js" type="text/javascript"></script>
     <script src="javascripts/raphael.js" type="text/javascript"></script>
     <script src="javascripts/jtab.js" type="text/javascript"></script>
     <!-- END: for jtab -->
@@ -78,13 +79,13 @@ jTab can be used to render notation in real-time using Javascript. This could be
 being generated or retrieved from some system or web service.
 </p>
 <span>Try it out. Enter a phrase here (see <a href="#notation">notation</a> for help):</span>
-<input id="user_notation" size="40"><input type="button" value="jTab this!" onclick="jtab.render('tab',$('user_notation').value);">
+<input id="user_notation" size="40"><input type="button" value="jTab this!" onclick="jtab.render('tab',$('#user_notation').val());">
 <div id="tab"><i>jTab will render your phrase here</i></div>
 
 <script type='text/javascript'>
-  $('user_notation').observe('keypress', function(e){
+  $('#user_notation').keypress(function(e){
     if (e.keyCode == 13) {
-      jtab.render('tab',$('user_notation').value);
+      jtab.render('tab',$('#user_notation').val());
     }    
   });
 </script>
@@ -302,7 +303,7 @@ Obviously, you can bring all your javascripting expertise to bear: the tab notat
 <pre>
 &lt;div id="mytab"&gt;&lt;/div&gt;
 &lt;script type="text/javascript"&gt;
-    jtab.render('mytab','Am7 C');
+    jtab.render($('#mytab'),'Am7 C');
 &lt;/script&gt;
 </pre>
 <p>
@@ -311,7 +312,7 @@ Actual result is this:
 
 <div id="mytab"><i>jTab rendering here..</i></div>
 <script type="text/javascript">
-    jtab.render('mytab','Am7 C');
+    jtab.render($('#mytab'),'Am7 C');
 </script>
 
 
