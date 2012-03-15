@@ -79,14 +79,12 @@ jTab can be used to render notation in real-time using Javascript. This could be
 being generated or retrieved from some system or web service.
 </p>
 <span>Try it out. Enter a phrase here (see <a href="#notation">notation</a> for help):</span>
-<input id="user_notation" size="40"><input type="button" value="jTab this!" onclick="jtab.render('tab',$('#user_notation').val());">
+<input id="user_notation" size="40"><input type="button" value="jTab this!" onclick="jtab.render($('#tab'),$('#user_notation').val());">
 <div id="tab"><i>jTab will render your phrase here</i></div>
 
 <script type='text/javascript'>
-  $('#user_notation').keypress(function(e){
-    if (e.keyCode == 13) {
-      jtab.render('tab',$('#user_notation').val());
-    }    
+  $('#user_notation').keyup(function(e){
+     jtab.render($('#tab'),$(this).val());
   });
 </script>
 
@@ -249,8 +247,8 @@ There is also a version located at <a href="http://jtab.tardate.com">jtab.tardat
 <h3>1. Include jTab Javascript files</h3>
 <p>
 jTab is provided as a single javascript source file (jtab.js) that needs to be included on your page.
-It depends on two additional libraries that must also be included: <a href="http://www.prototypejs.org/" target="_blank">Prototype</a> (prototype.js) 
-and <a href="http://raphaeljs.com/" target="_blank">Rapha&euml;l</a> (raphael.js). 
+It depends on three additional libraries that must also be included: <a href="http://www.jquery.com/" target="_blank">jQuery</a>, 
+LowPro (included), and <a href="http://raphaeljs.com/" target="_blank">Rapha&euml;l</a> (raphael.js). 
 Compatible versions of these libraries located along with jtab.js, or if you are already using a version of these libraries
 you probably do not need to include them again.
 </p>
@@ -269,7 +267,8 @@ The example below shows how to pull the files direct from tardate.com.
   &lt;link type="text/css" rel="stylesheet" href="http://jtab.tardate.com/css/jtab-helper.css"/&gt; 
     
   &lt;!-- mandatory script includes for jtab --&gt
-  &lt;script src="http://jtab.tardate.com/javascripts/prototype.js" type="text/javascript"&gt;&lt;/script&gt;
+  &lt;script src="http://jtab.tardate.com/javascripts/jquery.js" type="text/javascript"&gt;&lt;/script&gt;
+  &lt;script src="http://jtab.tardate.com/javascripts/lowpro.js" type="text/javascript"&gt;&lt;/script&gt;
   &lt;script src="http://jtab.tardate.com/javascripts/raphael.js" type="text/javascript"&gt;&lt;/script&gt;
   &lt;script src="http://jtab.tardate.com/javascripts/jtab.js" type="text/javascript"&gt;&lt;/script&gt;
     
@@ -441,7 +440,6 @@ Here are some places where you can see jTab in action:
 </p>
 <ul>
 <li><a href="http://chordmaster.tardate.com/" target="_blank">ChordMaster 2000</a> - a tool to help you learn chord fingerings for guitar</li>
-<li><a href="http://jtab.tardate.com/jtabtwiki-help.htm" target="_blank">jTabTwiki</a> - a TiddlyWiki jTab plugin. Together, they allow you to instantly setup a personal guitar tab wiki/notebook</li>
 </ul>
 <p>
 Let us know if you find more to be listed here.

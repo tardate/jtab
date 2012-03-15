@@ -7,7 +7,7 @@
  *   http://github.com/tardate/jtab/tree/master : source code repository, wiki, documentation
  *
  * This library also depends on the following two libraries that must be loaded for it to work:
- *   prototype - http://www.prototypejs.org/
+ *   jQuery - http://www.jquery.com/
  *   Raphaël - http://raphaeljs.com/
  *
  *
@@ -943,7 +943,6 @@ jtab.getStyle = function (element, style) {
 // set color pallette for the jtab rendering
 jtab.setPalette = function (element) {
   var fgColor = jtab.getStyle( $(element), 'color' );
-  cl(fgColor)
   if (!fgColor) {
     fgColor = '#000';
   }
@@ -951,7 +950,6 @@ jtab.setPalette = function (element) {
   Raphael.fn.tab_text_color = fgColor;
 
   bgColor = jtab.getStyle( $(element), 'background-color' );
-  cl(bgColor)
   if (!bgColor || (bgColor == 'rgba(0, 0, 0, 0)')) {
     bgColor = '#fff';
   }

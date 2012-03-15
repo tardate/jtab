@@ -61,14 +61,12 @@ Show don't tell! This page is a bit of a sandbox demonstrating the things you ca
 </p>
 <span>Try it out. Enter a phrase here (see <a href="index.htm#notation">notation</a> for help):</span>
 <input id="notation" size="40">
-<input type="button" value="jTab this!" onclick="jtab.render('tab',$('notation').value);">
+<input type="button" value="jTab this!" onclick="jtab.render('tab',$(#'notation').value);">
 <div id="tab"><i>jTab will render your phrase here</i></div>
 
 <script type='text/javascript'>
-  $('#notation').live('keypress', function(e){
-    if (e.keyCode == 13) {
-      jtab.render('#tab',$('#notation').val());
-    }    
+  $('#notation').keyup(function(e){
+     jtab.render($('#tab'),$(this).val());
   });
 </script>
 
@@ -145,7 +143,7 @@ Periods are required when you go above the 9th fret, and use X or x to indicate 
 <pre>
 &lt;div id="mytab"&gt;&lt;/div&gt;
 &lt;script type="text/javascript"&gt;
-    jtab.render('mytab','Am7 C');
+    jtab.render($('#mytab'),'Am7 C');
 &lt;/script&gt;
 </pre>
 <p>
@@ -154,7 +152,7 @@ Actual result is this:
 
 <div id="mytab"><i>jTab rendering here..</i></div>
 <script type="text/javascript">
- 	jtab.render('#mytab','Am7 C');
+ 	jtab.render($('#mytab'),'Am7 C');
 </script>
 
 

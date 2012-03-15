@@ -37,7 +37,7 @@ function render_chord_chart(start) {
 
   // emit a new child to hold a row
   var rowHolder = $('<div id="builder_'+(jtab.element_count++)+'"></div>')
-  $('#chart').html(rowHolder)
+  $('#chart').append(rowHolder)
 
   jtab.render(rowHolder,tokens);
   // yeild/async continuation of the chord chart if not yet complete
