@@ -950,7 +950,7 @@ jtab.setPalette = function (element) {
   Raphael.fn.tab_text_color = fgColor;
 
   bgColor = jtab.getStyle( jQuery(element), 'background-color' );
-  if (!bgColor || (bgColor == 'rgba(0, 0, 0, 0)')) {
+  if (!bgColor || (bgColor == 'transparent') || (bgColor == 'rgba(0, 0, 0, 0)')) {
     bgColor = '#fff';
   }
   Raphael.fn.fingering_text_color = bgColor; 
