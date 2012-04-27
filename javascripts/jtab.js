@@ -11,16 +11,16 @@
  *   Raphaël - http://raphaeljs.com/
  *
  *
- * This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General 
- * Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) 
+ * This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option)
  * any later version.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied 
- * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more 
+ * This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
  * details.
  *
- * You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to 
- * the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA 
+ * You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to
+ * the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
 //
@@ -29,12 +29,12 @@
 
 var jtab = {
   Version : '1.1',
-  element_count:0, //TODO: 
+  element_count:0, //TODO:
   Strings : {
   	AboutDialog : '<html><head><title>About jTab</title></head><body style=""><p style="">jTab version: {V}</p><p><a href="http://jtab.tardate.com" target="_blank">http://jtab.tardate.com</a></p><p><input type="button" class="close" value="OK" onClick="window.close()"/></p></body></html>'
   },
   Chords : {
-             // chord data - currently explicit representation for 6 string guitar, standard tuning only, and 
+             // chord data - currently explicit representation for 6 string guitar, standard tuning only, and
              // each chord is an array of alternate positions
              //   0   : 1st (open) position
              //   1   : 1st barre position, generally at 12/13/14th fret
@@ -86,11 +86,11 @@ var jtab = {
     "C#13"  : [ [ 3, [-1 ],  [4,1],  [6,2],  [4,1],  [6,3],  [6,4] ], [  ] ],
     "C#sus2": [ [ 0, [-1 ],  [-1 ],  [3,3],  [3,4],  [1,1],  [1,1] ], [  ] ],
     "C#sus4": [ [ 0, [-1 ],  [-1 ],  [3,2],  [3,3],  [4,4],  [1,1] ], [  ] ],
-    "C#dim" : [ [ 0, [-1 ],  [-1 ],  [2,1],  [3,3],  [2,2],  [3,4] ], [  ] ], 
+    "C#dim" : [ [ 0, [-1 ],  [-1 ],  [2,1],  [3,3],  [2,2],  [3,4] ], [  ] ],
     "C#dim7": [ [ 0, [-1 ],  [-1 ],  [2,1],  [3,3],  [2,2],  [3,4] ], [  ] ],
     "C#aug" : [ [ 0, [-1 ],  [4,4],  [3,3],  [2,1],  [2,2],  [-1 ] ], [  ] ],
 
-      
+
     D      : [ [ 0, [-1 ],  [0  ],  [0  ],  [2,1],  [3,3],  [2,2] ], [ 12, [-1,-1],  [12,1],  [12,1],  [14,3],  [15,4],  [14,2] ] ],
     Dm     : [ [ 0, [-1 ],  [0  ],  [0  ],  [2,2],  [3,3],  [1,1] ], [ 12, [-1,-1],  [12,1],  [12,1],  [14,3],  [15,4],  [13,2] ] ],
     D6     : [ [ 0, [-1 ],  [0  ],  [0  ],  [2,2],  [0  ],  [2,3] ], [ 12, [-1,-1],  [12,1],  [12,1],  [14,3],  [12,1],  [14,4] ] ],
@@ -229,28 +229,28 @@ var jtab = {
     Gdim7   : [ [ 0, [-1 ],  [-1 ],  [2,1],  [3,3],  [2,2],  [3,4] ], [  ] ],
     Gaug    : [ [ 0, [3,1],  [-1 ],  [5,4],  [4,2],  [4,3],  [3,1] ], [  ] ],
 
-    "G#"    : [ [ 0, [4,4],  [3,3],  [1,1],  [1,1],  [1,1],  [-1 ] ], [  ] ],      
-    "G#m"   : [ [ 0, [-1 ],  [2,2],  [1,1],  [1,1],  [4,4],  [4,4] ], [  ] ],      
-    "G#6"   : [ [ 0, [-1 ],  [-1 ],  [1,1],  [1,1],  [1,1],  [1,1] ], [  ] ],      
-    "G#m6"  : [ [ 0, [-1 ],  [-1 ],  [1,1],  [1,2],  [0  ],  [1,3] ], [  ] ],      
+    "G#"    : [ [ 0, [4,4],  [3,3],  [1,1],  [1,1],  [1,1],  [-1 ] ], [  ] ],
+    "G#m"   : [ [ 0, [-1 ],  [2,2],  [1,1],  [1,1],  [4,4],  [4,4] ], [  ] ],
+    "G#6"   : [ [ 0, [-1 ],  [-1 ],  [1,1],  [1,1],  [1,1],  [1,1] ], [  ] ],
+    "G#m6"  : [ [ 0, [-1 ],  [-1 ],  [1,1],  [1,2],  [0  ],  [1,3] ], [  ] ],
     "G#69"  : [ [ 0, [4,2],  [3,1],  [3,1],  [3,1],  [4,3],  [4,4] ], [  ] ],
-    "G#7"   : [ [ 0, [-1 ],  [-1 ],  [1,1],  [1,1],  [1,1],  [2,2] ], [  ] ],      
-    "G#m7"  : [ [ 3, [4,1],  [6,3],  [4,1],  [4,1],  [7,4],  [4,1] ], [  ] ],        
-    "G#maj7": [ [ 0, [-1 ],  [-1 ],  [1,1],  [1,1],  [1,1],  [3,3] ], [  ] ],      
-    "G#7b5" : [ [ 2, [4,2],  [-1 ],  [4,3],  [5,4],  [3,2],  [-1 ] ], [  ] ],      
-    "G#7#5" : [ [ 3, [4,1],  [-1 ],  [4,2],  [5,3],  [5,4],  [-1 ] ], [  ] ],      
+    "G#7"   : [ [ 0, [-1 ],  [-1 ],  [1,1],  [1,1],  [1,1],  [2,2] ], [  ] ],
+    "G#m7"  : [ [ 3, [4,1],  [6,3],  [4,1],  [4,1],  [7,4],  [4,1] ], [  ] ],
+    "G#maj7": [ [ 0, [-1 ],  [-1 ],  [1,1],  [1,1],  [1,1],  [3,3] ], [  ] ],
+    "G#7b5" : [ [ 2, [4,2],  [-1 ],  [4,3],  [5,4],  [3,2],  [-1 ] ], [  ] ],
+    "G#7#5" : [ [ 3, [4,1],  [-1 ],  [4,2],  [5,3],  [5,4],  [-1 ] ], [  ] ],
     "G#m7b5": [ [ 0, [4,1],  [5,2],  [4,1],  [4,1],  [7,4],  [4,1] ], [  ] ],
-    "G#7b9" : [ [ 0, [4,3],  [3,2],  [4,4],  [2,1],  [-1 ],  [-1 ] ], [  ] ],      
-    "G#9"   : [ [ 0, [2,2],  [1,1],  [1,1],  [1,1],  [1,1],  [2,4] ], [  ] ],      
-    "G#m9"  : [ [ 0, [2,2],  [1,1],  [1,1],  [1,1],  [0  ],  [2,4] ], [  ] ],      
-    "G#maj9": [ [ 2, [4,2],  [3,1],  [5,4],  [3,1],  [4,3],  [-1 ] ], [  ] ],      
-    "G#add9": [ [ 0, [-1 ],  [1,1],  [1,1],  [1,1],  [1,1],  [-1 ] ], [  ] ],      
+    "G#7b9" : [ [ 0, [4,3],  [3,2],  [4,4],  [2,1],  [-1 ],  [-1 ] ], [  ] ],
+    "G#9"   : [ [ 0, [2,2],  [1,1],  [1,1],  [1,1],  [1,1],  [2,4] ], [  ] ],
+    "G#m9"  : [ [ 0, [2,2],  [1,1],  [1,1],  [1,1],  [0  ],  [2,4] ], [  ] ],
+    "G#maj9": [ [ 2, [4,2],  [3,1],  [5,4],  [3,1],  [4,3],  [-1 ] ], [  ] ],
+    "G#add9": [ [ 0, [-1 ],  [1,1],  [1,1],  [1,1],  [1,1],  [-1 ] ], [  ] ],
     "G#13"  : [ [ 0, [4,3],  [3,2],  [4,4],  [1,1],  [1,1],  [1,1] ], [  ] ],
-    "G#sus2": [ [ 0, [-1 ],  [1,1],  [1,2],  [1,3],  [-1 ],  [-1 ] ], [  ] ],      
-    "G#sus4": [ [ 0, [-1 ],  [-1 ],  [1,1],  [1,1],  [2,2],  [4,4] ], [  ] ],      
-    "G#dim" : [ [ 0, [-1 ],  [-1 ],  [0  ],  [1,1],  [0  ],  [1,2] ], [  ] ],      
-    "G#dim7": [ [ 0, [-1 ],  [-1 ],  [0  ],  [1,1],  [0  ],  [1,2] ], [  ] ],      
-    "G#aug" : [ [ 0, [0,-1], [3,4],  [2,3],  [1,1],  [1,2],  [0,-1] ], [  ] ],      
+    "G#sus2": [ [ 0, [-1 ],  [1,1],  [1,2],  [1,3],  [-1 ],  [-1 ] ], [  ] ],
+    "G#sus4": [ [ 0, [-1 ],  [-1 ],  [1,1],  [1,1],  [2,2],  [4,4] ], [  ] ],
+    "G#dim" : [ [ 0, [-1 ],  [-1 ],  [0  ],  [1,1],  [0  ],  [1,2] ], [  ] ],
+    "G#dim7": [ [ 0, [-1 ],  [-1 ],  [0  ],  [1,1],  [0  ],  [1,2] ], [  ] ],
+    "G#aug" : [ [ 0, [0,-1], [3,4],  [2,3],  [1,1],  [1,2],  [0,-1] ], [  ] ],
 
     A       : [ [ 0, [-1],  [0  ],  [2,2],  [2,1],  [2,3],  [0  ] ], [ 12, [-1,-1], [12,1], [14,2], [14,3], [14,4], [12,1] ] ],
     Am      : [ [ 0, [-1],  [0  ],  [2,2],  [2,3],  [1,1],  [0  ] ], [ 12, [-1,-1], [12,1], [14,3], [14,4], [13,2], [12,1] ] ],
@@ -274,7 +274,7 @@ var jtab = {
     Adim    : [ [ 0, [-1],  [0  ],  [1,1],  [2,3],  [1,2],  [-1 ] ], [ 12, [-1],  [12,1],  [13,2],  [14,4],  [13,3],  [-1 ] ] ],
     Adim7   : [ [ 0, [-1],  [-1 ],  [1,1],  [2,3],  [1,2],  [2,4] ], [  ] ],
     Aaug    : [ [ 0, [-1],  [0  ],  [3,4],  [2,2],  [2,3],  [1,1] ], [ 12, [-1],  [12,],  [15,4],  [14,2],  [14,3],  [13,1] ] ],
-      
+
     "Bb"    : [ [ 0, [-1],  [1,1],  [3,3],  [3,3],  [3,3],  [1,1] ], [  ] ],
     "Bbm"   : [ [ 0, [-1],  [1,1],  [3,3],  [3,4],  [2,2],  [1,1] ], [  ] ],
     "Bb6"   : [ [ 0, [-1],  [1,1],  [3,3],  [3,3],  [3,3],  [3,3] ], [  ] ],
@@ -297,7 +297,7 @@ var jtab = {
     "Bbdim" : [ [ 0, [-1],  [1,1],  [2,2],  [3,4],  [2,3],  [-1 ] ], [  ] ],
     "Bbdim7": [ [ 0, [-1],  [-1 ],  [2,1],  [3,3],  [2,2],  [3,4] ], [  ] ],
     "Bbaug" : [ [ 0, [-1],  [1,1],  [4,4],  [3,2],  [3,3],  [2,1] ], [  ] ],
-      
+
     B       : [ [ 0, [ -1], [2,1],  [4,3],  [4,3],  [4,3],  [2,1] ], [  ] ],
     Bm      : [ [ 0, [ -1], [2,1],  [4,3],  [4,4],  [3,2],  [2,1] ], [  ] ],
     B6      : [ [ 0, [ -1], [2,1],  [4,3],  [4,3],  [4,3],  [4,3] ], [  ] ],
@@ -388,11 +388,11 @@ var jtabChord = jQuery.klass({
     this.chordArray = null;
     this.isValid = false;
 
-    this.fullChordName = token;  
-    this.isCustom = ( this.fullChordName.match( /\%/ ) != null )        
+    this.fullChordName = token;
+    this.isCustom = ( this.fullChordName.match( /\%/ ) != null )
     this.isCaged = ( this.fullChordName.match( /\:/ ) != null )
 
-    
+
     if (this.isCaged) {
       var parts = this.fullChordName.split(':');
       this.chordName = parts[0];
@@ -400,16 +400,16 @@ var jtabChord = jQuery.klass({
     } else if (this.isCustom){
       var parts = this.fullChordName.match( /\[(.+?)\]/ );
       if(parts){
-        this.chordName = parts[1];        
+        this.chordName = parts[1];
       } else {
         this.chordName = '';
       }
     } else {
       this.chordName = this.fullChordName;
       this.cagedPos = 1;
-    }    
-    this.rootExt = this.chordName.replace(/^[A-G#b]{1,2}/,''); 
-    this.rootNote = this.chordName.substr(0, this.chordName.length - this.rootExt.length); 
+    }
+    this.rootExt = this.chordName.replace(/^[A-G#b]{1,2}/,'');
+    this.rootNote = this.chordName.substr(0, this.chordName.length - this.rootExt.length);
     var baseNoteInfo = this.baseNotes[this.rootNote];
     if (baseNoteInfo) {
       this.baseName = baseNoteInfo[0] + this.rootExt;
@@ -419,7 +419,7 @@ var jtabChord = jQuery.klass({
       this.cagedBaseShape = '';
       this.cagedBaseFret = 0;
     }
-    
+
     if ( ( this.isCaged ) && ( this.cagedPos > 1 ) ) {
       this.setCagedChordArray();
     } else if (this.isCustom){
@@ -436,11 +436,11 @@ var jtabChord = jQuery.klass({
     notes = this.fullChordName.replace(/(\%|\[.+\])/g, '');
     pairs = notes.split('.');
     if (pairs.length < 6){
-      this.isValid = false;      
+      this.isValid = false;
       return;
     }
-    this.isValid = true;    
-    
+    this.isValid = true;
+
     array = [];
     for (var i = 0; i < pairs.length; i++){
       pair = pairs[i].split('/')
@@ -450,15 +450,15 @@ var jtabChord = jQuery.klass({
       array.push(pair)
     }
 
-    // fingeredFrets = array.reject(function(p){ 
-    //   return p.length === 1 
+    // fingeredFrets = array.reject(function(p){
+    //   return p.length === 1
     // }).collect(function(p){
     //   return parseInt(p[0])
     //   }).flatten().without(0,-1)
 
-    // `array` is an array of string/fretnumber pairs like [0,1]. 
+    // `array` is an array of string/fretnumber pairs like [0,1].
 
-    fingeredFrets = jQuery.grep(array, function(pair){ 
+    fingeredFrets = jQuery.grep(array, function(pair){
       // get only the pairs with two elements
       return (pair.length != 1);
     }).map(function(pair){
@@ -470,13 +470,13 @@ var jtabChord = jQuery.klass({
           return null;
         }
       })
-      
+
     fingeredFrets = jQuery.grep(fingeredFrets,function(n){
       return(n);
-    });  
-    
+    });
+
     //find all the fret positions which arent X or 0. I'm sure there's a better way to do this.
-    
+
     min = Math.min.apply( Math, fingeredFrets );
 
     array.unshift(min-1);
@@ -492,14 +492,14 @@ var jtabChord = jQuery.klass({
     var modelRef = this.baseChords[chordName][0];
     this.chordArray[0] = modelRef[0]
     for (var i = 1; i < modelRef.length ; i++) {
-      this.chordArray[i] = modelRef[i];    // TODO: this.chordArray[i] = modelRef[i].clone();  
-    }   
+      this.chordArray[i] = modelRef[i];    // TODO: this.chordArray[i] = modelRef[i].clone();
+    }
   },
   setCagedChordArray: function() {
     if ( ! this.cagedBaseShape.match( /[CAGED]/ ) ) return;
     var caged_index = "CAGED".indexOf(this.cagedBaseShape) + 1; // get 1-based index
     var fret_widths = [3,2,3,2,2];
-  
+
     var starting_fret = this.cagedBaseFret;
 
     for (var i = 1; i < this.cagedPos ; i++) {
@@ -507,11 +507,11 @@ var jtabChord = jQuery.klass({
       caged_index  = ( caged_index >= 5) ? 1 : caged_index + 1;
       starting_fret += fret_widths[index];
     }
-   
+
     var modelChord =  "CAGED".charAt( caged_index - 1 ) + this.rootExt;
     this.setChordArray(modelChord);
     this.shiftChordArray(starting_fret,modelChord);
-    
+
   },
   shiftChordArray: function(atFret,modelChord) { // shift chord to new fret position
 
@@ -523,8 +523,8 @@ var jtabChord = jQuery.klass({
       for (var i = 1; i < this.chordArray.length ; i++) {
         var fret = (this.chordArray[i][0] >= 0 ) ? this.chordArray[i][0] + atFret - initFret : this.chordArray[i][0];
         var finger = (use_caged_fingering) ? this.baseChords[modelChord][1][i][1] : this.chordArray[i][1];
-        this.chordArray[i] = [ fret ,  finger ];  
-      }  
+        this.chordArray[i] = [ fret ,  finger ];
+      }
     }
   }
 });
@@ -535,13 +535,13 @@ var jtabChord = jQuery.klass({
 //
 // define extensions to the Raphael class
 //
-  
+
 Raphael.fn.tabtype = 0;  // 0 = none, 1 = tab & chord, 2 = chord, 3 = tab
 Raphael.fn.has_chord = false;
 Raphael.fn.has_tab = false;
 
 Raphael.fn.debug = false;
-Raphael.fn.scale = 1; 
+Raphael.fn.scale = 1;
 Raphael.fn.margin_top = 36;
 Raphael.fn.margin_bottom = 10;
 Raphael.fn.margin_left = 16;
@@ -555,9 +555,9 @@ Raphael.fn.fret_spacing = 16;
 Raphael.fn.frets_drawn = 4;
 Raphael.fn.note_radius = 7;
 
-Raphael.fn.fret_width = Raphael.fn.string_spacing * ( Raphael.fn.strings_drawn - 1 ); 
-Raphael.fn.fret_height = Raphael.fn.fret_spacing * (Raphael.fn.frets_drawn + 0.5); 
-Raphael.fn.chord_width = Raphael.fn.margin_left + Raphael.fn.fret_width + Raphael.fn.string_spacing + Raphael.fn.margin_right; 
+Raphael.fn.fret_width = Raphael.fn.string_spacing * ( Raphael.fn.strings_drawn - 1 );
+Raphael.fn.fret_height = Raphael.fn.fret_spacing * (Raphael.fn.frets_drawn + 0.5);
+Raphael.fn.chord_width = Raphael.fn.margin_left + Raphael.fn.fret_width + Raphael.fn.string_spacing + Raphael.fn.margin_right;
 Raphael.fn.chord_height = Raphael.fn.margin_top + Raphael.fn.fret_height + Raphael.fn.margin_bottom;
 
 Raphael.fn.tab_current_string = 0; // 1,2,3,4,5,6 or 0 = not set
@@ -598,8 +598,8 @@ Raphael.fn.increment_offset = function (width) {
 }
 
 Raphael.fn.svg_params = function(x,y,l1,l2) {
-  // http://www.w3.org/TR/SVG/paths.html#PathData --helpful reading 
-  var move_line_to = "m"+x+" "+y+"l"+l1+" "+l2 
+  // http://www.w3.org/TR/SVG/paths.html#PathData --helpful reading
+  var move_line_to = "m"+x+" "+y+"l"+l1+" "+l2
   if(arguments.length == 4) return move_line_to
 }
 
@@ -607,10 +607,10 @@ Raphael.fn.svg_params = function(x,y,l1,l2) {
 Raphael.fn.chord_fretboard = function ( position, chord_name ) {
   var fret_left = this.current_offset + this.margin_left;
   var fret_labels = [ '', '', '', 'III', '', 'V', '', 'VII', '', 'IX', '', '', 'XII', '', '', 'XV', '', 'XVII', '', 'XIX', '', 'XXI', '' ];
-  
+
   this.text( // chord name
     fret_left + 2.5 * this.string_spacing,
-    this.margin_top - 20, 
+    this.margin_top - 20,
     chord_name).attr({stroke: this.tab_text_color, "font-size":"20px"});
 
   var stroke_width = position == 0 ? 3 : 0  // nut
@@ -618,19 +618,19 @@ Raphael.fn.chord_fretboard = function ( position, chord_name ) {
         chord_fretboard_path.attr({stroke: this.color, "stroke-width":stroke_width })
 
   for (var i = 0; i <= this.frets_drawn; i++ ) { // frets
-    
+
     this.path(this.svg_params(fret_left,this.margin_top + (i * this.fret_spacing),this.string_spacing * (this.strings_drawn - 1), 0))
-    
+
     pos = ( fret_labels[ position + i ] === undefined ) ? '' : fret_labels[ position + i ];
 
     if ( pos.length > 0 ) { // draw fret position
       this.text(
-          fret_left + this.fret_width + this.string_spacing * 1.0, 
-          this.margin_top + ( ( i - 0.5 ) * this.fret_spacing), 
+          fret_left + this.fret_width + this.string_spacing * 1.0,
+          this.margin_top + ( ( i - 0.5 ) * this.fret_spacing),
           pos).attr({stroke: this.tab_text_color, "font-size":"12px"});
     }
   }
-  for (var i = 0; i < this.strings_drawn; i++ ) { 
+  for (var i = 0; i < this.strings_drawn; i++ ) {
     this.path(this.svg_params(fret_left + (i * this.string_spacing),this.margin_top,0, this.fret_spacing * (this.frets_drawn + 0.5)))  // strings
   }
   this.tab_extend(this.chord_width); // extend the tab if present
@@ -648,14 +648,14 @@ Raphael.fn.stroke = function () {
     var stroke_path = this.path(this.svg_params(this.current_offset + this.tab_char_width, this.tab_top  + (3.5 * this.tab_spacing),this.tab_char_width, - 2 * this.tab_spacing))
         stroke_path.attr({stroke: this.tab_text_color, "stroke-width":4 })
 
-    this.increment_offset(width);    
+    this.increment_offset(width);
   } else if (this.has_chord) {
     var dx = this.string_spacing;
-    var dy = 2 * this.fret_spacing;     
-    this.path(this.svg_params(this.current_offset + this.margin_left, 
-                         this.margin_top + this.fret_spacing + dy,dx,-dy)).attr({stroke: this.tab_text_color, "stroke-width":4 })  
-    
-    this.increment_offset(  this.margin_left + dx + this.margin_right ); 
+    var dy = 2 * this.fret_spacing;
+    this.path(this.svg_params(this.current_offset + this.margin_left,
+                         this.margin_top + this.fret_spacing + dy,dx,-dy)).attr({stroke: this.tab_text_color, "stroke-width":4 })
+
+    this.increment_offset(  this.margin_left + dx + this.margin_right );
   }
 }
 
@@ -666,14 +666,14 @@ Raphael.fn.bar = function () {
   if (this.has_tab) {
     var width = this.tab_char_width * 2;
     // extend tab
-    this.tab_extend(width);    
+    this.tab_extend(width);
     var bar_stroke=this.path(this.svg_params(this.current_offset + this.tab_char_width, this.tab_top,0, this.tab_height))
-    this.increment_offset(width);    
+    this.increment_offset(width);
 
-  } else if (this.has_chord) { 
+  } else if (this.has_chord) {
     var fret_left = this.current_offset + this.margin_left;
-    var bar_stroke=this.path(this.svg_params(this.current_offset + this.margin_left, this.margin_top,0, 0, this.fret_height))    
-    this.increment_offset( this.margin_left + this.margin_right );  
+    var bar_stroke=this.path(this.svg_params(this.current_offset + this.margin_left, this.margin_top,0, 0, this.fret_height))
+    this.increment_offset( this.margin_left + this.margin_right );
   }
     bar_stroke.attr({stroke: this.color, "stroke-width":1 })
 
@@ -689,15 +689,15 @@ Raphael.fn.doublebar = function () {
     //  bar
     var path_1 = this.path(this.svg_params(this.current_offset + this.tab_char_width, this.tab_top,0, this.tab_height))
     var path_2 = this.path(this.svg_params(this.current_offset + this.tab_char_width + 6, this.tab_top,0, this.tab_height  ))
-    this.increment_offset(width);    
+    this.increment_offset(width);
 
-  } else if (this.has_chord) { 
+  } else if (this.has_chord) {
     var left = this.current_offset + this.margin_left;
-    
+
     var path_1 = this.path(this.svg_params(left, this.margin_top,0, this.fret_height))
     var path_2 = this.path(this.svg_params(left + 6, this.margin_top,0, this.fret_height))
 
-    this.increment_offset( this.margin_left + 6 + this.margin_right );  
+    this.increment_offset( this.margin_left + 6 + this.margin_right );
   }
     path_1.attr({stroke: this.color, "stroke-width":1 })
     path_2.attr({stroke: this.color, "stroke-width":4 })
@@ -709,7 +709,7 @@ Raphael.fn.chord_note = function (position, string_number, note) {
   // NB: internal string_number in chords counts from low to high
   var fret_number = note[0];
   var fret_left = this.current_offset + this.margin_left;
-    
+
   if (fret_number < 0 ) {
     // muted/not played
     this.text(fret_left + (string_number - 1) * this.string_spacing, this.margin_top - 8, "x").attr({stroke: this.tab_text_color, "font-size":"9px"});
@@ -718,18 +718,18 @@ Raphael.fn.chord_note = function (position, string_number, note) {
     this.text(fret_left + (string_number - 1) * this.string_spacing, this.margin_top - 8, "o").attr({stroke: this.tab_text_color, "font-size":"9px"});
   } else {
     var fret_dy = (fret_number - position - 0.5) * this.fret_spacing;
-    //var circle = 
+    //var circle =
     this.circle(
-      fret_left + (string_number - 1) * this.string_spacing, 
+      fret_left + (string_number - 1) * this.string_spacing,
       this.margin_top + fret_dy, this.note_radius).attr({stroke: this.color, fill: this.color});
     if ( ! (note[1] === undefined) ) {
-      this.text( fret_left + (string_number - 1) * this.string_spacing, 
+      this.text( fret_left + (string_number - 1) * this.string_spacing,
       this.margin_top + fret_dy, note[1] ).attr({stroke: this.fingering_text_color, "font-size":"12px"});
     }
   }
-  
+
   if ( this.has_tab && fret_number >= 0 ) {
-    this.draw_tab_note( (this.strings_drawn - string_number + 1), fret_number, this.margin_left + this.string_spacing * 2.5 ); 
+    this.draw_tab_note( (this.strings_drawn - string_number + 1), fret_number, this.margin_left + this.string_spacing * 2.5 );
   }
 }
 
@@ -765,8 +765,8 @@ Raphael.fn.tab_start = function () {
 // draw an individual note in the tab
 Raphael.fn.draw_tab_note = function (string_number, token, left_offset) {
   // NB: internal string_number in tab counts from high to low
-  this.text(this.current_offset + left_offset, 
-          this.tab_top + this.tab_spacing * (string_number - 1), 
+  this.text(this.current_offset + left_offset,
+          this.tab_top + this.tab_spacing * (string_number - 1),
           token).attr({stroke: this.color, "font-size":"16px"});
 }
 
@@ -774,10 +774,10 @@ Raphael.fn.draw_tab_note = function (string_number, token, left_offset) {
 Raphael.fn.get_string_number = function (token) {
   var string_number = null;
   if ( token.match( /^\$[1-6]/ ) != null ) {
-     string_number = token.substr(1,1); 
+     string_number = token.substr(1,1);
   } else if ( token.match( /^\$[EADGBe]/ ) != null ) {
      string_number =  6 - "EADGBe".indexOf(token.substr(1,1));
-  } 
+  }
   return string_number;
 }
 
@@ -797,7 +797,7 @@ Raphael.fn.get_fullchord_notes = function (token) {
       rc = token.split('');
     }
     if (rc.length != 6) rc = false;
-  } 
+  }
   return rc;
 }
 
@@ -805,12 +805,12 @@ Raphael.fn.get_fullchord_notes = function (token) {
 // draw a token on the tab
 Raphael.fn.tab_note = function (token) {
   if (this.has_tab == false) return;
-  
+
   if ( token.match( /\$/ ) != null ) { // contains a string specifier
     if ( token.match( /\./ ) != null ) { // is a multi-string specifier
       var parts = token.split(".");
       var width = 2;
-      for (var i = 0; i < parts.length ; i++) { // get the max length of the multi-string specifiers 
+      for (var i = 0; i < parts.length ; i++) { // get the max length of the multi-string specifiers
         if ( parts[i].length > width ) width = parts[i].length;
       }
       width *= this.tab_char_width + 1;
@@ -825,7 +825,7 @@ Raphael.fn.tab_note = function (token) {
         }
       }
       this.increment_offset( width );
-        
+
     } else { // just a string setting
       this.tab_current_string = this.get_string_number(token);
     }
@@ -836,13 +836,13 @@ Raphael.fn.tab_note = function (token) {
       var width = this.tab_char_width * (max_chars + 2);
       this.tab_extend( width );
       for (var i = 0; i < fullchord_notes.length ; i++) {
-        this.draw_tab_note( 6 - i, fullchord_notes[i], width * 0.5 ); 
+        this.draw_tab_note( 6 - i, fullchord_notes[i], width * 0.5 );
       }
       this.increment_offset( width );
     } else if ( this.tab_current_string > 0 ) { // else draw literal, but only if a current string selected
       var width = this.tab_char_width * ( token.length + 2 );
       this.tab_extend( width );
-      this.draw_tab_note( this.tab_current_string, token, width * 0.5 ); 
+      this.draw_tab_note( this.tab_current_string, token, width * 0.5 );
       this.increment_offset( width );
     }
   }
@@ -858,7 +858,7 @@ Raphael.fn.render_token = function (token) {
     var chord = c.chordArray;
     // this.chord_fretboard(chord[0], c.fullChordName );
     this.chord_fretboard(chord[0], c.chordName );
-    for (var i = 1; i < chord.length ; i++) {  
+    for (var i = 1; i < chord.length ; i++) {
       this.chord_note(chord[0], i, chord[i]);
     }
     this.increment_offset();
@@ -873,7 +873,7 @@ Raphael.fn.render_token = function (token) {
     } else if ( this.has_tab ) {
       this.tab_note( token );
     }
-    
+
   }
 }
 
@@ -891,16 +891,16 @@ Raphael.fn.render_token = function (token) {
 //   0 : unknown
 jtab.characterize = function (notation) {
   var tabtype = 0;
-  
-  if(notation == undefined){ 
-    notation = ''; 
+
+  if(notation == undefined){
+    notation = '';
   }
-  
-  var gotCustomChord = ( notation.match( /[\%]([0-4|T|X])?/ )   != undefined );  
+
+  var gotCustomChord = ( notation.match( /[\%]([0-4|T|X])?/ )   != undefined );
   var gotNormalChord = ( notation.match( /[^\$][A-G]|^[A-G]/ )  != undefined );
-  var gotTab = ( ( notation.match( /\$/ ) != null ) || ( notation.match( /[^\%][0-9|Xx|\.]{6,}/ ) != null ) );  
-  var gotChord =  gotNormalChord || gotCustomChord ;      
-  
+  var gotTab = ( ( notation.match( /\$/ ) != null ) || ( notation.match( /[^\%][0-9|Xx|\.]{6,}/ ) != null ) );
+  var gotChord =  gotNormalChord || gotCustomChord ;
+
   // set defaults - apply scaling here (TODO)
   Raphael.fn.current_offset = Raphael.fn.margin_left;
   if ( gotChord && gotTab ) { // chord and tab
@@ -922,7 +922,7 @@ jtab.characterize = function (notation) {
     Raphael.fn.tab_top = Raphael.fn.tab_margin_top;
     Raphael.fn.total_height = Raphael.fn.tab_top + Raphael.fn.tab_height + Raphael.fn.margin_bottom;
   }
-  Raphael.fn.tabtype = tabtype;    
+  Raphael.fn.tabtype = tabtype;
   return tabtype;
 }
 
@@ -953,7 +953,7 @@ jtab.setPalette = function (element) {
   if (!bgColor || (bgColor == 'transparent') || (bgColor == 'rgba(0, 0, 0, 0)')) {
     bgColor = '#fff';
   }
-  Raphael.fn.fingering_text_color = bgColor; 
+  Raphael.fn.fingering_text_color = bgColor;
 }
 
 // main render entry point
@@ -961,17 +961,17 @@ jtab.render = function (element,notation) {
 
   var tabtype = jtab.characterize( notation );
   if (tabtype == 0 ) return;
-  
+
   var rndID="builder_"+jtab.element_count++;
-    
+
   // add the Raphael canvas in its own DIV. this gets around an IE6 issue with not removing previous renderings
   var canvas_holder = jQuery('<div id="'+rndID+'"></div>').css({height: Raphael.fn.total_height});
-  
+
   jQuery(element).html(canvas_holder);
   jtab.setPalette(element);
   canvas = Raphael(rndID, 80, Raphael.fn.total_height );
   canvas.tab_start();
-  
+
   var tokens = notation.split(/\s/);
   for(var i = 0; i < tokens.length; i++) {
     canvas.render_token(tokens[i]);

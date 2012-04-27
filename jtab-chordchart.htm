@@ -23,11 +23,11 @@
 
 var chordList = jtab.ChordList();
 function render_chord_chart(start) {
-  
+
   var startAt = (start === undefined) ? 0 : start;
   var endAt = startAt + 5;
-  var tokens = '';  
-  
+  var tokens = '';
+
   for (var key = startAt; key < endAt; key++) {
     if ( chordList[key] === undefined ) break;
     var token = chordList[key];
@@ -42,7 +42,7 @@ function render_chord_chart(start) {
   jtab.render(rowHolder,tokens);
   // yeild/async continuation of the chord chart if not yet complete
   if (endAt < chordList.length) setTimeout('render_chord_chart(' + endAt + ')', 0 );
-  
+
 }
 
 </script>
