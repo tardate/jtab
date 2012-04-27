@@ -611,7 +611,7 @@ Raphael.fn.chord_fretboard = function ( position, chord_name ) {
   this.text( // chord name
     fret_left + 2.5 * this.string_spacing,
     this.margin_top - 20,
-    chord_name).attr({stroke: this.tab_text_color, "font-size":"20px"});
+    chord_name).attr({fill: this.tab_text_color, "font-size":"20px"});
 
   var stroke_width = position == 0 ? 3 : 0  // nut
   var chord_fretboard_path = this.path(this.svg_params(fret_left,this.margin_top,this.string_spacing * (this.strings_drawn - 1),0))
@@ -724,7 +724,7 @@ Raphael.fn.chord_note = function (position, string_number, note) {
       this.margin_top + fret_dy, this.note_radius).attr({stroke: this.color, fill: this.color});
     if ( ! (note[1] === undefined) ) {
       this.text( fret_left + (string_number - 1) * this.string_spacing,
-      this.margin_top + fret_dy, note[1] ).attr({stroke: this.fingering_text_color, "font-size":"12px"});
+      this.margin_top + fret_dy, note[1] ).attr({fill: this.fingering_text_color, "font-size":"12px"});
     }
   }
 
@@ -767,7 +767,7 @@ Raphael.fn.draw_tab_note = function (string_number, token, left_offset) {
   // NB: internal string_number in tab counts from high to low
   this.text(this.current_offset + left_offset,
           this.tab_top + this.tab_spacing * (string_number - 1),
-          token).attr({stroke: this.color, "font-size":"16px"});
+          token).attr({fill: this.color, "font-size":"16px"});
 }
 
 // gets string number from token $[1-6|EADGBe]
