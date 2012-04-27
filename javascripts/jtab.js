@@ -1,6 +1,6 @@
 /**
  * JTab - Javascript/CSS Guitar Chord and Tab Notation for the Web.
- * Version 1.1
+ * Version 1.2
  * Written by Paul Gallagher (http://tardate.com), 2009.
  * See:
  *   http://jtab.tardate.com : more information on availability, configuration and use.
@@ -28,7 +28,7 @@
 //
 
 var jtab = {
-  Version : '1.1',
+  Version : '1.2',
   element_count:0, //TODO:
   Strings : {
   	AboutDialog : '<html><head><title>About jTab</title></head><body style=""><p style="">jTab version: {V}</p><p><a href="http://jtab.tardate.com" target="_blank">http://jtab.tardate.com</a></p><p><input type="button" class="close" value="OK" onClick="window.close()"/></p></body></html>'
