@@ -986,18 +986,14 @@ jtab.renderimplicit = function(within_scope) {
 
 // initialize jtab - setup to run implicit rendering on window.onload
 jtab.init = function() {
-  if (typeof window.onload != 'function') {
-    window.onload = jtab.renderimplicit;
-  } else {
-    var oldonload = window.onload;
-    window.onload = function() {
-      if (oldonload) oldonload();
-      jtab.renderimplicit();
-    }
+  var oldonload = window.onload;
+  window.onload = function() {
+    if (typeof oldonload == 'function') oldonload();
+    jtab.renderimplicit(null);
   }
 }
 
-// bootstrap jtab
+// bootstrap jtab when jQuery is ready
 jQuery(document).ready(function($) {
   jtab.init();
 });
