@@ -8,7 +8,7 @@
  *
  * This library also depends on the following two libraries that must be loaded for it to work:
  *   jQuery - http://www.jquery.com/
- *   Raphaël - http://raphaeljs.com/
+ *   Raphael - http://raphaeljs.com/
  *
  *
  * This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General
