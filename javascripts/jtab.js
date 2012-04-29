@@ -980,14 +980,12 @@ jtab.render = function (element,notation) {
 
 
 // process implicit rendering of tags with class 'jtab'
-jtab.renderimplicit = function() {
-  jQuery('.jtab').each( function(name, index) { jtab.render(this,this.innerHTML); } ); //TODO: $('.jtab').each( function(name, index) { jtab.render(name,name.innerHTML); } );
+jtab.renderimplicit = function(within_scope) {
+  jQuery('.jtab',within_scope).each( function(name, index) { jtab.render(this,this.innerHTML); } );
 }
-
 
 // initialize jtab - setup to run implicit rendering on window.onload
 jtab.init = function() {
-
   if (typeof window.onload != 'function') {
     window.onload = jtab.renderimplicit;
   } else {
@@ -999,8 +997,7 @@ jtab.init = function() {
   }
 }
 
-
 // bootstrap jtab
-jtab.init();
-
-function cl(args) {try {console.log(arguments)} catch(error){} }
+jQuery(document).ready(function($) {
+  jtab.init();
+});
