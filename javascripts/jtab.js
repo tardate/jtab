@@ -956,8 +956,13 @@ jtab.setPalette = function (element) {
   Raphael.fn.fingering_text_color = bgColor;
 }
 
-// main render entry point
-jtab.render = function (element,notation) {
+// Render the tab for a given +element+.
+// +element+ is a DOM node
+// +notation_text+ is the optional notation to render (if not specified, +element+ text content will be used)
+// After rendering, the +element+ will be given the additional "rendered" class.
+jtab.render = function (element,notation_text) {
+
+  var notation = notation_text || jQuery(element).text() || '';
 
   var tabtype = jtab.characterize( notation );
   if (tabtype == 0 ) return;
@@ -976,15 +981,17 @@ jtab.render = function (element,notation) {
   for(var i = 0; i < tokens.length; i++) {
     canvas.render_token(tokens[i]);
   }
+  jQuery(element).addClass('rendered');
 }
 
-
-// process implicit rendering of tags with class 'jtab'
+// Render all nodes with class 'jtab'.
+// +within_scope+ is an optional selector that will restrict rendering to only those nodes contained within.
 jtab.renderimplicit = function(within_scope) {
-  jQuery('.jtab',within_scope).each( function(name, index) { jtab.render(this,this.innerHTML); } );
+  jQuery('.jtab',within_scope).not('.rendered').each( function(name, index) { jtab.render(this); } );
 }
 
-// initialize jtab - setup to run implicit rendering on window.onload
+// initialize jtab library.
+// Sets up to run implicit rendering on window.onload
 jtab.init = function() {
   var oldonload = window.onload;
   window.onload = function() {
