@@ -1,5 +1,6 @@
 1.2: 2012-04-28
 * jQuery-compatible
+* new jtab.AddChord method
 
 1.1: 2009-08-30
 * First official release.

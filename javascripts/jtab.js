@@ -1,7 +1,11 @@
 /**
  * JTab - Javascript/CSS Guitar Chord and Tab Notation for the Web.
  * Version 1.2
- * Written by Paul Gallagher (http://tardate.com), 2009.
+ * Written by Paul Gallagher (http://tardate.com), 2009. (original version and maintainer)
+ * Contributions:
+ *   Jason Ong (https://github.com/jasonong)
+ *   Bruno Bornsztein (https://github.com/bborn)
+ *   Binary Bit LAN (https://github.com/binarybitlan)
  * See:
  *   http://jtab.tardate.com : more information on availability, configuration and use.
  *   http://github.com/tardate/jtab/tree/master : source code repository, wiki, documentation
