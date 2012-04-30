@@ -539,8 +539,31 @@ shape as the desired chord's position/shape. In general,
       assert( c.isValid, "jtabChord('" + token + "') should be valid" );
       assert( c.isCaged, "jtabChord('" + token + "') should be CAGED" );
       assertHashEqual( modelChordArray, c.chordArray, "jtabChord('" + token + "') returned incorrect chordArray" );
-    }}
+    }},
 
+    testChord_AddChord_insert: function() {  with(this) {
+      var token = 'ATest';
+      var modelChordArrayNew = [ 0, [-1],  [0  ],  [2,3],  [2,2],  [2,1],  [0  ] ];
+      var c = new jtabChord(token);
+      assert( !c.isValid, "jtabChord('" + token + "') should not initially be valid" );
+      jtab.AddChord(token, [modelChordArrayNew]);
+      c = new jtabChord(token);
+      assert( c.isValid, "jtabChord('" + token + "') should be valid after insert" );
+      assertHashEqual( modelChordArrayNew, c.chordArray, "jtabChord('" + token + "') returned incorrect chordArray" );
+    }},
+
+    testChord_AddChord_update: function() {  with(this) {
+      var token = 'A';
+      var modelChordArray = [ 0, [-1],  [0  ],  [2,2],  [2,1],  [2,3],  [0  ] ];
+      var modelChordArrayNew = [ 0, [-1],  [0  ],  [2,2],  [2,2],  [2,3],  [0  ] ];
+      var c = new jtabChord(token);
+      assert( c.isValid, "jtabChord('" + token + "') should initially be valid" );
+      assertHashEqual( modelChordArray, c.chordArray, "jtabChord('" + token + "') returned incorrect chordArray before update" );
+      jtab.AddChord(token, [modelChordArrayNew]);
+      c = new jtabChord(token);
+      assert( c.isValid, "jtabChord('" + token + "') should be valid after update" );
+      assertHashEqual( modelChordArrayNew, c.chordArray, "jtabChord('" + token + "') returned incorrect chordArray after update" );
+    }}
 
   });
 // ]]>

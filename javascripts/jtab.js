@@ -344,11 +344,19 @@ var jtab = {
     BaseIntervals: ['C', 'C#', 'D', 'Eb', 'E', 'F', 'F#', 'G', 'G#', 'A', 'Bb', 'B']
   },
   ChordList : function() {
-  	var list = [];
-  	for (var key in jtab.Chords) {
-  		list.push( key );
-  	}
-  	return list;
+    var list = [];
+    for (var key in jtab.Chords) {
+      list.push( key );
+    }
+    return list;
+  },
+  /*
+   * Usage: jtab.AddChord("ChordName", Chord-Array)
+   * Example of Add: jtab.AddChord("Dsus4l", [ [ 0, [-1 ],  [-1 ],  [3,2],  [2,1],  [3,3],  [3,4] ], [ 12, [-1,-1],  [-1,-1],  [12,1],  [14,2],  [15,3],  [15,4] ] ]);
+   * Example of Update: jtab.AddChord("A", [ [ 0, [-1],  [0  ],  [2,3],  [2,2],  [2,1],  [0  ] ], [ 12, [-1,-1], [12,1], [14,2], [14,3], [14,4], [12,1] ] ]);
+   */
+  AddChord : function(chordName, chord) {
+    this.Chords[chordName] = chord;
   }
 };
 
