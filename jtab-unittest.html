@@ -562,6 +562,15 @@ shape as the desired chord's position/shape. In general,
       c = new jtabChord(token);
       assert( c.isValid, "jtabChord('" + token + "') should be valid after update" );
       assertHashEqual( modelChordArrayNew, c.chordArray, "jtabChord('" + token + "') returned incorrect chordArray after update" );
+    }},
+
+    testChord_Csharpm_fingering: function() {  with(this) {
+      var token = 'C#m';
+      var modelChordArray = [ 0, [-1 ],  [-1],  [2,2],  [1,1],  [2,3],  [0] ];
+      var c = new jtabChord(token);
+      assert( c.isValid, "jtabChord('" + token + "') should be valid" );
+      assert( ! c.isCaged, "jtabChord('" + token + "') should not be CAGED" );
+      assertHashEqual( modelChordArray, c.chordArray, "jtabChord('" + token + "') returned incorrect chordArray" );
     }}
 
   });
