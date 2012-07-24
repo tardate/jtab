@@ -392,155 +392,156 @@ Array.prototype.max_chars = function() {
 //  cagedPos       = caged position e.g. 3
 //
 
-var jtabChord = jQuery.klass({
-  initialize: function(token) {
-    this.scale = jtab.WesternScale;
-    this.baseNotes = this.scale.BaseNotes;
-    this.baseChords = jtab.Chords;
-    this.chordArray = null;
+function jtabChord (token) {
+
+  this.scale = jtab.WesternScale;
+  this.baseNotes = this.scale.BaseNotes;
+  this.baseChords = jtab.Chords;
+  this.chordArray = null;
+  this.isValid = false;
+
+  this.fullChordName = token;
+  this.isCustom = ( this.fullChordName.match( /\%/ ) != null )
+  this.isCaged = ( this.fullChordName.match( /\:/ ) != null )
+
+
+  if (this.isCaged) {
+    var parts = this.fullChordName.split(':');
+    this.chordName = parts[0];
+    this.cagedPos = parts[1];
+  } else if (this.isCustom){
+    var parts = this.fullChordName.match( /\[(.+?)\]/ );
+    if(parts){
+      this.chordName = parts[1];
+    } else {
+      this.chordName = '';
+    }
+  } else {
+    this.chordName = this.fullChordName;
+    this.cagedPos = 1;
+  }
+  this.rootExt = this.chordName.replace(/^[A-G#b]{1,2}/,'');
+  this.rootNote = this.chordName.substr(0, this.chordName.length - this.rootExt.length);
+  var baseNoteInfo = this.baseNotes[this.rootNote];
+  if (baseNoteInfo) {
+    this.baseName = baseNoteInfo[0] + this.rootExt;
+    this.cagedBaseShape = baseNoteInfo[1];
+    this.cagedBaseFret = baseNoteInfo[2];
+  } else {
+    this.cagedBaseShape = '';
+    this.cagedBaseFret = 0;
+  }
+
+  if ( ( this.isCaged ) && ( this.cagedPos > 1 ) ) {
+    this.setCagedChordArray();
+  } else if (this.isCustom){
+    this.setCustomChordArray();
+  } else {
+    this.setChordArray(this.baseName);
+  }
+}
+
+jtabChord.prototype.setCustomChordArray = function(){
+  this.chordArray = new Array();
+  this.chordArray = this.parseCustomChordArrayFromToken();
+};
+
+jtabChord.prototype.parseCustomChordArrayFromToken = function() {
+  notes = this.fullChordName.replace(/(\%|\[.+\])/g, '');
+  pairs = notes.split('.');
+  if (pairs.length < 6){
     this.isValid = false;
+    return;
+  }
+  this.isValid = true;
 
-    this.fullChordName = token;
-    this.isCustom = ( this.fullChordName.match( /\%/ ) != null )
-    this.isCaged = ( this.fullChordName.match( /\:/ ) != null )
+  array = [];
+  for (var i = 0; i < pairs.length; i++){
+    pair = pairs[i].split('/')
+    if (pair[0].match(/X/)){
+      pair = [-1]
+    }
+    array.push(pair)
+  }
 
+  // fingeredFrets = array.reject(function(p){
+  //   return p.length === 1
+  // }).collect(function(p){
+  //   return parseInt(p[0])
+  //   }).flatten().without(0,-1)
 
-    if (this.isCaged) {
-      var parts = this.fullChordName.split(':');
-      this.chordName = parts[0];
-      this.cagedPos = parts[1];
-    } else if (this.isCustom){
-      var parts = this.fullChordName.match( /\[(.+?)\]/ );
-      if(parts){
-        this.chordName = parts[1];
+  // `array` is an array of string/fretnumber pairs like [0,1].
+
+  fingeredFrets = jQuery.grep(array, function(pair){
+    // get only the pairs with two elements
+    return (pair.length != 1);
+  }).map(function(pair){
+    return parseInt(pair[0]);
+    }).map(function(i){
+      if ((i != 0) || (i != -1)){
+        return i;
       } else {
-        this.chordName = '';
+        return null;
       }
-    } else {
-      this.chordName = this.fullChordName;
-      this.cagedPos = 1;
-    }
-    this.rootExt = this.chordName.replace(/^[A-G#b]{1,2}/,'');
-    this.rootNote = this.chordName.substr(0, this.chordName.length - this.rootExt.length);
-    var baseNoteInfo = this.baseNotes[this.rootNote];
-    if (baseNoteInfo) {
-      this.baseName = baseNoteInfo[0] + this.rootExt;
-      this.cagedBaseShape = baseNoteInfo[1];
-      this.cagedBaseFret = baseNoteInfo[2];
-    } else {
-      this.cagedBaseShape = '';
-      this.cagedBaseFret = 0;
-    }
+    })
 
-    if ( ( this.isCaged ) && ( this.cagedPos > 1 ) ) {
-      this.setCagedChordArray();
-    } else if (this.isCustom){
-      this.setCustomChordArray();
-    } else {
-      this.setChordArray(this.baseName);
-    }
-  },
-  setCustomChordArray: function(){
-    this.chordArray = new Array();
-    this.chordArray = this.parseCustomChordArrayFromToken();
-  },
-  parseCustomChordArrayFromToken: function() {
-    notes = this.fullChordName.replace(/(\%|\[.+\])/g, '');
-    pairs = notes.split('.');
-    if (pairs.length < 6){
-      this.isValid = false;
-      return;
-    }
-    this.isValid = true;
+  fingeredFrets = jQuery.grep(fingeredFrets,function(n){
+    return(n);
+  });
 
-    array = [];
-    for (var i = 0; i < pairs.length; i++){
-      pair = pairs[i].split('/')
-      if (pair[0].match(/X/)){
-        pair = [-1]
-      }
-      array.push(pair)
-    }
+  //find all the fret positions which arent X or 0. I'm sure there's a better way to do this.
 
-    // fingeredFrets = array.reject(function(p){
-    //   return p.length === 1
-    // }).collect(function(p){
-    //   return parseInt(p[0])
-    //   }).flatten().without(0,-1)
+  min = Math.min.apply( Math, fingeredFrets );
 
-    // `array` is an array of string/fretnumber pairs like [0,1].
+  array.unshift(min-1);
+  return array;
+};
 
-    fingeredFrets = jQuery.grep(array, function(pair){
-      // get only the pairs with two elements
-      return (pair.length != 1);
-    }).map(function(pair){
-      return parseInt(pair[0]);
-      }).map(function(i){
-        if ((i != 0) || (i != -1)){
-          return i;
-        } else {
-          return null;
-        }
-      })
+jtabChord.prototype.setChordArray = function(chordName) { // clones chord array (position 0) from chord ref data into this object
+  this.chordArray = new Array();
+  if (this.baseChords[chordName] === undefined ) {
+    this.isValid = false;
+    return;
+  }
+  this.isValid = true;
+  var modelRef = this.baseChords[chordName][0];
+  this.chordArray[0] = modelRef[0]
+  for (var i = 1; i < modelRef.length ; i++) {
+    this.chordArray[i] = modelRef[i];    // TODO: this.chordArray[i] = modelRef[i].clone();
+  }
+};
 
-    fingeredFrets = jQuery.grep(fingeredFrets,function(n){
-      return(n);
-    });
+jtabChord.prototype.setCagedChordArray = function() {
+  if ( ! this.cagedBaseShape.match( /[CAGED]/ ) ) return;
+  var caged_index = "CAGED".indexOf(this.cagedBaseShape) + 1; // get 1-based index
+  var fret_widths = [3,2,3,2,2];
 
-    //find all the fret positions which arent X or 0. I'm sure there's a better way to do this.
+  var starting_fret = this.cagedBaseFret;
 
-    min = Math.min.apply( Math, fingeredFrets );
+  for (var i = 1; i < this.cagedPos ; i++) {
+    var index = (caged_index - 1) % 5;
+    caged_index  = ( caged_index >= 5) ? 1 : caged_index + 1;
+    starting_fret += fret_widths[index];
+  }
 
-    array.unshift(min-1);
-    return array;
-  },
-  setChordArray: function(chordName) { // clones chord array (position 0) from chord ref data into this object
-    this.chordArray = new Array();
-    if (this.baseChords[chordName] === undefined ) {
-      this.isValid = false;
-      return;
-    }
-    this.isValid = true;
-    var modelRef = this.baseChords[chordName][0];
-    this.chordArray[0] = modelRef[0]
-    for (var i = 1; i < modelRef.length ; i++) {
-      this.chordArray[i] = modelRef[i];    // TODO: this.chordArray[i] = modelRef[i].clone();
-    }
-  },
-  setCagedChordArray: function() {
-    if ( ! this.cagedBaseShape.match( /[CAGED]/ ) ) return;
-    var caged_index = "CAGED".indexOf(this.cagedBaseShape) + 1; // get 1-based index
-    var fret_widths = [3,2,3,2,2];
+  var modelChord =  "CAGED".charAt( caged_index - 1 ) + this.rootExt;
+  this.setChordArray(modelChord);
+  this.shiftChordArray(starting_fret,modelChord);
+};
 
-    var starting_fret = this.cagedBaseFret;
+jtabChord.prototype.shiftChordArray = function(atFret,modelChord) { // shift chord to new fret position
+  var initFret = this.chordArray[0];
+  if (atFret != initFret) {
+    var use_caged_fingering = ( (this.isCaged) && (this.cagedPos > 0) && ( ! ( this.baseChords[modelChord][1][0] === undefined ) )  );
 
-    for (var i = 1; i < this.cagedPos ; i++) {
-      var index = (caged_index - 1) % 5;
-      caged_index  = ( caged_index >= 5) ? 1 : caged_index + 1;
-      starting_fret += fret_widths[index];
-    }
-
-    var modelChord =  "CAGED".charAt( caged_index - 1 ) + this.rootExt;
-    this.setChordArray(modelChord);
-    this.shiftChordArray(starting_fret,modelChord);
-
-  },
-  shiftChordArray: function(atFret,modelChord) { // shift chord to new fret position
-
-    var initFret = this.chordArray[0];
-    if (atFret != initFret) {
-      var use_caged_fingering = ( (this.isCaged) && (this.cagedPos > 0) && ( ! ( this.baseChords[modelChord][1][0] === undefined ) )  );
-
-      this.chordArray[0] = atFret - 1;
-      for (var i = 1; i < this.chordArray.length ; i++) {
-        var fret = (this.chordArray[i][0] >= 0 ) ? this.chordArray[i][0] + atFret - initFret : this.chordArray[i][0];
-        var finger = (use_caged_fingering) ? this.baseChords[modelChord][1][i][1] : this.chordArray[i][1];
-        this.chordArray[i] = [ fret ,  finger ];
-      }
+    this.chordArray[0] = atFret - 1;
+    for (var i = 1; i < this.chordArray.length ; i++) {
+      var fret = (this.chordArray[i][0] >= 0 ) ? this.chordArray[i][0] + atFret - initFret : this.chordArray[i][0];
+      var finger = (use_caged_fingering) ? this.baseChords[modelChord][1][i][1] : this.chordArray[i][1];
+      this.chordArray[i] = [ fret ,  finger ];
     }
   }
-});
-
+};
 
 
 
