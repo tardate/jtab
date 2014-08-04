@@ -1,0 +1,39 @@
+{
+  "name": "jtab",
+  "version": "1.3.1",
+  "homepage": "https://github.com/tardate/jtab",
+  "authors": [
+    "Paul Gallagher <gallagher.paul@gmail.com>"
+  ],
+  "description": "Javascript/CSS Guitar Chord and Tab Notation for the Web",
+  "main": [
+    "./css/jtab-helper.css",
+    "./css/jtab-site.css",
+    "./javascripts/jquery.js",
+    "./javascripts/raphael.js",
+    "./javascripts/jtab.js"
+  ],
+  "moduleType": [
+    "globals"
+  ],
+  "keywords": [
+    "tab",
+    "tablature",
+    "guitar",
+    "chord",
+    "notation",
+    "music"
+  ],
+  "license": "GPL",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests",
+    "examples.htm",
+    "index.htm",
+    "jtab-unittest.html",
+    "jtab-chordchart.htm"
+  ]
+}
