@@ -27,6 +27,8 @@
  * the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
+var _ = require('underscore');
+var Raphael = require('raphael');
 //
 // define the jtab class
 //
@@ -35,7 +37,7 @@ var jtab = {
   Version : '1.3.1',
   element_count:0, //TODO:
   Strings : {
-  	AboutDialog : '<html><head><title>About jTab</title></head><body style=""><p style="">jTab version: {V}</p><p><a href="http://jtab.tardate.com" target="_blank">http://jtab.tardate.com</a></p><p><input type="button" class="close" value="OK" onClick="window.close()"/></p></body></html>'
+    AboutDialog : '<html><head><title>About jTab</title></head><body style=""><p style="">jTab version: {V}</p><p><a href="http://jtab.tardate.com" target="_blank">http://jtab.tardate.com</a></p><p><input type="button" class="close" value="OK" onClick="window.close()"/></p></body></html>'
   },
   Chords : {
              // chord data - currently explicit representation for 6 string guitar, standard tuning only, and
@@ -472,22 +474,20 @@ jtabChord.prototype.parseCustomChordArrayFromToken = function() {
 
   // `array` is an array of string/fretnumber pairs like [0,1].
 
-  fingeredFrets = jQuery.grep(array, function(pair){
-    // get only the pairs with two elements
-    return (pair.length != 1);
-  }).map(function(pair){
+  fingeredFrets = _.where(array, function(pair) { return pair.length != 1});
+  fingeredFrets = _.map(fingeredFrets, function (pair) {
     return parseInt(pair[0]);
-    }).map(function(i){
-      if ((i != 0) || (i != -1)){
-        return i;
-      } else {
-        return null;
-      }
-    })
-
-  fingeredFrets = jQuery.grep(fingeredFrets,function(n){
-    return(n);
   });
+
+  fingeredFrets = _.map(fingeredFrets, function (pair) {
+    if ((i != 0) || (i != -1)){
+        return i;
+    } else {
+        return null;
+    }
+  });
+
+  fingeredFrets = _.where(array, function(pair) { return pair;});
 
   //find all the fret positions which arent X or 0. I'm sure there's a better way to do this.
 
@@ -944,10 +944,10 @@ jtab.characterize = function (notation) {
 
 // utility function to get calculated style based on given element
 jtab.getStyle = function (element, style) {
-  var value = element.css(style);
+  var value = element.style[style];
   if(!value) {
     if(document.defaultView) {
-      value = document.defaultView.getComputedStyle(element[0], "").getPropertyValue(style);
+      value = document.defaultView.getComputedStyle(element, "").getPropertyValue(style);
     } else if(element.currentStyle) {
       value = element.currentStyle[style];
     }
@@ -958,14 +958,14 @@ jtab.getStyle = function (element, style) {
 
 // set color pallette for the jtab rendering
 jtab.setPalette = function (element) {
-  var fgColor = jtab.getStyle( jQuery(element), 'color' );
+  var fgColor = jtab.getStyle( element, 'color' );
   if (!fgColor) {
     fgColor = '#000';
   }
   Raphael.fn.color = fgColor;
   Raphael.fn.tab_text_color = fgColor;
 
-  bgColor = jtab.getStyle( jQuery(element), 'background-color' );
+  bgColor = jtab.getStyle( element, 'background-color' );
   if (!bgColor || (bgColor == 'transparent') || (bgColor == 'rgba(0, 0, 0, 0)')) {
     bgColor = '#fff';
   }
@@ -978,7 +978,7 @@ jtab.setPalette = function (element) {
 // After rendering, the +element+ will be given the additional "rendered" class.
 jtab.render = function (element,notation_text) {
 
-  var notation = notation_text || jQuery(element).text() || '';
+  var notation = notation_text || element.textContent || '';
 
   var tabtype = jtab.characterize( notation );
   if (tabtype == 0 ) return;
@@ -986,24 +986,32 @@ jtab.render = function (element,notation_text) {
   var rndID="builder_"+jtab.element_count++;
 
   // add the Raphael canvas in its own DIV. this gets around an IE6 issue with not removing previous renderings
-  var canvas_holder = jQuery('<div id="'+rndID+'"></div>').css({height: Raphael.fn.total_height});
+  var canvas_holder = document.createElement('div');
+  canvas_holder.id = rndID;
+  canvas_holder.style.height = Raphael.fn.total_height;
+  element.innerHTML = "";
+  element.appendChild(canvas_holder);
 
-  jQuery(element).html(canvas_holder);
   jtab.setPalette(element);
   canvas = Raphael(rndID, 80, Raphael.fn.total_height );
   canvas.tab_start();
+
 
   var tokens = notation.split(/\s/);
   for(var i = 0; i < tokens.length; i++) {
     canvas.render_token(tokens[i]);
   }
-  jQuery(element).addClass('rendered');
+  element.className += ' rendered';
 }
 
 // Render all nodes with class 'jtab'.
 // +within_scope+ is an optional selector that will restrict rendering to only those nodes contained within.
-jtab.renderimplicit = function(within_scope) {
-  jQuery('.jtab',within_scope).not('.rendered').each( function(name, index) { jtab.render(this); } );
+jtab.renderimplicit = function(within_element) {
+  within_element = within_element ? within_element : document;
+  _.each(within_element.getElementsByClassName("jtab"), function (el) {
+    if(el.className.indexOf("rendered") > -1) return;
+    jtab.render(el);
+  });
 }
 
 // initialize jtab library.
@@ -1016,7 +1024,10 @@ jtab.init = function() {
   }
 }
 
-// bootstrap jtab when jQuery is ready
-jQuery(document).ready(function($) {
-  jtab.init();
-});
+jtab.init();
+
+if(typeof window != "undefined") {
+  window.jtab = jtab;
+}
+
+module.exports = jtab;
