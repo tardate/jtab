@@ -1,0 +1,36 @@
+{
+  "name": "jtab",
+  "version": "1.3.1",
+  "description": "Guitar chord and tab lib",
+  "main": "javascripts/jtab.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/csk157/jtab.git"
+  },
+  "keywords": [
+    "guitar",
+    "tabs",
+    "chords"
+  ],
+  "author": "Paul Gallagher",
+  "license": "GNU Lesser General",
+  "bugs": {
+    "url": "https://github.com/csk157/jtab/issues"
+  },
+  "homepage": "https://github.com/csk157/jtab#readme",
+  "dependencies": {
+    "raphael": "^2.1.4",
+    "underscore": "^1.8.3"
+  },
+  "devDependencies": {
+    "browserify": "^10.1.3",
+    "uglify-js": "^2.4.21"
+  },
+  "scripts": {
+    "browserify": "browserify javascripts/jtab.js | uglifyjs > dist/jtab.js && cp css/jtab-helper.css dist/jtab.css",
+    "build": "npm run browserify "
+  }
+}
