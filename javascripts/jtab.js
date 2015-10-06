@@ -1017,6 +1017,9 @@ jtab.renderimplicit = function(within_element) {
 // initialize jtab library.
 // Sets up to run implicit rendering on window.onload
 jtab.init = function() {
+  if(!window) {
+    return;
+  }
   var oldonload = window.onload;
   window.onload = function() {
     if (typeof oldonload == 'function') oldonload();
