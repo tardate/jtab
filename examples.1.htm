@@ -1,0 +1,89 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+
+<head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+
+    <title>jTab - Guitar Chord and Tab Library Examples</title>
+    <meta name="description" content="jTab is a javascript-based library that allows you to easily render arbitrary guitar chord and tabulature (tab) notation on the web"
+    />
+    <meta name="keywords" content="guitar,chord,tab,tabulature,music,notation,javascript,css,svg,html,xhtml" />
+
+    <link type="text/css" rel="stylesheet" href="css/jtab-site.css" />
+
+    <!-- START: for jtab -->
+    <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+    <link type="text/css" rel="stylesheet" href="css/jtab-helper.css" />
+    <script src="javascripts/jquery.js" type="text/javascript"></script>
+    <script src="javascripts/raphael.js" type="text/javascript"></script>
+    <script src="javascripts/jtab.js" type="text/javascript"></script>
+    <!-- END: for jtab -->
+<style>
+    .atfolhyds {
+        line-height:75px;font-weight: bold;color: #b22222;width: 90%;
+    }
+
+    .krijcheug {
+        position:relative;top:-20px;color: black;line-height:40px;
+    }
+
+    .mejiowvnz {
+        position:relative;margin-left:-34px;font-weight: bold;margin-right:5px;
+    }
+
+</style>
+</head>
+
+<body>
+
+    <div id="header">
+        <h1>jTab - Guitar Chord and Tab Notation for the Web</h1>
+    </div>
+
+    <div id="content">
+
+        <h2>Live Examples</h2>
+
+        <p class="atfolhyds">
+            <span class="krijcheug">
+                <ruby>
+                    <span class="chord" chord="C"></span>
+                    <span style="display: none;">B</span>
+                </ruby>
+            </span>
+            <span class="mejiowvnz">願</span>
+            <span class="krijcheug" >
+                <ruby>
+                    <span class="chord" chord="A"></span>
+                    <span style="display: none;">B</span>
+                </ruby>
+            </span>
+            <span class="mejiowvnz">叶いやしないさ</span>
+        </p>
+        <h3>Render notation provided by a user</h3>
+        <span>Try it out. Enter a phrase here (see
+            <a href="index.htm#notation">notation</a> for help):</span>
+        <input id="notation" size="40">
+        <input type="button" value="jTab this!" onclick="jtab.render('tab',$(#'notation').value);">
+        <div id="tab">
+            <i>jTab will render your phrase here</i>
+        </div>
+
+        <script type='text/javascript'>
+            $('#notation').keyup(function (e) {
+                jtab.render($('#tab'), $(this).val());
+            });
+        </script>
+
+        <h3>Implicitly render a chord-only phrase</h3>
+        <p>Note that the "chordonly" class is optional (it just pre-adjusts display size to reduce screen jitter).
+        </p>
+        <div class="jtab chordonly"> E / / / | A7 / B7 / || </div>
+    </div>
+    <div id="footer">
+    </div>
+
+</body>
+
+</html>
