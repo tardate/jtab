@@ -14,10 +14,7 @@
 
     <!-- START: for jtab -->
     <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
-    <link type="text/css" rel="stylesheet" href="css/jtab-helper.css" />
-    <script src="javascripts/jquery.js" type="text/javascript"></script>
-    <script src="javascripts/raphael.js" type="text/javascript"></script>
-    <script src="javascripts/jtab.js" type="text/javascript"></script>
+    <script src="dist/jtab.min.js" type="text/javascript"></script>
     <!-- END: for jtab -->
 <style>
     .atfolhyds {
@@ -65,15 +62,15 @@
         <span>Try it out. Enter a phrase here (see
             <a href="index.htm#notation">notation</a> for help):</span>
         <input id="notation" size="40">
-        <input type="button" value="jTab this!" onclick="jtab.render('tab',$(#'notation').value);">
+        <input type="button" value="jTab this!" onclick="jtab.render('tab',notation.value);">
         <div id="tab">
             <i>jTab will render your phrase here</i>
         </div>
 
         <script type='text/javascript'>
-            $('#notation').keyup(function (e) {
-                jtab.render($('#tab'), $(this).val());
-            });
+            notation.onkeyup = function (e) {
+                jtab.render(document.getElementById('tab'), e.target.value);
+            };
         </script>
 
         <h3>Implicitly render a chord-only phrase</h3>

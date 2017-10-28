@@ -4,7 +4,7 @@
   "description": "Guitar chord and tab lib",
   "main": "javascripts/jtab.js",
   "scripts": {
-    "browserify": "browserify javascripts/jtab.js | uglifyjs > dist/jtab.js && cp css/jtab-helper.css dist/jtab.css",
+    "dev" : "webpack",
     "build": "webpack -p"
   },
   "repository": {

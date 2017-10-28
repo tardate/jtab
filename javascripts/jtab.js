@@ -433,7 +433,6 @@ function jtabChord (token) {
     this.cagedBaseShape = '';
     this.cagedBaseFret = 0;
   }
-
   if ( ( this.isCaged ) && ( this.cagedPos > 1 ) ) {
     this.setCagedChordArray();
   } else if (this.isCustom){
@@ -444,7 +443,7 @@ function jtabChord (token) {
 }
 
 jtabChord.prototype.setCustomChordArray = function(){
-  this.chordArray = new Array();
+  this.chordArray = [];
   this.chordArray = this.parseCustomChordArrayFromToken();
 };
 
@@ -487,13 +486,15 @@ jtabChord.prototype.parseCustomChordArrayFromToken = function() {
     }
   });
 
-  fingeredFrets = _.where(array, function(pair) { return pair;});
+  fingeredFrets = _.where(fingeredFrets, function(pair) { return pair;});
 
   //find all the fret positions which arent X or 0. I'm sure there's a better way to do this.
 
   min = Math.min.apply( Math, fingeredFrets );
 
+  console.log(array);
   array.unshift(min-1);
+  console.log(array);
   return array;
 };
 
@@ -875,7 +876,6 @@ Raphael.fn.render_token = function (token) {
 
   if ( c.isValid ) { // draw chord
     var chord = c.chordArray;
-    // this.chord_fretboard(chord[0], c.fullChordName );
     this.chord_fretboard(chord[0], c.chordName );
     for (var i = 1; i < chord.length ; i++) {
       this.chord_note(chord[0], i, chord[i]);
