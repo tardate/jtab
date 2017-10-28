@@ -1,0 +1,22 @@
+{
+  "name": "jtab",
+  "version": "1.0.0",
+  "description": "this is the source repository for the jTab Javascript library.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/telesoho/jtab.git"
+  },
+  "author": "wotiger",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/telesoho/jtab/issues"
+  },
+  "homepage": "https://github.com/telesoho/jtab#readme",
+  "dependencies": {
+    "raphael": "^2.2.7"
+  }
+}
