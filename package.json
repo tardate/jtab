@@ -4,8 +4,8 @@
   "description": "Guitar chord and tab lib",
   "main": "javascripts/jtab.js",
   "scripts": {
-    "dev" : "webpack",
-    "build": "webpack -p"
+    "dev" : "webpack --env.dev",
+    "build": "webpack -p --env.production"
   },
   "repository": {
     "type": "git",

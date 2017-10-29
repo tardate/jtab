@@ -36,9 +36,6 @@ var Raphael = require('raphael');
 var jtab = {
   Version : '1.3.1',
   element_count:0, //TODO:
-  Strings : {
-    AboutDialog : '<html><head><title>About jTab</title></head><body style=""><p style="">jTab version: {V}</p><p><a href="http://jtab.tardate.com" target="_blank">http://jtab.tardate.com</a></p><p><input type="button" class="close" value="OK" onClick="window.close()"/></p></body></html>'
-  },
   Chords : {
              // chord data - currently explicit representation for 6 string guitar, standard tuning only, and
              // each chord is an array of alternate positions
@@ -1006,15 +1003,17 @@ jtab.render = function (element,notation_text) {
   }
   element.className += ' rendered';
 }
-Raphael.fn.render_token2 = function (token) {
+
+
+Raphael.fn.render_token_one_chord = function (token) {
 
   var c = new jtabChord(token);
 
   if (c.isValid) { // draw chord
     var chord = c.chordArray;
-    this.chord_fretboard2(chord[0], c.chordName);
+    this.chord_fretboard_one_chord(chord[0], c.chordName);
     for (var i = 1; i < chord.length; i++) {
-      this.chord_note2(chord[0], i, chord[i]);
+      this.chord_note_one_chord(chord[0], i, chord[i]);
     }
     this.increment_offset();
 
@@ -1023,7 +1022,7 @@ Raphael.fn.render_token2 = function (token) {
 
 
 // draw a note in a chord
-Raphael.fn.chord_note2 = function (position, string_number, note) {
+Raphael.fn.chord_note_one_chord = function (position, string_number, note) {
   // NB: internal string_number in chords counts from low to high
   var fret_number = note[0];
   var fret_left = this.current_offset + this.margin_left;
@@ -1063,7 +1062,7 @@ Raphael.fn.chord_note2 = function (position, string_number, note) {
   }
 }
 // draw the fretboard
-Raphael.fn.chord_fretboard2 = function (position, chord_name) {
+Raphael.fn.chord_fretboard_one_chord = function (position, chord_name) {
 
   var string_spacing = 8; // 弦间间隔
   var strings_drawn = 6; // 显示的弦数量
@@ -1136,7 +1135,7 @@ jtab.renderOneChord = function (element, notation_text) {
 
   // add the Raphael canvas in its own DIV. this gets around an IE6 issue with not removing previous renderings
   canvas = Raphael(element, 48, 40);  
-  canvas.render_token2(element.getAttribute("chord"));
+  canvas.render_token_one_chord(element.getAttribute("chord"));
   element.className += ' rendered';
 }
   
