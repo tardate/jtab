@@ -105,9 +105,6 @@ var Raphael = __webpack_require__(2);
 var jtab = {
   Version : '1.3.1',
   element_count:0, //TODO:
-  Strings : {
-    AboutDialog : '<html><head><title>About jTab</title></head><body style=""><p style="">jTab version: {V}</p><p><a href="http://jtab.tardate.com" target="_blank">http://jtab.tardate.com</a></p><p><input type="button" class="close" value="OK" onClick="window.close()"/></p></body></html>'
-  },
   Chords : {
              // chord data - currently explicit representation for 6 string guitar, standard tuning only, and
              // each chord is an array of alternate positions
@@ -1221,6 +1218,14 @@ jtab.renderimplicit = function(within_element) {
   });
 }
 
+jtab.renderChord = function (within_element) {
+  within_element = within_element ? within_element : document;
+  _.each(within_element.getElementsByClassName("chord"), function (el) {
+    if(el.className.indexOf("rendered") > -1) return;
+    jtab.renderOneChord(el);
+  });  
+}
+
 // initialize jtab library.
 // Sets up to run implicit rendering on window.onload
 jtab.init = function() {
@@ -1237,8 +1242,6 @@ jtab.init = function() {
     });    
   }
 }
-
-jtab.init();
 
 if(typeof window != "undefined") {
   window.jtab = jtab;

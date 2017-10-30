@@ -1149,6 +1149,14 @@ jtab.renderimplicit = function(within_element) {
   });
 }
 
+jtab.renderChord = function (within_element) {
+  within_element = within_element ? within_element : document;
+  _.each(within_element.getElementsByClassName("chord"), function (el) {
+    if(el.className.indexOf("rendered") > -1) return;
+    jtab.renderOneChord(el);
+  });  
+}
+
 // initialize jtab library.
 // Sets up to run implicit rendering on window.onload
 jtab.init = function() {
@@ -1165,8 +1173,6 @@ jtab.init = function() {
     });    
   }
 }
-
-jtab.init();
 
 if(typeof window != "undefined") {
   window.jtab = jtab;
