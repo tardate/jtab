@@ -1,0 +1,19 @@
+{
+  "name": "jtab",
+  "version": "1.0.0",
+  "description": "jTab.rf - refactored version of the jTab library",
+  "main": "javascripts/jtab.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/simonlischka/jtab.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/simonlischka/jtab/issues"
+  },
+  "homepage": "https://github.com/simonlischka/jtab#readme"
+}
