@@ -90,6 +90,10 @@
       notation = "Bm $3 4 4h5p3h4 5 $2 3 5 7 7h8p7 5/7 ";
       tabtype = jtab.characterize( notation );
       assertEqual( 1, tabtype, "not recognised as chord and tab notation: '" + notation + "'" );
+      
+      notation = "[01:44.75]D $夕暮れ A $に見上 G $げる D $空";
+      tabtype = jtab.characterize( notation );
+      assertEqual( 1, tabtype, "not recognised as chord and tab notation: '" + notation + "'" );
     }},
 
 

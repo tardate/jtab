@@ -28,6 +28,8 @@
  * the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
+var _ = require('underscore');
+var Raphael = require('raphael');
 //
 // define the jtab class
 //
@@ -35,9 +37,6 @@
 var jtab = {
   Version : '1.3.1',
   element_count:0, //TODO:
-  Strings : {
-  	AboutDialog : '<html><head><title>About jTab</title></head><body style=""><p style="">jTab version: {V}</p><p><a href="http://jtab.tardate.com" target="_blank">http://jtab.tardate.com</a></p><p><input type="button" class="close" value="OK" onClick="window.close()"/></p></body></html>'
-  },
   Chords : {
              // chord data - currently explicit representation for 6 string guitar, standard tuning only, and
              // each chord is an array of alternate positions
@@ -432,7 +431,6 @@ function jtabChord (token) {
     this.cagedBaseShape = '';
     this.cagedBaseFret = 0;
   }
-
   if ( ( this.isCaged ) && ( this.cagedPos > 1 ) ) {
     this.setCagedChordArray();
   } else if (this.isCustom){
@@ -443,7 +441,7 @@ function jtabChord (token) {
 }
 
 jtabChord.prototype.setCustomChordArray = function(){
-  this.chordArray = new Array();
+  this.chordArray = [];
   this.chordArray = this.parseCustomChordArrayFromToken();
 };
 
@@ -547,19 +545,21 @@ Raphael.fn.has_chord = false;
 Raphael.fn.has_tab = false;
 
 Raphael.fn.debug = false;
-Raphael.fn.scale = 1;
-Raphael.fn.margin_top = 36;
-Raphael.fn.margin_bottom = 10;
-Raphael.fn.margin_left = 16;
-Raphael.fn.margin_right = 10;
+Raphael.fn.scale = 0.5;
+Raphael.fn.margin_top = 30;
+Raphael.fn.margin_bottom = 0;
+Raphael.fn.margin_left = 5;
+Raphael.fn.margin_right = 5;
 
 Raphael.fn.current_offset = Raphael.fn.margin_left;
 
-Raphael.fn.string_spacing = 16;
-Raphael.fn.strings_drawn = 6;
-Raphael.fn.fret_spacing = 16;
-Raphael.fn.frets_drawn = 4;
-Raphael.fn.note_radius = 7;
+
+Raphael.fn.string_spacing = 8;   // 弦间间隔
+Raphael.fn.strings_drawn = 6;     // 显示的弦数量
+Raphael.fn.fret_spacing = 10;     // 音柱间隔
+Raphael.fn.frets_drawn = 4;       // 显示的音柱数量
+Raphael.fn.note_radius = 4;       // 标注半径
+
 
 Raphael.fn.fret_width = Raphael.fn.string_spacing * ( Raphael.fn.strings_drawn - 1 );
 Raphael.fn.fret_height = Raphael.fn.fret_spacing * (Raphael.fn.frets_drawn + 0.5);
@@ -614,13 +614,14 @@ Raphael.fn.chord_fretboard = function ( position, chord_name ) {
   var fret_left = this.current_offset + this.margin_left;
   // conventional fret labels
   var fret_labels = [ '', '', '', 'III', '', 'V', '', 'VII', '', 'IX', '', '', 'XII', '', '', 'XV', '', 'XVII', '', 'XIX', '', 'XXI', '' ];
+  // var fret_labels = [ '', '', '', '3', '', '5', '', '7', '', '9', '', '', '12', '', '', '15', '', '17', '', '19', '', '21', '' ];
   // alternative friendly fret labels. Currently disabled, maybe bring these back as a configurable option?
   // var fret_labels = [ '', '1fr', '2fr', '3fr', '4fr', '5fr', '6fr', '7fr', '8fr', '9fr', '10fr', '11fr', '12fr', '13fr', '14fr', '15fr', '16fr', '17fr', '18fr', '19fr', '20fr', '21fr', '' ];
 
   this.text( // chord name
     fret_left + 2.5 * this.string_spacing,
     this.margin_top - 20,
-    chord_name).attr({fill: this.tab_text_color, "font-size":"20px"});
+    chord_name).attr({fill: this.tab_text_color, "font-size":"10px"});
 
   var stroke_width = position == 0 ? 3 : 0  // nut
   var chord_fretboard_path = this.path(this.svg_params(fret_left,this.margin_top,this.string_spacing * (this.strings_drawn - 1),0))
@@ -636,7 +637,7 @@ Raphael.fn.chord_fretboard = function ( position, chord_name ) {
       this.text(
           fret_left + this.fret_width + this.string_spacing * 1.0,
           this.margin_top + ( ( i - 0.5 ) * this.fret_spacing),
-          pos).attr({stroke: this.tab_text_color, "font-size":"12px"});
+          pos).attr({stroke: this.tab_text_color, "font-size":"10px"});
     }
   }
   for (var i = 0; i < this.strings_drawn; i++ ) {
@@ -721,10 +722,10 @@ Raphael.fn.chord_note = function (position, string_number, note) {
 
   if (fret_number < 0 ) {
     // muted/not played
-    this.text(fret_left + (string_number - 1) * this.string_spacing, this.margin_top - 8, "x").attr({stroke: this.tab_text_color, "font-size":"9px"});
+    this.text(fret_left + (string_number - 1) * this.string_spacing, this.margin_top - 8, "x").attr({stroke: this.tab_text_color, "font-size":"8px"});
   } else if (fret_number == 0 ) {
     // open
-    this.text(fret_left + (string_number - 1) * this.string_spacing, this.margin_top - 8, "o").attr({stroke: this.tab_text_color, "font-size":"9px"});
+    this.text(fret_left + (string_number - 1) * this.string_spacing, this.margin_top - 8, "o").attr({stroke: this.tab_text_color, "font-size":"8px"});
   } else {
     var fret_dy = (fret_number - position - 0.5) * this.fret_spacing;
     //var circle =
@@ -733,7 +734,7 @@ Raphael.fn.chord_note = function (position, string_number, note) {
       this.margin_top + fret_dy, this.note_radius).attr({stroke: this.color, fill: this.color});
     if ( ! (note[1] === undefined) ) {
       this.text( fret_left + (string_number - 1) * this.string_spacing,
-      this.margin_top + fret_dy, note[1] ).attr({fill: this.fingering_text_color, "font-size":"12px"});
+      this.margin_top + fret_dy, note[1] ).attr({fill: this.fingering_text_color, "font-size":"8px"});
     }
   }
 
@@ -763,9 +764,9 @@ Raphael.fn.tab_start = function () {
   this.tab_extend(width);
 
   //write TAB
-  this.text(this.current_offset + this.tab_char_width, this.tab_top + this.tab_spacing * 1.5, "T").attr({stroke: this.color, "font-size":"14px"});
-  this.text(this.current_offset + this.tab_char_width, this.tab_top + this.tab_spacing * 2.5, "A").attr({stroke: this.color, "font-size":"14px"});
-  this.text(this.current_offset + this.tab_char_width, this.tab_top + this.tab_spacing * 3.5, "B").attr({stroke: this.color, "font-size":"14px"});
+  this.text(this.current_offset + this.tab_char_width, this.tab_top + this.tab_spacing * 1.5, "T").attr({stroke: this.color, "font-size":"10px"});
+  this.text(this.current_offset + this.tab_char_width, this.tab_top + this.tab_spacing * 2.5, "A").attr({stroke: this.color, "font-size":"10px"});
+  this.text(this.current_offset + this.tab_char_width, this.tab_top + this.tab_spacing * 3.5, "B").attr({stroke: this.color, "font-size":"10px"});
   this.increment_offset(width);
 
 }
@@ -776,7 +777,7 @@ Raphael.fn.draw_tab_note = function (string_number, token, left_offset) {
   // NB: internal string_number in tab counts from high to low
   this.text(this.current_offset + left_offset,
           this.tab_top + this.tab_spacing * (string_number - 1),
-          token).attr({fill: this.color, "font-size":"16px"});
+          token).attr({fill: this.color, "font-size":"10px"});
 }
 
 // gets string number from token $[1-6|EADGBe]
@@ -865,7 +866,6 @@ Raphael.fn.render_token = function (token) {
 
   if ( c.isValid ) { // draw chord
     var chord = c.chordArray;
-    // this.chord_fretboard(chord[0], c.fullChordName );
     this.chord_fretboard(chord[0], c.chordName );
     for (var i = 1; i < chord.length ; i++) {
       this.chord_note(chord[0], i, chord[i]);
@@ -937,10 +937,10 @@ jtab.characterize = function (notation) {
 
 // utility function to get calculated style based on given element
 jtab.getStyle = function (element, style) {
-  var value = element.css(style);
+  var value = element.style[style];
   if(!value) {
     if(document.defaultView) {
-      value = document.defaultView.getComputedStyle(element[0], "").getPropertyValue(style);
+      value = document.defaultView.getComputedStyle(element, "").getPropertyValue(style);
     } else if(element.currentStyle) {
       value = element.currentStyle[style];
     }
@@ -951,14 +951,14 @@ jtab.getStyle = function (element, style) {
 
 // set color pallette for the jtab rendering
 jtab.setPalette = function (element) {
-  var fgColor = jtab.getStyle( jQuery(element), 'color' );
+  var fgColor = jtab.getStyle( element, 'color' );
   if (!fgColor) {
     fgColor = '#000';
   }
   Raphael.fn.color = fgColor;
   Raphael.fn.tab_text_color = fgColor;
 
-  bgColor = jtab.getStyle( jQuery(element), 'background-color' );
+  bgColor = jtab.getStyle( element, 'background-color' );
   if (!bgColor || (bgColor == 'transparent') || (bgColor == 'rgba(0, 0, 0, 0)')) {
     bgColor = '#fff';
   }
@@ -971,7 +971,7 @@ jtab.setPalette = function (element) {
 // After rendering, the +element+ will be given the additional "rendered" class.
 jtab.render = function (element,notation_text) {
 
-  var notation = notation_text || jQuery(element).text() || '';
+  var notation = notation_text || element.textContent || '';
 
   var tabtype = jtab.characterize( notation );
   if (tabtype == 0 ) return;
@@ -979,37 +979,196 @@ jtab.render = function (element,notation_text) {
   var rndID="builder_"+jtab.element_count++;
 
   // add the Raphael canvas in its own DIV. this gets around an IE6 issue with not removing previous renderings
-  var canvas_holder = jQuery('<div id="'+rndID+'"></div>').css({height: Raphael.fn.total_height});
+  var canvas_holder = document.createElement('div');
+  canvas_holder.id = rndID;
+  canvas_holder.style.height = Raphael.fn.total_height;
+  element.innerHTML = "";
+  element.appendChild(canvas_holder);
 
-  jQuery(element).html(canvas_holder);
   jtab.setPalette(element);
   canvas = Raphael(rndID, 80, Raphael.fn.total_height );
   canvas.tab_start();
+
 
   var tokens = notation.split(/\s/);
   for(var i = 0; i < tokens.length; i++) {
     canvas.render_token(tokens[i]);
   }
-  jQuery(element).addClass('rendered');
+  element.className += ' rendered';
 }
 
+
+Raphael.fn.render_token_one_chord = function (token) {
+
+  var c = new jtabChord(token);
+
+  if (c.isValid) { // draw chord
+    var chord = c.chordArray;
+    this.chord_fretboard_one_chord(chord[0], c.chordName);
+    for (var i = 1; i < chord.length; i++) {
+      this.chord_note_one_chord(chord[0], i, chord[i]);
+    }
+    this.increment_offset();
+
+  }
+}
+
+
+// draw a note in a chord
+Raphael.fn.chord_note_one_chord = function (position, string_number, note) {
+  // NB: internal string_number in chords counts from low to high
+  var fret_number = note[0];
+  var fret_left = this.current_offset + this.margin_left;
+
+  if (fret_number < 0) {
+    // muted/not played
+    this.text(fret_left + (string_number - 1) * this.string_spacing, this.margin_top - 8, "x").attr({
+      stroke: this.tab_text_color,
+      "font-size": "8px"
+    });
+  } else if (fret_number == 0) {
+    // open
+    this.text(fret_left + (string_number - 1) * this.string_spacing, this.margin_top - 8, "o").attr({
+      stroke: this.tab_text_color,
+      "font-size": "8px"
+    });
+  } else {
+    var fret_dy = (fret_number - position - 0.5) * this.fret_spacing;
+    //var circle =
+    this.circle(
+      fret_left + (string_number - 1) * this.string_spacing,
+      this.margin_top + fret_dy, this.note_radius).attr({
+      stroke: this.color,
+      fill: this.color
+    });
+    if (!(note[1] === undefined)) {
+      this.text(fret_left + (string_number - 1) * this.string_spacing,
+        this.margin_top + fret_dy, note[1]).attr({
+        fill: this.fingering_text_color,
+        "font-size": "8px"
+      });
+    }
+  }
+
+  if (this.has_tab && fret_number >= 0) {
+    this.draw_tab_note((this.strings_drawn - string_number + 1), fret_number, this.margin_left + this.string_spacing * 2.5);
+  }
+}
+// draw the fretboard
+Raphael.fn.chord_fretboard_one_chord = function (position, chord_name) {
+
+  var string_spacing = 8; // 弦间间隔
+  var strings_drawn = 6; // 显示的弦数量
+  var fret_spacing = 10; // 音柱间隔
+  var frets_drawn = 4; // 显示的音柱数量
+  var note_radius = 4; // 标注半径
+  var scale = 0.5;
+  var margin_top = 30;
+  var margin_bottom = 0;
+  var margin_left = 5;
+  var margin_right = 5;
+  var color = "#000";
+  var fingering_text_color = "#fff";
+  var tab_text_color = "#000";
+
+  var fret_left = this.current_offset + margin_left;
+
+  var fret_width = string_spacing * (strings_drawn - 1);
+  var fret_height = fret_spacing * (frets_drawn + 0.5);
+  var chord_width = margin_left + fret_width + string_spacing + margin_right;
+  var chord_height = margin_top + fret_height + margin_bottom;
+
+  // conventional fret labels
+  var fret_labels = ['', '', '', 'III', '', 'V', '', 'VII', '', 'IX', '', '', 'XII', '', '', 'XV', '', 'XVII', '', 'XIX', '', 'XXI', ''];
+  //var fret_labels = [ '', '', '', '3', '', '5', '', '7', '', '9', '', '', '12', '', '', '15', '', '17', '', '19', '', '21', '' ];
+
+  this.text( // chord name
+    fret_left + 2.5 * string_spacing,
+    margin_top - 20,
+    chord_name).attr({
+    fill: tab_text_color,
+    "font-size": "10px"
+  });
+
+  var stroke_width = position == 0 ? 3 : 0 // nut
+  var chord_fretboard_path = this.path(this.svg_params(fret_left, margin_top, string_spacing * (strings_drawn - 1), 0))
+  chord_fretboard_path.attr({
+    stroke: color,
+    "stroke-width": stroke_width
+  })
+
+  for (var i = 0; i <= frets_drawn; i++) { // frets
+
+    this.path(this.svg_params(fret_left, margin_top + (i * fret_spacing), string_spacing * (strings_drawn - 1), 0))
+
+    pos = (fret_labels[position + i] === undefined) ? '' : fret_labels[position + i];
+
+    if (pos.length > 0) { // draw fret position
+      this.text(
+        fret_left + fret_width + string_spacing * 1.0,
+        margin_top + ((i - 0.5) * fret_spacing),
+        pos).attr({
+        stroke: tab_text_color,
+        "font-size": "9px"
+      });
+    }
+  }
+  for (var i = 0; i < strings_drawn; i++) {
+    this.path(this.svg_params(fret_left + (i * string_spacing), margin_top, 0, fret_spacing * (frets_drawn + 0.5))) // strings
+  }
+
+}
+// Render the tab for a given +element+.
+// +element+ is a DOM node
+// +notation_text+ is the optional notation to render (if not specified, +element+ text content will be used)
+// After rendering, the +element+ will be given the additional "rendered" class.
+jtab.renderOneChord = function (element, notation_text) {
+
+  var rndID = "builder_" + jtab.element_count++;
+
+  // add the Raphael canvas in its own DIV. this gets around an IE6 issue with not removing previous renderings
+  canvas = Raphael(element, 48, 40);  
+  canvas.render_token_one_chord(element.getAttribute("chord"));
+  element.className += ' rendered';
+}
+  
 // Render all nodes with class 'jtab'.
 // +within_scope+ is an optional selector that will restrict rendering to only those nodes contained within.
-jtab.renderimplicit = function(within_scope) {
-  jQuery('.jtab',within_scope).not('.rendered').each( function(name, index) { jtab.render(this); } );
+jtab.renderimplicit = function(within_element) {
+  within_element = within_element ? within_element : document;
+  _.each(within_element.getElementsByClassName("jtab"), function (el) {
+    if(el.className.indexOf("rendered") > -1) return;
+    jtab.render(el);
+  });
+}
+
+jtab.renderChord = function (within_element) {
+  within_element = within_element ? within_element : document;
+  _.each(within_element.getElementsByClassName("chord"), function (el) {
+    if(el.className.indexOf("rendered") > -1) return;
+    jtab.renderOneChord(el);
+  });  
 }
 
 // initialize jtab library.
 // Sets up to run implicit rendering on window.onload
 jtab.init = function() {
+  if(!window) {
+    return;
+  }
   var oldonload = window.onload;
   window.onload = function() {
     if (typeof oldonload == 'function') oldonload();
     jtab.renderimplicit(null);
+    _.each(document.getElementsByClassName("chord"), function (el) {
+      if(el.className.indexOf("rendered") > -1) return;
+      jtab.renderOneChord(el);
+    });    
   }
 }
 
-// bootstrap jtab when jQuery is ready
-jQuery(document).ready(function($) {
-  jtab.init();
-});
+if(typeof window != "undefined") {
+  window.jtab = jtab;
+}
+
+module.exports = jtab;
