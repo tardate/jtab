@@ -11,11 +11,8 @@
     <link type="text/css" rel="stylesheet" href="css/jtab-site.css"/>
 
     <!-- START: for jtab -->
-    <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
-    <link type="text/css" rel="stylesheet" href="css/jtab-helper.css"/>
-    <script src="javascripts/jquery.js" type="text/javascript"></script>
-    <script src="javascripts/raphael.js" type="text/javascript"></script>
-    <script src="javascripts/jtab.js" type="text/javascript"></script>
+    <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />    
+    <script src="dist/jtab.min.js" type="text/javascript"></script>
     <!-- END: for jtab -->
   </head>
   <body>
@@ -78,13 +75,13 @@ jTab can be used to render notation in real-time using Javascript. This could be
 being generated or retrieved from some system or web service.
 </p>
 <span>Try it out. Enter a phrase here (see <a href="#notation">notation</a> for help):</span>
-<input id="user_notation" size="40"><input type="button" value="jTab this!" onclick="jtab.render($('#tab'),$('#user_notation').val());">
+<input id="user_notation" size="40"><input type="button" value="jTab this!" onclick="document.getElementById('user_notation').value">
 <div id="tab"><i>jTab will render your phrase here</i></div>
 
 <script type='text/javascript'>
-  $('#user_notation').keyup(function(e){
-     jtab.render($('#tab'),$(this).val());
-  });
+  document.getElementById('user_notation').onkeyup = function (e) {
+    jtab.render(document.getElementById('tab'), e.target.value);
+  };
 </script>
 
 <h3>Implicit Rendering using CSS</h3>
@@ -245,11 +242,7 @@ There is also a version located at <a href="http://jtab.tardate.com">jtab.tardat
 <a name="install"><h2>How To Install jTab on your Web Page or Site</h2></a>
 <h3>1. Include jTab Javascript files</h3>
 <p>
-jTab is provided as a single javascript source file (jtab.js) that needs to be included on your page.
-It depends on two additional libraries that must also be included: <a href="http://www.jquery.com/" target="_blank">jQuery</a>,
-and <a href="http://raphaeljs.com/" target="_blank">Rapha&euml;l</a> (raphael.js).
-Compatible versions of these libraries located along with jtab.js, or if you are already using a version of these libraries
-you probably do not need to include them again.
+jTab is provided as a single javascript source file (dist/jtab.js) that needs to be included on your page.
 </p>
 <p>
 You can <a href="#download">download</a> these files and use them locally on your own site.
@@ -263,12 +256,10 @@ The example below shows how to pull the files direct from tardate.com.
   &lt;!-- recommended to avoid security warnings with SVG in IE8 --&gt
   &lt;meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" /&gt;
   &lt;!-- optional: helpers to preset jtab region heights to avoid rendering jitter --&gt
-  &lt;link type="text/css" rel="stylesheet" href="http://jtab.tardate.com/css/jtab-helper.css"/&gt;
+  &lt;link type="text/css" rel="stylesheet" href="http://jtab.tardate.com/dist/jtab.css"/&gt;
 
   &lt;!-- mandatory script includes for jtab --&gt
-  &lt;script src="http://jtab.tardate.com/javascripts/jquery.js" type="text/javascript"&gt;&lt;/script&gt;
-  &lt;script src="http://jtab.tardate.com/javascripts/raphael.js" type="text/javascript"&gt;&lt;/script&gt;
-  &lt;script src="http://jtab.tardate.com/javascripts/jtab.js" type="text/javascript"&gt;&lt;/script&gt;
+  &lt;script src="http://jtab.tardate.com/dist/jtab.js" type="text/javascript"&gt;&lt;/script&gt;
 
 &lt;/head&gt;
 &lt;body&gt;
@@ -300,7 +291,7 @@ Obviously, you can bring all your javascripting expertise to bear: the tab notat
 <pre>
 &lt;div id="mytab"&gt;&lt;/div&gt;
 &lt;script type="text/javascript"&gt;
-    jtab.render($('#mytab'),'Am7 C');
+    jtab.render(document.getElementById('mytab'),'Am7 C');
 &lt;/script&gt;
 </pre>
 <p>
@@ -309,7 +300,7 @@ Actual result is this:
 
 <div id="mytab"><i>jTab rendering here..</i></div>
 <script type="text/javascript">
-    jtab.render($('#mytab'),'Am7 C');
+    jtab.render(document.getElementById('mytab'), 'Am7 C');
 </script>
 
 
@@ -458,4 +449,7 @@ Let us know if you find more to be listed here.
 </div>
 
   </body>
+  <script>
+    jtab.init();
+  </script>
 </html>
