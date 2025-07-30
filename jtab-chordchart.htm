@@ -5,8 +5,8 @@
     <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
 
     <title>jTab - Chord Chart</title>
-    <meta name="description" content="jTab is a javascript-based library that allows you to easily render arbitrary guitar chord and tabulature (tab) notation on the web"/>
-    <meta name="keywords"    content="guitar,chord,tab,tabulature,music,notation,javascript,css,svg,html,xhtml"/>
+    <meta name="description" content="jTab is a javascript-based library that allows you to easily render arbitrary guitar chord and tablature (tab) notation on the web"/>
+    <meta name="keywords"    content="guitar,chord,tab,tablature,music,notation,javascript,css,svg,html,xhtml"/>
 
     <link type="text/css" rel="stylesheet" href="css/jtab-site.css"/>
 
@@ -39,7 +39,7 @@ function render_chord_chart(start) {
   $('#chart').append(rowHolder)
 
   jtab.render(rowHolder,tokens);
-  // yeild/async continuation of the chord chart if not yet complete
+  // yield/async continuation of the chord chart if not yet complete
   if (endAt < chordList.length) setTimeout('render_chord_chart(' + endAt + ')', 0 );
 
 }

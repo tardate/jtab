@@ -1,19 +1,14 @@
 /**
  * JTab - Javascript/CSS Guitar Chord and Tab Notation for the Web.
- * Version 1.3.1
- * Written by Paul Gallagher (http://tardate.com), 2009. (original version and maintainer)
- * Contributions:
- *   Jason Ong (https://github.com/jasonong)
- *   Bruno Bornsztein (https://github.com/bborn)
- *   Binary Bit LAN (https://github.com/binarybitlan)
+ * Version 1.4.0
+ *
  * See:
- *   http://jtab.tardate.com : more information on availability, configuration and use.
- *   http://github.com/tardate/jtab/tree/master : source code repository, wiki, documentation
+ *   https://jtab.tardate.com : more information on availability, configuration and use.
+ *   https://github.com/tardate/jtab : source code repository, wiki, documentation
  *
  * This library also depends on the following two libraries that must be loaded for it to work:
- *   jQuery - http://www.jquery.com/
- *   Raphael - http://raphaeljs.com/
- *
+ *   jQuery - https://jquery.com/  (currently tested with 3.7.1)
+ *   Raphael - http://raphaeljs.com/ (currently tested with 2.3.0)
  *
  * This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General
  * Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option)
@@ -23,8 +18,8 @@
  * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
  * details.
  *
- * You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to
- * the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+ * You should have received a copy of the GNU General Public License along with this program.
+ * If not, see https://www.gnu.org/licenses/.
  */
 
 //
@@ -32,7 +27,7 @@
 //
 
 var jtab = {
-  Version : '1.3.1',
+  Version : '1.4.0',
   element_count:0, //TODO:
   Strings : {
   	AboutDialog : '<html><head><title>About jTab</title></head><body style=""><p style="">jTab version: {V}</p><p><a href="http://jtab.tardate.com" target="_blank">http://jtab.tardate.com</a></p><p><input type="button" class="close" value="OK" onClick="window.close()"/></p></body></html>'
@@ -1009,10 +1004,14 @@ jtab.renderimplicit = function(within_scope) {
 // initialize jtab library.
 // Sets up to run implicit rendering on window.onload
 jtab.init = function() {
-  var oldonload = window.onload;
-  window.onload = function() {
-    if (typeof oldonload == 'function') oldonload();
-    jtab.renderimplicit(null);
+  if (document.readyState === "complete") {
+    jtab.renderimplicit();
+  } else {
+    var oldonload = window.onload;
+    window.onload = function() {
+      if (typeof oldonload == 'function') oldonload();
+      jtab.renderimplicit();
+    }
   }
 }
 
