@@ -7,8 +7,8 @@
  *   https://github.com/tardate/jtab : source code repository, wiki, documentation
  *
  * This library also depends on the following two libraries that must be loaded for it to work:
- *   jQuery - https://jquery.com/
- *   Raphael - http://raphaeljs.com/
+ *   jQuery - https://jquery.com/  (currently tested with 3.7.1)
+ *   Raphael - http://raphaeljs.com/ (currently tested with 2.3.0)
  *
  * This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General
  * Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option)
@@ -1004,10 +1004,14 @@ jtab.renderimplicit = function(within_scope) {
 // initialize jtab library.
 // Sets up to run implicit rendering on window.onload
 jtab.init = function() {
-  var oldonload = window.onload;
-  window.onload = function() {
-    if (typeof oldonload == 'function') oldonload();
-    jtab.renderimplicit(null);
+  if (document.readyState === "complete") {
+    jtab.renderimplicit();
+  } else {
+    var oldonload = window.onload;
+    window.onload = function() {
+      if (typeof oldonload == 'function') oldonload();
+      jtab.renderimplicit();
+    }
   }
 }
 
