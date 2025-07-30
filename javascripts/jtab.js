@@ -410,7 +410,7 @@ function jtabChord (token) {
     this.chordName = parts[0];
     this.cagedPos = parts[1];
   } else if (this.isCustom){
-    var parts = this.fullChordName.match( /\[(.+?)\]/ );
+    var parts = this.fullChordName.match( /\[(.*?)\]/ );
     if(parts){
       this.chordName = parts[1];
     } else {
@@ -447,7 +447,7 @@ jtabChord.prototype.setCustomChordArray = function(){
 };
 
 jtabChord.prototype.parseCustomChordArrayFromToken = function() {
-  notes = this.fullChordName.replace(/(\%|\[.+\])/g, '');
+  notes = this.fullChordName.replace(/(\%|\[.*?\])/g, '');
   pairs = notes.split('.');
   if (pairs.length < 6){
     this.isValid = false;
