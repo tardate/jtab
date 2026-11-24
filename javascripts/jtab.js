@@ -767,20 +767,37 @@ Raphael.fn.tab_start = function () {
   //  start bar
   this.path(this.svg_params(this.current_offset, this.tab_top,0, this.tab_height)).attr({stroke: this.color, "stroke-width":1 })
 
-  // extend tab
-  this.tab_extend(width);
-
   //write TAB, vertically centred on the staff
+  var layout = jtab.tab_letter_layout[this.tab_strings] || jtab.tab_letter_layout[6];
+  var letter_spacing = layout[0];
+  var font_size = layout[1];
   var mid = this.tab_mid();
-  var font_size = ( this.tab_strings < 5 ) ? "12px" : "14px";
-  var letter_spacing = ( this.tab_strings < 5 ) ? 0.9 : 1;
   var letters = ["T", "A", "B"];
-  // odd string count: the middle falls on a line, so shift up half a space to keep letters between lines
-  if ( this.tab_strings % 2 == 1 ) mid -= 0.5;
+  var letter_boxes = [];
+  // half the visible height of a capital letter, plus a little padding
+  var half_height = font_size * 0.36 + 2;
   for (var i = 0; i < letters.length; i++) {
-    this.text(this.current_offset + this.tab_char_width,
-      this.tab_top + this.tab_spacing * (mid + (i - 1) * letter_spacing),
-      letters[i]).attr({stroke: this.color, "font-size":font_size});
+    var y = this.tab_top + this.tab_spacing * (mid + (i - 1) * letter_spacing);
+    var letter = this.text(this.current_offset + this.tab_char_width, y, letters[i])
+      .attr({stroke: this.color, "font-size": font_size + "px"});
+    var bbox = letter.getBBox();
+    letter_boxes.push({ left: bbox.x - 2, right: bbox.x + bbox.width + 2, top: y - half_height, bottom: y + half_height });
+  }
+
+  // staff lines for the start column, broken where a letter sits on a line
+  var left = this.current_offset;
+  var right = this.current_offset + width;
+  for (var s = 0; s < this.tab_strings; s++ ) {
+    var line_y = this.tab_top + s * this.tab_spacing;
+    var x = left;
+    for (var i = 0; i < letter_boxes.length; i++) {
+      var box = letter_boxes[i];
+      if ( line_y < box.top || line_y > box.bottom ) continue;
+      // skip tiny stubs (e.g. between the start bar and the letter)
+      if ( box.left - x > 4 ) this.path(this.svg_params(x, line_y, box.left - x, 0)).attr({stroke: this.color});
+      x = Math.max(x, box.right);
+    }
+    if ( right > x ) this.path(this.svg_params(x, line_y, right - x, 0)).attr({stroke: this.color});
   }
   this.increment_offset(width);
 
@@ -922,6 +939,14 @@ jtab.string_names = {
   5 : "BEADG",   // 5 string bass
   6 : "EADGBe",  // 6 string guitar
   7 : "BEADGbe"  // 7 string guitar: $B = low B (7th string), $b = high B (2nd string)
+};
+
+// T/A/B letter layout for each string count: [letter spacing (in string spaces), font size (px)]
+jtab.tab_letter_layout = {
+  4 : [0.9, 12],
+  5 : [1, 14],
+  6 : [1, 14],
+  7 : [1.25, 16]
 };
 
 // set the number of strings drawn on the tab staff (4, 5, 6 or 7; anything else = 6)
