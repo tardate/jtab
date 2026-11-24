@@ -168,10 +168,13 @@ but aims to be as simple as possible.
 <p>
 Basic entry of notes on a single string is done by setting the string and then following with the notation (separated by spaces).
   <ul>
-  <li>Indicating the string is done with the dollar sign ("$") followed by the string number (1-6, high to low).
+  <li>Indicating the string is done with the dollar sign ("$") followed by the string number (1-6 on a 6 string, high to low).
   e.g. $2 is the B string in standard tuning</li>
   <li>Alternatively, you can use the string tuning instead of string number, EADGBe low to high in standard tuning.
-  e.g. $B is the 2nd string in standard tuning.</li>
+  e.g. $B is the 2nd string in standard tuning ($b also works).</li>
+  <li>Tab for 4, 5 and 7 string instruments is drawn by adding a <code>strings-N</code> class to the element
+  (e.g. <code>&lt;div class="jtab tabonly strings-7"&gt;</code>). String numbers then run from 1 to N, and string names are
+  (low to high): 4 = EADG, 5 = BEADG, 7 = BEADGbe. On a 7 string, $B is the low B and $b is the high B.</li>
   <li>Then you can in fact follow with anything you like - fret position, slides ( / \ ) hammer-ons (h), pull-offs (p) etc (just avoid uppercase characters to avoid confusion with chords)</li>
   <li>Examples:
      <ul>
@@ -194,10 +197,10 @@ To handle multiple notes played on different strings, join all the individual st
    </ul>
 </p>
 <p>
-Tab for a whole or partial chord can be easier to enter as a full six-string block.
-A shorthand is possible if you want to enter notes across all 6 strings:
+Tab for a whole or partial chord can be easier to enter as a full block with one entry per string.
+A shorthand is possible if you want to enter notes across all strings (6 by default, or N with a <code>strings-N</code> class):
    <ul>
-    <li>Below the 10th fret, just concatenate the six string fret positions (from low string to high) e.g. 022100 is E chord at the nut.</li>
+    <li>Below the 10th fret, just concatenate the fret positions for every string (from low string to high) e.g. 022100 is E chord at the nut.</li>
     <li>Periods are required to separate each string e.g. 8.10.10.9.8.8 is C chord at the 8th fret (which can also be written as C:4 in CAGED notation)</li>
     <li>substitute an X or x for mute strings e.g. X02220 is an A chord</li>
    </ul>
@@ -328,7 +331,7 @@ At the moment, the standard height of jTab renderings is as follows:
   <ul>
   <li>Chord and tab diagram: 218px</li>
   <li>Chord-only diagram: 118px</li>
-  <li>Tab-only diagram: 100px</li>
+  <li>Tab-only diagram: 100px (6 strings), 68px (4 strings), 84px (5 strings), 116px (7 strings)</li>
   </ul>
 Note that width is indeterminate - it depends on your notation.
 </p>
@@ -344,6 +347,7 @@ will only have tab or chord elements present.
 <pre>&lt;div class="jtab"&gt;(pre-sized for chord and tab)&lt;/div&gt;
 &lt;div class="jtab chordonly"&gt;(pre-sized for chord only)&lt;/div&gt;
 &lt;div class="jtab tabonly"&gt;(pre-sized for tab only)&lt;/div&gt;
+&lt;div class="jtab tabonly strings-7"&gt;(pre-sized for 7 string tab only; also strings-4 and strings-5)&lt;/div&gt;
 </pre>
 
 
@@ -420,7 +424,7 @@ Some of the main things to note:
 <ul>
 <li>Chord diagrams don't render a barre symbol or other common annotations.</li>
 <li>No explicit support for alternate tunings</li>
-<li>Currently only six-string beasts. No bass, lutes, mandolins, banjoes etc etc.. sorry ;-) </li>
+<li>Tab can be drawn for 4, 5, 6 or 7 strings (see the <code>strings-N</code> class), but chord diagrams are still six-string only. No lutes, mandolins, banjoes etc etc.. sorry ;-) </li>
 </ul>
 
 

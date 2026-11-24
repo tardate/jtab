@@ -568,7 +568,7 @@ Raphael.fn.fret_height = Raphael.fn.fret_spacing * (Raphael.fn.frets_drawn + 0.5
 Raphael.fn.chord_width = Raphael.fn.margin_left + Raphael.fn.fret_width + Raphael.fn.string_spacing + Raphael.fn.margin_right;
 Raphael.fn.chord_height = Raphael.fn.margin_top + Raphael.fn.fret_height + Raphael.fn.margin_bottom;
 
-Raphael.fn.tab_current_string = 0; // 1,2,3,4,5,6 or 0 = not set
+Raphael.fn.tab_current_string = 0; // 1..tab_strings or 0 = not set
 Raphael.fn.tab_margin_top = 10;
 Raphael.fn.tab_top = Raphael.fn.chord_height + Raphael.fn.tab_margin_top;
 Raphael.fn.tab_spacing = Raphael.fn.fret_spacing;
