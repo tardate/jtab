@@ -93,6 +93,22 @@ Show don't tell! This page is a bit of a sandbox demonstrating the things you ca
 </pre>
 <div class="jtab tabonly">$4.7/9.$3.6/8.$2.5/7 9p7 $2.9.$3.9.$4.9 ||</div>
 
+<h3>Tab for 4, 5 and 7 string instruments</h3>
+<p>Add a <code>strings-N</code> class (4, 5, 6 or 7) to change how many strings the tab has. The default is 6.
+Strings can be numbered from 1 (highest) to N, or named:
+4 = <code>EADG</code>, 5 = <code>BEADG</code>, 6 = <code>EADGBe</code>, 7 = <code>BEADGbe</code>
+(on a 7 string, <code>$B</code> is the low B and <code>$b</code> is the high B).
+Chord diagrams are only supported for 6 strings, so chord names are ignored in these tabs.
+</p>
+<pre>
+&lt;div class="jtab tabonly strings-4"&gt;$E 0 3 5 $A 2 3 / | $D 0 2 $G 0 2 4 | 0220 ||&lt;/div&gt;
+&lt;div class="jtab tabonly strings-5"&gt;$B 0 2 4 $E 0 2 | $5.0.$1.4 $3 2 ||&lt;/div&gt;
+&lt;div class="jtab tabonly strings-7"&gt;$B 0 2 3 | $b 0 1 $e 0 | 0X02220 ||&lt;/div&gt;
+</pre>
+<div class="jtab tabonly strings-4">$E 0 3 5 $A 2 3 / | $D 0 2 $G 0 2 4 | 0220 ||</div>
+<div class="jtab tabonly strings-5">$B 0 2 4 $E 0 2 | $5.0.$1.4 $3 2 ||</div>
+<div class="jtab tabonly strings-7">$B 0 2 3 | $b 0 1 $e 0 | 0X02220 ||</div>
+
 <h3>Implicitly render a mixed chord and tab phrase</h3>
 <p>
 </p>

@@ -572,7 +572,8 @@ Raphael.fn.tab_current_string = 0; // 1,2,3,4,5,6 or 0 = not set
 Raphael.fn.tab_margin_top = 10;
 Raphael.fn.tab_top = Raphael.fn.chord_height + Raphael.fn.tab_margin_top;
 Raphael.fn.tab_spacing = Raphael.fn.fret_spacing;
-Raphael.fn.tab_height = Raphael.fn.tab_spacing * 5;
+Raphael.fn.tab_strings = 6; // number of strings drawn on the tab staff (4, 5, 6 or 7)
+Raphael.fn.tab_height = Raphael.fn.tab_spacing * ( Raphael.fn.tab_strings - 1 );
 Raphael.fn.tab_char_width = 8;
 
 Raphael.fn.total_height = Raphael.fn.tab_top + Raphael.fn.tab_height + Raphael.fn.margin_bottom;
@@ -656,7 +657,7 @@ Raphael.fn.stroke = function () {
     // extend tab
     this.tab_extend(width);
     //  stroke
-    var stroke_path = this.path(this.svg_params(this.current_offset + this.tab_char_width, this.tab_top  + (3.5 * this.tab_spacing),this.tab_char_width, - 2 * this.tab_spacing))
+    var stroke_path = this.path(this.svg_params(this.current_offset + this.tab_char_width, this.tab_top  + ((this.tab_mid() + 1) * this.tab_spacing),this.tab_char_width, - 2 * this.tab_spacing))
         stroke_path.attr({stroke: this.tab_text_color, "stroke-width":4 })
 
     this.increment_offset(width);
@@ -748,11 +749,16 @@ Raphael.fn.chord_note = function (position, string_number, note) {
 // extend the tab drawing area
 Raphael.fn.tab_extend = function (width) {
   if (this.has_tab == false) return;
-  for (var i = 0; i < this.strings_drawn; i++ ) {
+  for (var i = 0; i < this.tab_strings; i++ ) {
     this.path(this.svg_params(this.current_offset, this.tab_top  + (i * this.tab_spacing),width, 0)).attr({stroke: this.color})
   }
 }
 
+
+// vertical middle of the tab staff, in units of tab_spacing from tab_top
+Raphael.fn.tab_mid = function () {
+  return (this.tab_strings - 1) / 2;
+}
 
 // start the tab
 Raphael.fn.tab_start = function () {
@@ -764,10 +770,18 @@ Raphael.fn.tab_start = function () {
   // extend tab
   this.tab_extend(width);
 
-  //write TAB
-  this.text(this.current_offset + this.tab_char_width, this.tab_top + this.tab_spacing * 1.5, "T").attr({stroke: this.color, "font-size":"14px"});
-  this.text(this.current_offset + this.tab_char_width, this.tab_top + this.tab_spacing * 2.5, "A").attr({stroke: this.color, "font-size":"14px"});
-  this.text(this.current_offset + this.tab_char_width, this.tab_top + this.tab_spacing * 3.5, "B").attr({stroke: this.color, "font-size":"14px"});
+  //write TAB, vertically centred on the staff
+  var mid = this.tab_mid();
+  var font_size = ( this.tab_strings < 5 ) ? "12px" : "14px";
+  var letter_spacing = ( this.tab_strings < 5 ) ? 0.9 : 1;
+  var letters = ["T", "A", "B"];
+  // odd string count: the middle falls on a line, so shift up half a space to keep letters between lines
+  if ( this.tab_strings % 2 == 1 ) mid -= 0.5;
+  for (var i = 0; i < letters.length; i++) {
+    this.text(this.current_offset + this.tab_char_width,
+      this.tab_top + this.tab_spacing * (mid + (i - 1) * letter_spacing),
+      letters[i]).attr({stroke: this.color, "font-size":font_size});
+  }
   this.increment_offset(width);
 
 }
@@ -781,13 +795,20 @@ Raphael.fn.draw_tab_note = function (string_number, token, left_offset) {
           token).attr({fill: this.color, "font-size":"16px"});
 }
 
-// gets string number from token $[1-6|EADGBe]
+// gets string number from token $[1-N] or $<string name> (see jtab.string_names)
 Raphael.fn.get_string_number = function (token) {
   var string_number = null;
-  if ( token.match( /^\$[1-6]/ ) != null ) {
-     string_number = token.substr(1,1);
-  } else if ( token.match( /^\$[EADGBe]/ ) != null ) {
-     string_number =  6 - "EADGBe".indexOf(token.substr(1,1));
+  var n = this.tab_strings;
+  var names = jtab.string_names[n];
+  var m = token.match( /^\$([1-9]|[A-Za-z])/ );
+  if ( m == null ) return null;
+  var c = m[1];
+  if ( c.match( /[1-9]/ ) != null ) {
+    if ( parseInt(c, 10) <= n ) string_number = parseInt(c, 10);
+  } else {
+    if ( n == 6 && c == "b" ) c = "B"; // alias: $b == $B on a 6 string
+    var idx = names.indexOf(c);
+    if ( idx >= 0 ) string_number = n - idx;
   }
   return string_number;
 }
@@ -807,7 +828,7 @@ Raphael.fn.get_fullchord_notes = function (token) {
     } else {
       rc = token.split('');
     }
-    if (rc.length != 6) rc = false;
+    if (rc.length != this.tab_strings) rc = false;
   }
   return rc;
 }
@@ -847,7 +868,7 @@ Raphael.fn.tab_note = function (token) {
       var width = this.tab_char_width * (max_chars + 2);
       this.tab_extend( width );
       for (var i = 0; i < fullchord_notes.length ; i++) {
-        this.draw_tab_note( 6 - i, fullchord_notes[i], width * 0.5 );
+        this.draw_tab_note( this.tab_strings - i, fullchord_notes[i], width * 0.5 );
       }
       this.increment_offset( width );
     } else if ( this.tab_current_string > 0 ) { // else draw literal, but only if a current string selected
@@ -863,7 +884,8 @@ Raphael.fn.tab_note = function (token) {
 // main drawing routine entry point: to render a token - chord or tab
 Raphael.fn.render_token = function (token) {
 
-  var c = new jtabChord(token);
+  // chord diagrams are only supported for 6 string guitar
+  var c = ( this.tab_strings == 6 ) ? new jtabChord(token) : { isValid: false };
 
   if ( c.isValid ) { // draw chord
     var chord = c.chordArray;
@@ -894,6 +916,31 @@ Raphael.fn.render_token = function (token) {
 //
 
 
+// string names (low to high) for each supported string count
+jtab.string_names = {
+  4 : "EADG",    // 4 string bass
+  5 : "BEADG",   // 5 string bass
+  6 : "EADGBe",  // 6 string guitar
+  7 : "BEADGbe"  // 7 string guitar: $B = low B (7th string), $b = high B (2nd string)
+};
+
+// set the number of strings drawn on the tab staff (4, 5, 6 or 7; anything else = 6)
+jtab.setStringCount = function (n) {
+  n = parseInt(n, 10);
+  if ( jtab.string_names[n] === undefined ) n = 6;
+  Raphael.fn.tab_strings = n;
+  Raphael.fn.tab_height = Raphael.fn.tab_spacing * ( n - 1 );
+  Raphael.fn.tab_current_string = 0;
+  return n;
+}
+
+// get the string count requested by a "strings-N" class on +element+ (default 6)
+jtab.getStringCount = function (element) {
+  var classes = jQuery(element).attr('class') || '';
+  var m = classes.match( /(^|\s)strings-(\d+)(\s|$)/ );
+  return m ? parseInt(m[2], 10) : 6;
+}
+
 // determine nature of the token stream
 // returns:
 //   1 : chord and tab present
@@ -907,10 +954,16 @@ jtab.characterize = function (notation) {
     notation = '';
   }
 
+  var strings = Raphael.fn.tab_strings;
   var gotCustomChord = ( notation.match( /[\%]([0-4|T|X])?/ )   != undefined );
   var gotNormalChord = ( notation.match( /[^\$][A-G]|^[A-G]/ )  != undefined );
-  var gotTab = ( ( notation.match( /\$/ ) != null ) || ( notation.match( /[^\%][0-9|Xx|\.]{6,}/ ) != null ) );
+  var fullChordTab = new RegExp( "[^\\%][0-9|Xx|\\.]{" + strings + ",}" );
+  var gotTab = ( ( notation.match( /\$/ ) != null ) || ( notation.match( fullChordTab ) != null ) );
   var gotChord =  gotNormalChord || gotCustomChord ;
+  if ( strings != 6 ) { // chord diagrams only supported for 6 strings: render as tab only
+    gotChord = false;
+    gotTab = true;
+  }
 
   // set defaults - apply scaling here (TODO)
   Raphael.fn.current_offset = Raphael.fn.margin_left;
@@ -975,6 +1028,7 @@ jtab.render = function (element,notation_text) {
 
   var notation = notation_text || jQuery(element).text() || '';
 
+  jtab.setStringCount( jtab.getStringCount(element) );
   var tabtype = jtab.characterize( notation );
   if (tabtype == 0 ) return;
 
