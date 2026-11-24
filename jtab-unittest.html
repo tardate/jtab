@@ -80,6 +80,62 @@
       assertEqual( expected, Raphael.fn.get_string_number(token), "incorrect string number for: '" + token + "'" );
     }},
 
+    testRaphaelGetStringNumber4: function() {  with(this) {
+      jtab.setStringCount(4);
+      var cases = { "$1":1, "$4":4, "$5":null, "$G":1, "$D":2, "$A":3, "$E":4, "$B":null, "$e":null };
+      for (var token in cases) {
+        assertEqual( cases[token], Raphael.fn.get_string_number(token), "4 strings: incorrect string number for: '" + token + "'" );
+      }
+      jtab.setStringCount(6);
+    }},
+
+    testRaphaelGetStringNumber5: function() {  with(this) {
+      jtab.setStringCount(5);
+      var cases = { "$1":1, "$5":5, "$6":null, "$G":1, "$D":2, "$A":3, "$E":4, "$B":5 };
+      for (var token in cases) {
+        assertEqual( cases[token], Raphael.fn.get_string_number(token), "5 strings: incorrect string number for: '" + token + "'" );
+      }
+      jtab.setStringCount(6);
+    }},
+
+    testRaphaelGetStringNumber6Alias: function() {  with(this) {
+      jtab.setStringCount(6);
+      assertEqual( 2, Raphael.fn.get_string_number("$b"), "6 strings: $b should alias $B" );
+      assertEqual( null, Raphael.fn.get_string_number("$7"), "6 strings: $7 should be invalid" );
+    }},
+
+    testRaphaelGetStringNumber7: function() {  with(this) {
+      jtab.setStringCount(7);
+      var cases = { "$1":1, "$7":7, "$8":null, "$e":1, "$b":2, "$G":3, "$D":4, "$A":5, "$E":6, "$B":7 };
+      for (var token in cases) {
+        assertEqual( cases[token], Raphael.fn.get_string_number(token), "7 strings: incorrect string number for: '" + token + "'" );
+      }
+      jtab.setStringCount(6);
+    }},
+
+    testFullChordNotesFollowStringCount: function() {  with(this) {
+      jtab.setStringCount(4);
+      assertEqual( 4, Raphael.fn.get_fullchord_notes("0220").length, "4 strings: 0220 should be a full chord" );
+      assertEqual( false, Raphael.fn.get_fullchord_notes("X02220"), "4 strings: X02220 should not be a full chord" );
+      jtab.setStringCount(7);
+      assertEqual( 7, Raphael.fn.get_fullchord_notes("0X02220").length, "7 strings: 0X02220 should be a full chord" );
+      jtab.setStringCount(6);
+    }},
+
+    testRecognizeNonSixStringAsTabOnly: function() {  with(this) {
+      jtab.setStringCount(4);
+      assertEqual( 3, jtab.characterize( "0220 | $E 0 3" ), "4 strings: should be tab-only" );
+      assertEqual( 3, jtab.characterize( "A $A 0 2" ), "4 strings: chord names should not enable chord mode" );
+      jtab.setStringCount(6);
+    }},
+
+    testStringCountFromClass: function() {  with(this) {
+      assertEqual( 7, jtab.getStringCount( jQuery('<div class="jtab tabonly strings-7"></div>') ) );
+      assertEqual( 6, jtab.getStringCount( jQuery('<div class="jtab tabonly"></div>') ) );
+      assertEqual( 6, jtab.setStringCount(9), "unsupported counts fall back to 6" );
+      jtab.setStringCount(6);
+    }},
+
     testRecognizeChordAndTabNotation: function() {  with(this) {
       var notation = "Bm $3 4 4h5p3h4 5 $2 3 5 7 7h8p7 5/7 | A $4 7 9 $3 7 6 $5 9 $4 7h9 7 $5 9\7 5/7 | ";
       var tabtype = jtab.characterize( notation );
